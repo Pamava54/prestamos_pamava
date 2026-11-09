@@ -106,6 +106,9 @@ input[type=range]{padding:0;border:0;accent-color:var(--p);margin-top:8px}
 .sys{align-self:center;background:var(--gs);color:#3A2B00;border-radius:999px;padding:4px 12px;font-size:.78rem;font-weight:700;text-align:center;max-width:92%}
 .pend{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.pend span{background:var(--ps);color:var(--pd);border-radius:10px;padding:4px 8px;font-size:.82rem;font-weight:700}.pend button{border:0;background:none;color:var(--bad);font-weight:900;cursor:pointer}
 #toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#17262B;color:#fff;padding:10px 16px;border-radius:12px;z-index:80;display:none;max-width:90%;font-weight:700;font-size:.9rem}
+.msg.wide{align-self:stretch;max-width:100%;background:#fff;color:var(--ink);border:2px solid var(--p);border-radius:14px}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin:8px 0}.pgrid small{display:block;color:var(--mut);font-size:.72rem}.pgrid b{font-size:.92rem;word-break:break-word}
+ul.chk{list-style:none;padding:0;margin:8px 0 0}ul.chk li{padding:3px 0}
 details.card summary{font-weight:800;cursor:pointer}
 @media print{header.top,nav.tabs,.fab,#calc,.x,.noprint,.wm{display:none!important}#modal{position:static;background:none;display:block}#modal .box{box-shadow:none;max-height:none;padding:0}body{background:#fff}main{display:none}}
 </style></head><body>
@@ -2453,8 +2456,8 @@ const fd=s=>{const d=pd(s);return `${d.getDate()} ${MES[d.getMonth()]} ${d.getFu
 const uid=()=>Math.random().toString(36).slice(2,9);
 const hash=t=>{let h=5381;for(const c of t)h=((h<<5)+h+c.charCodeAt(0))>>>0;return h.toString(36).toUpperCase().padStart(7,"0").slice(0,7)};
 /* ============ datos ============ */
-const LS="pamava_prestamos_demo_v2";
-let db,tt,ui={mode:"P",tab:"resumen",cid:null,chat:null,pend:[],draft:"",pendTipo:null,pmonto:"",calc:{monto:500000,plazo:4,unidad:"M"}};
+const LS="pamava_prestamos_demo_v3";
+let db,tt,ui={mode:"P",tab:"resumen",cid:null,chat:null,nuevo:false,cf:"todos",pend:[],draft:"",pendTipo:null,pmonto:"",calc:{monto:500000,plazo:4,unidad:"M"}};
 const MEDIOS=["Efectivo","Nequi","Daviplata","Transferencia bancaria"];
 function periodRate(p){return p.periodo==="M"?p.tasa/100:p.tasa/200}
 function buildCuotas(cap,tasa,periodo,n,inicio,metodo){
@@ -2486,8 +2489,8 @@ const cli=id=>db.clientes.find(c=>c.id===id);
 const pres=id=>db.prestamos.find(p=>p.id===id);
 function seed(){
  const t=today();
- db={cfg:{prestamista:"Prestamista de ejemplo",tel:"",tope:25,tasaSimple:1.5,montoMin:100000,montoMax:5000000,plazoMax:12,ini:7,fin:19,satIni:8,satFin:15,festivos:"",maxContactos:2,ignorarHorario:false,medios:"Efectivo, Nequi, Daviplata"},clientes:[],prestamos:[],pagos:[],notifs:[],contactos:[],log:[],msgs:[],sols:[]};
- const C=(n,d,tel,dir,ref)=>{const c={id:uid(),nombre:n,doc:d,tel,dir,ref,notas:""};db.clientes.push(c);return c};
+ db={cfg:{prestamista:"Prestamista de ejemplo",tel:"",tope:25,tasaSimple:1.5,montoMin:100000,montoMax:5000000,plazoMax:12,docsReq:"Cédula de ciudadanía (ambos lados), Comprobante de ingresos o certificado laboral, Recibo de servicio público, Dos referencias personales (nombre y teléfono)",lugar:"Oficina del prestamista (escribe aquí la dirección)",ini:7,fin:19,satIni:8,satFin:15,festivos:"",maxContactos:2,ignorarHorario:false,medios:"Efectivo, Nequi, Daviplata"},clientes:[],prestamos:[],pagos:[],notifs:[],contactos:[],log:[],msgs:[],sols:[]};
+ const C=(n,d,tel,dir,ref)=>{const c={id:uid(),nombre:n,doc:d,tel,dir,ref,notas:"",estado:"cliente"};db.clientes.push(c);return c};
  const c1=C("María Fernanda Rojas","1.110.000.001","3001112233","Barrio Jordán, Mz 4 Cs 12","Vecina: Ana Gómez");
  const c2=C("Carlos Andrés Peña","1.110.000.002","3002223344","Calle 60 # 5-20, Centro","Tienda La Esquina");
  const c3=C("Luz Marina Castro","1.110.000.003","3003334455","Barrio Arkacentro, Cs 8","Hijo: Pedro");
@@ -2508,6 +2511,9 @@ function seed(){
  M({clienteId:c2.id,de:"P",t:Date.now()-4*H,txt:"Hola Carlos, con gusto. Envíame por aquí una foto de tu cédula por los dos lados.",leido:true});
  M({clienteId:c2.id,de:"C",t:Date.now()-1*H,tipo:"doc",txt:"Aquí está mi cédula.",adj:[{nombre:"cedula.jpg",mime:"image/svg+xml",data:ph("Cédula (ejemplo)","#DCEBF7")}]});
  M({clienteId:c1.id,de:"C",t:Date.now()-2*H,tipo:"pago",monto:200000,prestamoId:p1.id,txt:"Ya pagué la cuota por Nequi.",adj:[{nombre:"comprobante-nequi.jpg",mime:"image/svg+xml",data:ph("Comprobante Nequi (ejemplo)","#F3E1F7")}]});
+ const c5=C("Andrea Ruiz Londoño","1.110.000.005","3005556677","Barrio La Pola, Cs 21","");c5.estado="prospecto";c5.origen="app";
+ db.sols.push({id:uid(),clienteId:c5.id,monto:4000000,plazo:12,unidad:"M",fecha:today(),etapa:"recibida"});
+ M({clienteId:c5.id,de:"C",t:Date.now()-20*60e3,tipo:"solicitud",txt:"Hola, estoy interesado en adquirir un préstamo de $4.000.000 a un tiempo de 12 meses."});
  save()}
 function load(){try{db=JSON.parse(localStorage.getItem(LS))}catch(e){db=null}if(!db||!db.clientes)seed();if(!db.msgs)db.msgs=[];if(!db.sols)db.sols=[]}
 /* ============ horario y límite de contacto ============ */
@@ -2524,18 +2530,18 @@ function contactosSemana(cid){const lim=Date.now()-7*864e5;return db.contactos.f
 /* ============ vistas ============ */
 const TABS_P=[["resumen","📊","Resumen"],["cobros","💵","Cobros"],["clientes","👥","Clientes"],["prestamos","📒","Préstamos"],["msg","💬","Mensajes"],["mas","⚙️","Más"]];
 const TABS_C=[["c_res","🏠","Mi crédito"],["c_calc","🧮","Calcular"],["c_msg","💬","Mensajes"],["c_rec","🧾","Recibos"],["c_av","🔔","Avisos"]];
-function setMode(m){ui.mode=m;ui.chat=null;ui.pend=[];ui.draft="";ui.tab=m==="P"?"resumen":"c_res";if(m==="C"&&!ui.cid)ui.cid=db.clientes[0]?.id;draw()}
+function setMode(m){ui.mode=m;ui.nuevo=false;ui.chat=null;ui.pend=[];ui.draft="";ui.tab=m==="P"?"resumen":"c_res";if(m==="C"&&!ui.cid)ui.cid=db.clientes[0]?.id;draw()}
 function draw(){
  const ta=$("#mtxt");if(ta)ui.draft=ta.value;
  $("#appName").textContent=BRAND.nombre;document.title=BRAND.nombre;
  $("#mP").setAttribute("aria-pressed",ui.mode==="P");$("#mC").setAttribute("aria-pressed",ui.mode==="C");
- const who=$("#who");who.style.display=ui.mode==="C"?"":"none";who.innerHTML=db.clientes.map(c=>`<option value="${c.id}"${c.id===ui.cid?" selected":""}>${esc(c.nombre)}</option>`).join("");
+ const who=$("#who");who.style.display=ui.mode==="C"?"":"none";who.innerHTML=db.clientes.map(c=>`<option value="${c.id}"${c.id===ui.cid&&!ui.nuevo?" selected":""}>${esc(c.nombre)}</option>`).join("")+`<option value="__new"${ui.nuevo?" selected":""}>➕ Soy nuevo (registrarme)</option>`;
  $("#calcBtn").style.display=ui.mode==="C"?"none":"";if(ui.mode==="C")$("#calc").classList.remove("on");
  const V={resumen:vResumen,cobros:vCobros,clientes:vClientes,prestamos:vPrestamos,msg:vMsg,mas:vMas,c_res:vCRes,c_calc:vCCalc,c_msg:vCMsg,c_rec:vCRec,c_av:vCAv};
- const html=(V[ui.tab]||vResumen)();
+ const html=(ui.mode==="C"&&ui.nuevo)?vNuevo():(V[ui.tab]||vResumen)();
  const T=ui.mode==="P"?TABS_P:TABS_C;const bd=k=>k==="msg"?noLeidos("P"):k==="c_msg"?noLeidos("C",ui.cid):0;
  $("#tabs").innerHTML=T.map(([k,i,l])=>`<button data-tab="${k}" aria-selected="${ui.tab===k}"><span>${i}</span>${l}${bd(k)?`<em class="bd">${bd(k)}</em>`:""}</button>`).join("");
- $("#app").innerHTML=html+`<div class="foot">Prototipo con datos de demostración · PAMAVA soluciones</div>`;
+ $("#tabs").style.display=(ui.mode==="C"&&ui.nuevo)?"none":"";$("#app").innerHTML=html+`<div class="foot">Prototipo con datos de demostración · PAMAVA soluciones</div>`;
  const th=$("#thread");if(th)th.scrollTop=th.scrollHeight;
  save()}
 function semaforo(cid){let peor=0;db.prestamos.filter(p=>p.clienteId===cid).forEach(p=>vencidas(p).forEach(q=>{peor=Math.max(peor,diffDays(today(),q.fecha))}));return peor===0?"ok":peor<=7?"warn":"bad"}
@@ -2547,11 +2553,11 @@ function vResumen(){
  const hoy=ps.flatMap(p=>p.cuotas.filter(q=>q.pagado<q.valor&&q.fecha===t).map(q=>({p,q})));
  const recHoy=db.pagos.filter(x=>x.fecha===t).reduce((s,x)=>s+x.monto,0);
  return `<h1>Resumen</h1>
- <div class="grid kpis"><div class="card kpi"><small>Dinero prestado</small><b>${money(prest)}</b></div><div class="card kpi"><small>Por cobrar</small><b>${money(cobrar)}</b></div><div class="card kpi ok"><small>Recuperado</small><b>${money(rec)}</b></div><div class="card kpi ${mora?"bad":"ok"}"><small>En mora</small><b>${money(mora)}</b></div><div class="card kpi"><small>Intereses totales</small><b>${money(gan)}</b></div><div class="card kpi ${sano>=90?"ok":sano>=75?"warn":"bad"}"><small>Salud de la cartera</small><b>${sano}%</b></div></div>
+ <div class="grid kpis"><div class="card kpi"><small>Dinero prestado</small><b>${money(prest)}</b></div><div class="card kpi"><small>Por cobrar</small><b>${money(cobrar)}</b></div><div class="card kpi ok"><small>Recuperado</small><b>${money(rec)}</b></div><div class="card kpi ${mora?"bad":"ok"}"><small>En mora</small><b>${money(mora)}</b></div><div class="card kpi"><small>Intereses totales</small><b>${money(gan)}</b></div><div class="card kpi ${sano>=90?"ok":sano>=75?"warn":"bad"}"><small>Salud de la cartera</small><b>${sano}%</b></div><div class="card kpi ${db.sols.some(x=>!["desembolsada","rechazada"].includes(x.etapa))?"warn":"ok"}" data-go="msg" style="cursor:pointer"><small>Solicitudes abiertas</small><b>${db.sols.filter(x=>!["desembolsada","rechazada"].includes(x.etapa)).length}</b></div></div>
  <div class="card" style="margin-top:10px"><div class="row"><h2 class="sp">Hoy</h2><span class="pill gray">Recaudado hoy ${money(recHoy)}</span></div>
  ${hoy.length?`<div class="list">${hoy.map(({p,q})=>`<div class="item"><span class="dot ${semaforo(p.clienteId)}"></span><div class="info"><b>${esc(cli(p.clienteId).nombre)}</b><small>Cuota ${q.n} de ${p.n}</small></div><b>${money(q.valor-q.pagado)}</b></div>`).join("")}</div>`:`<div class="empty">No hay cuotas que venzan hoy.</div>`}
  <div style="margin-top:8px"><button class="btn sec" data-go="cobros">Ver cobros y vencidos →</button></div></div>
- <div class="card" style="margin-top:10px"><h2>Clientes por comportamiento</h2><div class="list">${db.clientes.map(c=>`<div class="item"><span class="dot ${semaforo(c.id)}"></span><div class="info"><b>${esc(c.nombre)}</b><small>${db.prestamos.filter(p=>p.clienteId===c.id).length} préstamo(s)</small></div><span class="pill ${semaforo(c.id)}">${{ok:"Al día",warn:"Atraso leve",bad:"En mora"}[semaforo(c.id)]}</span></div>`).join("")||`<div class="empty">Aún no hay clientes.</div>`}</div></div>`}
+ <div class="card" style="margin-top:10px"><h2>Clientes por comportamiento</h2><div class="list">${db.clientes.filter(c=>c.estado!=="prospecto").map(c=>`<div class="item"><span class="dot ${semaforo(c.id)}"></span><div class="info"><b>${esc(c.nombre)}</b><small>${db.prestamos.filter(p=>p.clienteId===c.id).length} préstamo(s)</small></div><span class="pill ${semaforo(c.id)}">${{ok:"Al día",warn:"Atraso leve",bad:"En mora"}[semaforo(c.id)]}</span></div>`).join("")||`<div class="empty">Aún no hay clientes.</div>`}</div></div>`}
 function listaCobros(){const t=today();return db.prestamos.flatMap(p=>p.cuotas.filter(q=>q.pagado<q.valor&&q.fecha<=t).map(q=>({p,q,atraso:diffDays(t,q.fecha)}))).sort((a,b)=>(cli(a.p.clienteId).dir||"").localeCompare(cli(b.p.clienteId).dir||""))}
 function vCobros(){
  const L=listaCobros();const tot=L.reduce((s,x)=>s+x.q.valor-x.q.pagado,0);const h=permitido();
@@ -2560,8 +2566,10 @@ function vCobros(){
  <div class="row" style="margin:10px 0"><span class="pill gray">${L.length} cuota(s)</span><span class="pill warn">Total ${money(tot)}</span><span class="sp"></span><span style="color:var(--mut);font-size:.82rem">Ordenado por dirección (ruta)</span></div>
  <div class="list">${L.map(({p,q,atraso})=>{const c=cli(p.clienteId);const cs=contactosSemana(c.id);return `<div class="card"><div class="row"><span class="dot ${atraso>7?"bad":atraso>0?"warn":"ok"}"></span><div class="sp"><b>${esc(c.nombre)}</b><br><small style="color:var(--mut)">📍 ${esc(c.dir||"Sin dirección")}</small></div><div style="text-align:right"><b>${money(q.valor-q.pagado)}</b><br><small>${atraso>0?`<span style="color:var(--bad)">${atraso} día(s) de atraso</span>`:"vence hoy"}</small></div></div>
  <div class="row" style="margin-top:8px"><span class="pill gray">Cuota ${q.n}/${p.n} · ${fd(q.fecha)}</span><span class="pill ${cs>=db.cfg.maxContactos?"bad":"gray"}">Contactos esta semana: ${cs}/${db.cfg.maxContactos}</span><span class="sp"></span><button class="btn sec sm" data-remind="${p.id}|${q.n}">Recordar</button><button class="btn sm" data-pay="${p.id}">Registrar pago</button></div></div>`}).join("")||`<div class="card empty">🎉 No hay cobros pendientes para hoy.</div>`}</div>`}
-function vClientes(){return `<div class="row"><h1 class="sp">Clientes</h1><button class="btn" data-newcli>+ Nuevo</button></div>
- <div class="list">${db.clientes.map(c=>{const ps=db.prestamos.filter(p=>p.clienteId===c.id);const deuda=ps.reduce((s,p)=>s+saldoPrest(p),0);return `<div class="item" data-cli="${c.id}" style="cursor:pointer"><span class="dot ${semaforo(c.id)}"></span><div class="info"><b>${esc(c.nombre)}</b><small>${esc(c.tel)} · ${esc(c.dir||"")}</small></div><div style="text-align:right"><b>${money(deuda)}</b><br><small>${ps.length} préstamo(s)</small></div></div>`}).join("")||`<div class="card empty">Agrega tu primer cliente.</div>`}</div>`}
+function vClientes(){const f=ui.cf||"todos";const nS=db.clientes.filter(c=>c.estado==="prospecto").length;const L=db.clientes.filter(c=>f==="todos"||(f==="sol"?c.estado==="prospecto":c.estado!=="prospecto"));
+ return `<div class="row"><h1 class="sp">Clientes</h1><button class="btn" data-newcli>+ Nuevo</button></div>
+ <div class="seg2" style="margin-bottom:10px" role="group" aria-label="Filtro">${[["todos","Todos"],["sol","Solicitantes"+(nS?` (${nS})`:"")],["cli","Clientes"]].map(([k,l])=>`<button data-cf="${k}" aria-pressed="${f===k}">${l}</button>`).join("")}</div>
+ <div class="list">${L.map(c=>{const ps=db.prestamos.filter(p=>p.clienteId===c.id);const deuda=ps.reduce((s,p)=>s+saldoPrest(p),0);return `<div class="item" data-cli="${c.id}" style="cursor:pointer"><span class="dot ${c.estado==="prospecto"?"warn":semaforo(c.id)}"></span><div class="info"><b>${esc(c.nombre)}</b><small>${esc(c.tel)} · ${esc(c.dir||"")}</small></div><div style="text-align:right">${c.estado==="prospecto"?`<span class="pill warn">Solicitante</span>`:`<b>${money(deuda)}</b><br><small>${ps.length} préstamo(s)</small>`}</div></div>`}).join("")||`<div class="card empty">${f==="sol"?"No hay solicitantes por ahora.":"Agrega tu primer cliente."}</div>`}</div>`}
 function vPrestamos(){return `<div class="row"><h1 class="sp">Préstamos</h1><button class="btn" data-newpre>+ Nuevo</button></div>
  <div class="list">${db.prestamos.map(p=>{const c=cli(p.clienteId),pag=totalPrest(p)-saldoPrest(p),e=estadoPrest(p);return `<div class="card" data-pre="${p.id}" style="cursor:pointer"><div class="row"><b class="sp">${esc(c.nombre)}</b><span class="pill ${e==="pagado"?"ok":e==="mora"?"bad":"ok"}">${e==="pagado"?"Pagado":e==="mora"?"En mora":"Al día"}</span></div>
  <div class="row" style="margin:4px 0"><small style="color:var(--mut)">${money(p.capital)} · ${p.tasa}% mensual · ${p.n} cuotas ${p.periodo==="M"?"mensuales":"quincenales"}</small></div>
@@ -2576,6 +2584,8 @@ function vMas(){const c=db.cfg;return `<h1>Más</h1>
  <label class="f">Monto mínimo que puede pedir ($)<input name="montoMin" value="${c.montoMin.toLocaleString("es-CO")}" inputmode="numeric"></label>
  <label class="f">Monto máximo que puede pedir ($)<input name="montoMax" value="${c.montoMax.toLocaleString("es-CO")}" inputmode="numeric"></label>
  <label class="f">Plazo máximo (meses)<input name="plazoMax" value="${c.plazoMax}" inputmode="numeric"></label>
+ <label class="f" style="grid-column:1/-1">Documentos que pides para el estudio (separados por coma)<input name="docsReq" value="${esc(c.docsReq)}"></label>
+ <label class="f" style="grid-column:1/-1">Lugar de entrega y firma<input name="lugar" value="${esc(c.lugar)}"></label>
  <label class="f">Horario L–V: desde (h)<input name="ini" value="${c.ini}" inputmode="numeric"></label>
  <label class="f">Horario L–V: hasta (h)<input name="fin" value="${c.fin}" inputmode="numeric"></label>
  <label class="f">Sábado: desde (h)<input name="satIni" value="${c.satIni}" inputmode="numeric"></label>
@@ -2615,10 +2625,14 @@ function simular(pid,x){const p=pres(pid);const r=periodRate(p);const cuotasPend
  const K2=Math.max(0,K-x);const nc=r===0?K2/cuotasPend:K2*r/(1-Math.pow(1+r,-cuotasPend));const B=x+nc*cuotasPend;const ah=A-B;
  return `<div class="grid kpis"><div class="card kpi"><small>Sin abono pagarías</small><b>${money(A)}</b></div><div class="card kpi"><small>Con abono pagarías</small><b>${money(B)}</b></div><div class="card kpi ok"><small>Te ahorras</small><b>${money(Math.max(0,ah))}</b></div></div><div class="alert info" style="margin-top:8px">Tu cuota bajaría a aproximadamente <b>${money(nc)}</b> (${cuotasPend} cuotas restantes).</div>`}
 /* ============ seguimiento, mensajes y calculadora del cliente ============ */
-const ETAPAS=["Solicitud","Documentos","Aprobación","Entregado"];
-const ETAPA_IDX={recibida:1,docs:2,aprobada:3,desembolsada:4,rechazada:0};
-const ETIQ={recibida:"Recibida",docs:"En revisión",aprobada:"Aprobada",desembolsada:"Entregada",rechazada:"No aprobada"};
-const ETXT={recibida:"Recibimos tu solicitud. Falta enviar tus documentos por Mensajes.",docs:"Ya recibimos tus documentos. Estamos revisando tu solicitud.",aprobada:"¡Aprobada! Solo falta la entrega del dinero.",desembolsada:"El dinero fue entregado.",rechazada:"Por ahora no pudimos aprobarla. Escríbenos si quieres saber el motivo."};
+const ETAPAS=["Solicitud","Plan de cuotas","Documentos","Cita y entrega"];
+const ETAPA_IDX={recibida:1,plan:1,aceptada:2,docs:3,cita:3,desembolsada:4,rechazada:0};
+const ETIQ={recibida:"Recibida",plan:"Plan enviado",aceptada:"Plan aceptado",docs:"Validada",cita:"Con cita",desembolsada:"Entregada",rechazada:"Cerrada"};
+const ETXT={recibida:"Recibimos tu solicitud. El prestamista te enviará un plan de cuotas por Mensajes.",plan:"Te enviamos un plan de cuotas. Revísalo en Mensajes y dinos si lo aceptas.",aceptada:"Aceptaste el plan. Ahora te pediremos los documentos para el estudio.",docs:"Tus documentos están validados. Pronto te citaremos para la entrega y la firma.",cita:"Tienes una cita para firmar y recibir el dinero. Mira la fecha en Mensajes.",desembolsada:"El dinero fue entregado.",rechazada:"La solicitud se cerró. Escríbenos si quieres saber el motivo."};
+const docsLista=()=>String(db.cfg.docsReq||"").split(",").map(x=>x.trim()).filter(Boolean);
+function notif(cid,tipo,txt){db.notifs.unshift({id:uid(),clienteId:cid,fecha:new Date().toISOString(),tipo,txt})}
+const citaDe=cid=>msgsDe(cid).filter(m=>m.tipo==="cita").slice(-1)[0];
+const plazoTxt=(n,u)=>u==="M"?n+(n===1?" mes":" meses"):n+(n===1?" quincena":" quincenas");
 const solsDe=cid=>db.sols.filter(s=>s.clienteId===cid);
 const solUlt=cid=>solsDe(cid).slice(-1)[0];
 const solAbierta=cid=>solsDe(cid).find(s=>s.etapa!=="desembolsada"&&s.etapa!=="rechazada");
@@ -2632,12 +2646,16 @@ function addMsg(o){const m=Object.assign({id:uid(),t:Date.now(),adj:[],leido:fal
 const hora=t=>new Date(t).toLocaleString("es-CO",{dateStyle:"short",timeStyle:"short"});
 function bubble(m,rol){
  if(m.de==="S")return `<div class="sys">${esc(m.txt)}</div>`;
+ const wide=h=>`<div class="msg wide">${h}<small class="mt">${hora(m.t)}</small></div>`;
+ if(m.tipo==="plan"){const pl=m.plan;return wide(`<div style="margin-bottom:6px">${esc(m.txt)}</div>${planHtml(pl)}<div class="row" style="margin-top:8px">${rol==="C"&&pl.estado==="enviado"?`<button class="btn sm" data-plan="${m.id}|ok">✅ Acepto el plan</button><button class="btn gh sm" data-plan="${m.id}|no">No me interesa</button>`:""}<button class="btn sec sm" data-printplan="${m.id}">🖨️ Imprimir</button></div>`)}
+ if(m.tipo==="docreq"){const s=db.sols.find(x=>x.id===m.solId);const ok=(s&&s.docsOk)||[];return wide(`<div class="tagm">📄 Documentos para el estudio</div><div>${esc(m.txt)}</div><ul class="chk">${m.items.map(i=>`<li>${ok.includes(i)?"✅":"⬜"} ${esc(i)}</li>`).join("")}</ul>`)}
+ if(m.tipo==="cita"){const ct=m.cita;return wide(`<div class="tagm">📅 Cita para la entrega y la firma</div><div class="pgrid"><div><small>Fecha</small><b>${fd(ct.fecha)}</b></div><div><small>Hora</small><b>${esc(ct.hora)}</b></div><div style="grid-column:1/-1"><small>Lugar</small><b>${esc(ct.lugar)}</b></div></div>${ct.nota?`<div style="margin-bottom:6px">${esc(ct.nota)}</div>`:""}${ct.conf?`<div style="font-weight:800">✅ El cliente confirmó su asistencia</div>`:rol==="C"?`<button class="btn sm" data-citaok="${m.id}">✔ Confirmo mi asistencia</button>`:`<div style="font-size:.85rem;color:var(--mut)">⏳ Esperando confirmación del cliente</div>`}`)}
  const mine=m.de===rol;
  const adj=m.adj.map((a,i)=>a.mime.startsWith("image/")?`<img class="adj" src="${a.data}" alt="${esc(a.nombre)}" data-img="${m.id}|${i}">`:`<a class="adjf" href="${a.data}" download="${esc(a.nombre)}">📎 ${esc(a.nombre)}</a>`).join("");
  let tag="",extra="";
  if(m.tipo==="pago"){tag=`<div class="tagm">💳 Comprobante de pago${m.monto?" · "+money(m.monto):""}</div>`;
   extra=m.reg?`<div style="margin-top:6px;font-weight:800">✅ Pago registrado · ${esc(m.reg)}</div>`:rol==="P"&&m.prestamoId?`<button class="btn sm" data-regmsg="${m.id}" style="margin-top:6px">Registrar este pago</button>`:`<div style="margin-top:6px;font-size:.8rem;opacity:.85">⏳ Esperando que el prestamista lo registre</div>`}
- else if(m.tipo==="doc")tag=`<div class="tagm">📄 Documento</div>`;
+ else if(m.tipo==="doc")tag=`<div class="tagm">📄 Documento${m.docItem?" · "+esc(m.docItem):""}</div>`;
  else if(m.tipo==="solicitud")tag=`<div class="tagm">📨 Solicitud de préstamo</div>`;
  return `<div class="msg ${mine?"me":"ot"}">${tag}${m.txt?`<div>${esc(m.txt).replace(/\n/g,"<br>")}</div>`:""}${adj}${extra}<small class="mt">${hora(m.t)}</small></div>`}
 function hilo(cid,rol){const L=msgsDe(cid);return `<div class="thread" id="thread">${L.map(m=>bubble(m,rol)).join("")||`<div class="empty">Aún no hay mensajes. Escribe el primero 👇</div>`}</div>`}
@@ -2647,17 +2665,70 @@ function composer(rol,cid){const pend=ui.pend||[];const L=db.prestamos.filter(p=
  <div class="row" style="margin-top:8px"><button class="btn sec sm" data-att="doc" ${bloq?"disabled":""}>📄 Documento</button>${rol==="C"&&L.length?`<button class="btn sec sm" data-att="pago">💳 Comprobante de pago</button>`:""}<span class="sp"></span><button class="btn" id="msend" ${bloq?"disabled":""}>Enviar ➤</button></div>
  <input type="file" id="mfile" accept="image/*,application/pdf" multiple hidden>
  ${pend.length?`<div class="pend">${pend.map((a,i)=>`<span>${a.mime.startsWith("image/")?"🖼️":"📎"} ${esc(a.nombre)} <button data-pdel="${i}" aria-label="Quitar">✕</button></span>`).join("")}</div>`:""}
+ ${(()=>{const s=solAbierta(cid);return pend.length&&ui.pendTipo!=="pago"&&rol==="C"&&s&&s.docsReq&&s.docsReq.length?`<div class="form" style="margin-top:6px"><label class="f">¿Qué documento estás enviando?<select id="mdoc">${s.docsReq.map(i=>`<option>${esc(i)}</option>`).join("")}<option value="">Otro documento</option></select></label></div>`:""})()}
  ${pend.length&&ui.pendTipo==="pago"&&rol==="C"?`<div class="form" style="margin-top:6px"><label class="f">Valor que pagaste ($)<input id="mmonto" inputmode="numeric" value="${esc(ui.pmonto||"")}" placeholder="200.000"></label>${L.length>1?`<label class="f">¿A cuál préstamo?<select id="mpre">${L.map(p=>`<option value="${p.id}">${money(p.capital)} · saldo ${money(saldoPrest(p))}</option>`).join("")}</select></label>`:""}</div>`:""}
  <div id="merr" style="color:var(--bad);font-weight:700;font-size:.85rem;margin-top:6px"></div>
  <small style="color:var(--mut)">Fotos o PDF. En la demostración se guardan en este celular (máx. 3 por mensaje).</small></div>`}
 function vCMsg(){const c=cli(ui.cid);if(!c)return`<div class="card empty">Sin clientes.</div>`;marcarLeidos("C",c.id);const s=solUlt(c.id);
  return `<h1>Mensajes</h1><p style="color:var(--mut);margin:-4px 0 6px">Escríbele a ${esc(db.cfg.prestamista)}. Aquí envías tus documentos y los comprobantes de pago de tus cuotas.</p>
  ${s&&s.etapa!=="desembolsada"?`<div class="card">${stepsHtml(s.etapa)}<small style="color:var(--mut)">${ETXT[s.etapa]}</small></div>`:""}${hilo(c.id,"C")}${composer("C",c.id)}`}
-function solPanel(s){const A={recibida:[["docs","📄 Documentos recibidos"],["rechazar","✖ Rechazar"]],docs:[["aprobar","✔ Aprobar"],["rechazar","✖ Rechazar"]],aprobada:[["desembolsar","💵 Entregar dinero y crear préstamo"],["rechazar","✖ Rechazar"]]}[s.etapa]||[];
- return `<div class="card" style="margin-top:8px"><div class="row"><b class="sp">Solicitud: ${money(s.monto)} · ${s.plazo} ${s.unidad==="M"?"mes(es)":"quincena(s)"}</b><span class="pill ${s.etapa==="rechazada"?"bad":s.etapa==="desembolsada"?"ok":"warn"}">${ETIQ[s.etapa]}</span></div>${stepsHtml(s.etapa)}${A.length?`<div class="row">${A.map(([a,l])=>`<button class="btn ${a==="rechazar"?"gh":""} sm" data-sol="${s.id}|${a}">${l}</button>`).join("")}</div>`:""}</div>`}
-function chatP(cid){const c=cli(cid);marcarLeidos("P",cid);const s=solUlt(cid);
- return `<div class="row"><button class="btn gh sm" data-chatback>← Mensajes</button><h2 class="sp" style="margin:0">${esc(c.nombre)}</h2>${c.tel?`<a class="btn sec sm" style="text-decoration:none" href="tel:${esc(c.tel)}" aria-label="Llamar">📞</a>`:""}</div>
- ${s?solPanel(s):""}${hilo(cid,"P")}${composer("P",cid)}`}
+function solPanel(s){const A={recibida:[["plan","📋 Enviar plan de cuotas"],["rechazar","✖ Rechazar"]],plan:[["plan","📋 Enviar plan modificado"],["rechazar","✖ Rechazar"]],aceptada:[["docreq","📄 Pedir documentos"],["docs","✔ Documentos validados"],["rechazar","✖ Rechazar"]],docs:[["cita","📅 Citar para entrega y firma"],["rechazar","✖ Rechazar"]],cita:[["desembolsar","💵 Firmado: entregar dinero"],["cita","📅 Reprogramar"],["rechazar","✖ Rechazar"]]}[s.etapa]||[];
+ const items=s.docsReq||[],ok=s.docsOk||[],ct=citaDe(s.clienteId);
+ return `<div class="card" style="margin-top:8px"><div class="row"><b class="sp">Solicitud: ${money(s.monto)} · ${plazoTxt(s.plazo,s.unidad)}${s.tasa?" · "+String(s.tasa).replace(".",",")+"%":""}</b><span class="pill ${s.etapa==="rechazada"?"bad":s.etapa==="desembolsada"?"ok":"warn"}">${ETIQ[s.etapa]}</span></div>${stepsHtml(s.etapa)}
+ ${items.length?`<div style="margin:0 0 8px;font-size:.88rem"><b>Documentos:</b> ${items.map(i=>`${ok.includes(i)?"✅":"⬜"} ${esc(i)}`).join(" · ")}</div>`:""}
+ ${s.etapa==="cita"&&ct?`<div class="alert info" style="margin-bottom:8px">📅 ${fd(ct.cita.fecha)} ${esc(ct.cita.hora)} · ${esc(ct.cita.lugar)} · ${ct.cita.conf?"✅ el cliente confirmó":"⏳ sin confirmar"}</div>`:""}
+ ${A.length?`<div class="row">${A.map(([a,l])=>`<button class="btn ${a==="rechazar"?"gh":a==="cita"&&s.etapa==="cita"?"sec":""} sm" data-sol="${s.id}|${a}">${l}</button>`).join("")}</div>`:""}</div>`}
+function chatP(cid){const c=cli(cid);marcarLeidos("P",cid);const s=solAbierta(cid);
+ return `<div class="row"><button class="btn gh sm" data-chatback>← Mensajes</button><h2 class="sp" style="margin:0">${esc(c.nombre)}</h2>${c.estado==="prospecto"?`<span class="pill warn">Solicitante</span>`:""}${c.tel?`<a class="btn sec sm" style="text-decoration:none" href="tel:${esc(c.tel)}" aria-label="Llamar">📞</a>`:""}</div>
+ ${s?solPanel(s):`<div class="card" style="margin-top:8px"><div class="row"><span class="sp" style="color:var(--mut)">Sin solicitud abierta.</span><button class="btn sm" data-newplan="${cid}">📋 Enviar plan de cuotas</button></div></div>`}${hilo(cid,"P")}${composer("P",cid)}`}
+function planHtml(pl,firmas){const k=pl.cli,e=ea(pl.tasa);
+ return `<div class="plan"><div class="row"><b class="sp">📋 Plan de cuotas</b><span class="pill ${pl.estado==="aceptado"?"ok":pl.estado==="enviado"?"warn":"gray"}">${{enviado:"Pendiente de respuesta",aceptado:"Aceptado",rechazado:"No aceptado",reemplazado:"Reemplazado"}[pl.estado]}</span></div>
+ <div class="pgrid"><div><small>Prestamista</small><b>${esc(pl.prestamista)}</b></div><div><small>Fecha</small><b>${fd(pl.fecha)}</b></div>
+ <div><small>Nombre</small><b>${esc(k.nombre)}</b></div><div><small>Cédula</small><b>${esc(k.doc||"—")}</b></div>
+ <div><small>Dirección</small><b>${esc(k.dir||"—")}</b></div><div><small>Teléfono</small><b>${esc(k.tel||"—")}</b></div>
+ <div><small>Monto</small><b>${money(pl.monto)}</b></div><div><small>Plazo</small><b>${plazoTxt(pl.plazo,pl.unidad)}</b></div>
+ <div><small>Tasa</small><b>${String(pl.tasa).replace(".",",")}% mensual simple <span style="font-weight:600;color:var(--mut)">(${e.toFixed(1)}% E.A.)</span></b></div><div><small>Cuota</small><b>${money(pl.cuotas[0].valor)}</b></div>
+ <div><small>Total a pagar</small><b>${money(pl.total)}</b></div><div><small>Intereses</small><b>${money(pl.int)}</b></div></div>
+ <div class="scroll" style="max-height:220px"><table class="t"><thead><tr><th>#</th><th>Fecha</th><th>Cuota</th><th>Capital</th><th>Interés</th></tr></thead><tbody>${pl.cuotas.map(q=>`<tr><td>${q.n}</td><td>${fd(q.fecha)}</td><td>${money(q.valor)}</td><td>${money(q.capital)}</td><td>${money(q.interes)}</td></tr>`).join("")}</tbody></table></div>
+ <small style="color:var(--mut)">Las fechas se ajustan a la fecha real de entrega del dinero.</small>
+ ${firmas?`<div style="display:flex;gap:30px;margin-top:46px"><div style="flex:1;border-top:1px solid #000;padding-top:4px;font-size:.85rem">Firma del cliente<br>C.C. ${esc(k.doc||"")}</div><div style="flex:1;border-top:1px solid #000;padding-top:4px;font-size:.85rem">Firma del prestamista<br>${esc(pl.prestamista)}</div></div>`:""}</div>`}
+function formPlan(cid){const c=cli(cid);const s=solAbierta(cid);const d=s?{monto:s.monto,plazo:s.plazo,unidad:s.unidad,tasa:s.tasa||db.cfg.tasaSimple}:{monto:1000000,plazo:6,unidad:"M",tasa:db.cfg.tasaSimple};
+ return `<h2>Plan de cuotas</h2><p style="margin:0 0 8px;color:var(--mut)">Revisa los datos. Al enviarlo, el cliente lo ve en Mensajes y puede aceptarlo.</p><form id="fplan" data-cid="${cid}" class="form">
+ <label class="f">Nombre<input name="nombre" required value="${esc(c.nombre)}"></label><label class="f">Cédula<input name="doc" required value="${esc(c.doc)}"></label>
+ <label class="f">Dirección<input name="dir" required value="${esc(c.dir)}"></label><label class="f">Teléfono<input name="tel" required inputmode="tel" value="${esc(c.tel)}"></label>
+ <label class="f">Monto ($)<input name="monto" data-money inputmode="numeric" value="${d.monto.toLocaleString("es-CO")}"></label><label class="f">Tasa mensual simple (%)<input name="tasa" inputmode="decimal" value="${String(d.tasa).replace(".",",")}"></label>
+ <label class="f">Plazo<input name="plazo" inputmode="numeric" value="${d.plazo}"></label><label class="f">Cuotas<select name="unidad"><option value="M"${d.unidad==="M"?" selected":""}>Mensuales</option><option value="Q"${d.unidad==="Q"?" selected":""}>Quincenales</option></select></label>
+ <div id="plprev" style="grid-column:1/-1"></div><div style="grid-column:1/-1"><button class="btn" type="submit" id="plsend" disabled>Enviar plan al cliente</button></div></form>`}
+function prevPlan(){const f=$("#fplan");if(!f)return;const monto=num(f.monto.value),tasa=num(f.tasa.value),plazo=Math.round(num(f.plazo.value)),un=f.unidad.value;const box=$("#plprev"),btn=$("#plsend");
+ if(!(monto>0&&tasa>=0&&plazo>0)){box.innerHTML="";btn.disabled=true;return}
+ const cu=buildCuotas(monto,tasa,un,plazo,today(),"S");const tot=cu.reduce((a,q)=>a+q.valor,0);const e=ea(tasa);const sobre=e>num(db.cfg.tope);
+ box.innerHTML=`${sobre?`<div class="alert bad">🚫 Esta tasa equivale a <b>${e.toFixed(1)}% E.A.</b> y supera el tope de usura (${db.cfg.tope}%). Bájala para poder enviar el plan.</div>`:`<div class="alert ok">✅ ${e.toFixed(1)}% E.A. (dentro del tope de ${db.cfg.tope}%).</div>`}<div class="grid kpis" style="margin-top:8px"><div class="card kpi"><small>Cuota aprox.</small><b>${money(cu[0].valor)}</b></div><div class="card kpi"><small>Total a pagar</small><b>${money(tot)}</b></div><div class="card kpi"><small>Intereses</small><b>${money(tot-monto)}</b></div></div>`;btn.disabled=sobre}
+function formCita(cid){const ult=citaDe(cid);const d=ult?ult.cita:{fecha:addDays(today(),1),hora:"10:00",lugar:db.cfg.lugar||"",nota:"Trae tu cédula original. Firmaremos el pagaré y el contrato y ahí te entregamos el dinero."};
+ return `<h2>Citar al cliente</h2><p style="margin:0 0 8px;color:var(--mut)">Se envía por Mensajes para la entrega del dinero y la firma de los documentos físicos.</p><form id="fcita" data-cid="${cid}" class="form">
+ <label class="f">Fecha<input type="date" name="fecha" required min="${today()}" value="${d.fecha}"></label><label class="f">Hora<input type="time" name="hora" required value="${d.hora}"></label>
+ <label class="f" style="grid-column:1/-1">Lugar<input name="lugar" required value="${esc(d.lugar)}" placeholder="Dirección donde se firma"></label>
+ <label class="f" style="grid-column:1/-1">Nota para el cliente<textarea name="nota" rows="3">${esc(d.nota)}</textarea></label>
+ <div style="grid-column:1/-1"><button class="btn" type="submit">Enviar cita</button></div></form>`}
+function vNuevo(){const k=db.cfg;return `<h1>Pide tu préstamo</h1><p style="color:var(--mut);margin:-4px 0 10px">Cuéntanos quién eres y qué necesitas. ${esc(k.prestamista)} te responde por Mensajes con un plan de cuotas.</p>
+ <form id="fnew" class="card form"><label class="f">Nombre completo<input name="nombre" required></label><label class="f">Cédula<input name="doc" required inputmode="numeric"></label>
+ <label class="f">Teléfono / WhatsApp<input name="tel" required inputmode="tel"></label><label class="f">Dirección o barrio<input name="dir" required></label>
+ <label class="f">¿Cuánto necesitas? ($)<input name="monto" data-money required inputmode="numeric" placeholder="4.000.000"></label>
+ <label class="f">¿En cuánto tiempo?<div class="row" style="flex-wrap:nowrap"><input name="plazo" required inputmode="numeric" placeholder="12" style="max-width:90px"><select name="unidad"><option value="M">Meses</option><option value="Q">Quincenas</option></select></div></label>
+ <label class="f" style="flex-direction:row;gap:8px;align-items:flex-start;grid-column:1/-1"><input type="checkbox" required style="width:auto;margin-top:4px"> <span style="font-weight:600">Autorizo el tratamiento de mis datos personales (Ley 1581 de 2012) para estudiar mi solicitud y ser contactado por los canales y horarios permitidos.</span></label>
+ <div id="nerr" style="grid-column:1/-1;color:var(--bad);font-weight:700"></div><div style="grid-column:1/-1"><button class="btn" type="submit" style="width:100%;padding:12px">📨 Enviar solicitud</button></div></form>`}
+function cambiarSol(id,acc){const s=db.sols.find(x=>x.id===id);if(!s)return;const c=cli(s.clienteId);let txt;
+ if(acc==="plan"){openM(formPlan(c.id));prevPlan();return}
+ if(acc==="cita"){openM(formCita(c.id));return}
+ if(acc==="docreq"){const items=docsLista();if(!items.length){toast("Define los documentos en Más → Configuración.");return}
+  s.docsReq=items;s.docsOk=s.docsOk||[];const m="Para el estudio de tu solicitud necesitamos estos documentos. Envíalos por aquí con el botón Documento.";
+  addMsg({clienteId:c.id,de:"P",tipo:"docreq",solId:s.id,items,txt:m});notif(c.id,"estado","Te pedimos los documentos para el estudio. Envíalos en Mensajes.");log(`Documentos solicitados a ${c.nombre}`);save();draw();return}
+ if(acc==="docs"){const falta=(s.docsReq||[]).filter(i=>!(s.docsOk||[]).includes(i));if(falta.length&&!confirm("Faltan: "+falta.join(", ")+". ¿Marcar como validados de todos modos?"))return;s.etapa="docs";txt="Revisamos tus documentos y están completos. Pronto te citaremos para la entrega del dinero y la firma."}
+ else if(acc==="rechazar"){if(!confirm("¿Cerrar esta solicitud sin aprobarla?"))return;s.etapa="rechazada";txt="Por ahora no pudimos aprobar tu solicitud. Escríbenos si quieres conocer el motivo."}
+ else if(acc==="desembolsar"){const tasa=s.tasa||db.cfg.tasaSimple;if(ea(tasa)>num(db.cfg.tope)){alert("La tasa supera el tope de usura.");return}
+  if(!confirm("¿Ya se firmaron los documentos físicos y se entregó el dinero? Se creará el préstamo."))return;
+  const p=crearPrestamo({clienteId:c.id,capital:s.monto,tasa,periodo:s.unidad,n:s.plazo,inicio:today(),metodo:"S"});s.etapa="desembolsada";s.prestamoId=p.id;c.estado="cliente";
+  txt=`Te entregamos ${money(s.monto)}. Tu primera cuota es el ${fd(p.cuotas[0].fecha)} por ${money(p.cuotas[0].valor)}.`}
+ addMsg({clienteId:c.id,de:"S",txt});notif(c.id,"estado",txt);log(`Solicitud de ${c.nombre}: ${ETIQ[s.etapa]}`);save();draw()}
 function vMsg(){if(ui.chat&&cli(ui.chat))return chatP(ui.chat);
  const rows=db.clientes.map(c=>({c,ms:msgsDe(c.id)})).sort((a,b)=>((b.ms.slice(-1)[0]||{}).t||0)-((a.ms.slice(-1)[0]||{}).t||0));
  return `<h1>Mensajes</h1><p style="color:var(--mut);margin:-4px 0 8px">Documentos, comprobantes de pago y solicitudes de tus clientes.</p><div class="list">${rows.map(({c,ms})=>{const u=ms.filter(m=>m.de==="C"&&!m.leido).length;const l=ms.slice(-1)[0];const s=solUlt(c.id);
@@ -2672,20 +2743,42 @@ function enviar(){const rol=ui.mode,cid=rol==="C"?ui.cid:ui.chat;if(!cid)return;
  const o={clienteId:cid,de:rol,txt,adj:pend};
  if(pend.length){o.tipo=rol==="C"?(ui.pendTipo||"doc"):"doc";
   if(o.tipo==="pago"){const mo=num(($("#mmonto")||{}).value);if(!(mo>0)){err("Escribe el valor que pagaste.");return}o.monto=mo;const L=db.prestamos.filter(p=>p.clienteId===cid&&saldoPrest(p)>0);const sel=$("#mpre");o.prestamoId=sel?sel.value:(L[0]&&L[0].id)}}
+ if(o.tipo==="doc"&&rol==="C"){const sel=$("#mdoc"),s=solAbierta(cid);if(sel&&sel.value){o.docItem=sel.value;if(s){s.docsOk=s.docsOk||[];if(!s.docsOk.includes(sel.value))s.docsOk.push(sel.value)}}}
  addMsg(o);
  if(rol==="P")db.notifs.unshift({id:uid(),clienteId:cid,fecha:new Date().toISOString(),tipo:"mensaje",txt:`Nuevo mensaje de ${db.cfg.prestamista}${txt?": "+txt.slice(0,90):""}`});
  log(rol==="C"?`Mensaje de ${cli(cid).nombre}${o.tipo==="pago"?" con comprobante de pago":pend.length?" con adjunto":""}`:`Mensaje enviado a ${cli(cid).nombre}`);
  ui.pend=[];ui.draft="";ui.pendTipo=null;ui.pmonto="";save();draw()}
-function cambiarSol(id,acc){const s=db.sols.find(x=>x.id===id);if(!s)return;const c=cli(s.clienteId);let txt;
- if(acc==="docs"){s.etapa="docs";txt="Recibimos tus documentos. Estamos revisando tu solicitud."}
- else if(acc==="aprobar"){s.etapa="aprobada";txt=`¡Tu solicitud de ${money(s.monto)} fue aprobada! Falta la entrega del dinero.`}
- else if(acc==="rechazar"){if(!confirm("¿Rechazar esta solicitud?"))return;s.etapa="rechazada";txt="Por ahora no pudimos aprobar tu solicitud. Escríbenos si quieres conocer el motivo."}
- else if(acc==="desembolsar"){if(ea(db.cfg.tasaSimple)>num(db.cfg.tope)){alert("El interés configurado supera el tope de usura. Ajústalo en Más → Configuración.");return}
-  const p=crearPrestamo({clienteId:c.id,capital:s.monto,tasa:db.cfg.tasaSimple,periodo:s.unidad,n:s.plazo,inicio:today(),metodo:"S"});s.etapa="desembolsada";s.prestamoId=p.id;
-  txt=`Te entregamos ${money(s.monto)}. Tu primera cuota es el ${fd(p.cuotas[0].fecha)} por ${money(p.cuotas[0].valor)}.`}
- addMsg({clienteId:c.id,de:"S",txt});
- db.notifs.unshift({id:uid(),clienteId:c.id,fecha:new Date().toISOString(),tipo:"estado",txt});
- log(`Solicitud de ${c.nombre}: ${ETIQ[s.etapa]}`);save();draw()}
+document.addEventListener("click",e=>{const t=e.target;let b;
+ if(b=t.closest("[data-newplan]")){openM(formPlan(b.dataset.newplan));prevPlan();return}
+ if(b=t.closest("[data-printplan]")){const m=db.msgs.find(x=>x.id===b.dataset.printplan);if(m)openM(planHtml(m.plan,true)+`<div class="row noprint" style="margin-top:12px"><button class="btn" onclick="window.print()">🖨️ Imprimir para firmar</button></div>`);return}
+ if(b=t.closest("[data-plan]")){const[id,a]=b.dataset.plan.split("|");const m=db.msgs.find(x=>x.id===id);if(!m)return;const c=cli(m.clienteId);const s=db.sols.find(x=>x.id===m.solId);
+  if(a==="ok"){m.plan.estado="aceptado";if(s){Object.assign(s,{monto:m.plan.monto,plazo:m.plan.plazo,unidad:m.plan.unidad,tasa:m.plan.tasa,etapa:"aceptada"})}
+   addMsg({clienteId:c.id,de:"C",txt:`✅ Acepto el plan de cuotas: ${money(m.plan.monto)} a ${plazoTxt(m.plan.plazo,m.plan.unidad)}.`});log(`${c.nombre} aceptó el plan de cuotas`);toast("¡Listo! El prestamista te pedirá los documentos.")}
+  else{if(!confirm("¿Seguro que no te interesa este plan?"))return;m.plan.estado="rechazado";if(s)s.etapa="rechazada";addMsg({clienteId:c.id,de:"C",txt:"No me interesa el plan de cuotas. Gracias."});log(`${c.nombre} no aceptó el plan`)}
+  save();draw();return}
+ if(b=t.closest("[data-citaok]")){const m=db.msgs.find(x=>x.id===b.dataset.citaok);if(!m)return;m.cita.conf=true;addMsg({clienteId:m.clienteId,de:"C",txt:`✅ Confirmo mi asistencia a la cita del ${fd(m.cita.fecha)} a las ${m.cita.hora}.`});log(`${cli(m.clienteId).nombre} confirmó la cita`);save();draw();return}
+ if(b=t.closest("[data-cf]")){ui.cf=b.dataset.cf;draw();return}
+});
+document.addEventListener("submit",e=>{const f=e.target;
+ if(f.id==="fplan"){const c=cli(f.dataset.cid);const monto=num(f.monto.value),tasa=num(f.tasa.value),plazo=Math.round(num(f.plazo.value)),un=f.unidad.value;if(!(monto>0&&plazo>0)||ea(tasa)>num(db.cfg.tope))return;
+  Object.assign(c,{nombre:f.nombre.value.trim()||c.nombre,doc:f.doc.value.trim(),dir:f.dir.value.trim(),tel:f.tel.value.trim()});
+  const cu=buildCuotas(monto,tasa,un,plazo,today(),"S");const tot=cu.reduce((a,q)=>a+q.valor,0);
+  let s=solAbierta(c.id);if(!s){s={id:uid(),clienteId:c.id,fecha:today()};db.sols.push(s)}Object.assign(s,{monto,plazo,unidad:un,tasa,etapa:"plan"});
+  db.msgs.filter(m=>m.tipo==="plan"&&m.clienteId===c.id&&m.plan.estado==="enviado").forEach(m=>m.plan.estado="reemplazado");
+  addMsg({clienteId:c.id,de:"P",tipo:"plan",solId:s.id,txt:"Te envío el plan de cuotas con las condiciones del préstamo. Revísalo y dime si lo aceptas.",plan:{prestamista:db.cfg.prestamista,fecha:today(),monto,plazo,unidad:un,tasa,total:tot,int:tot-monto,cuotas:cu,cli:{nombre:c.nombre,doc:c.doc,dir:c.dir,tel:c.tel},estado:"enviado"}});
+  notif(c.id,"estado","Te enviamos un plan de cuotas. Revísalo en Mensajes.");log(`Plan de cuotas enviado a ${c.nombre}: ${money(monto)}`);save();closeM();draw();return}
+ if(f.id==="fcita"){const c=cli(f.dataset.cid);const s=solAbierta(c.id);if(!s)return;const ct={fecha:f.fecha.value,hora:f.hora.value,lugar:f.lugar.value.trim(),nota:f.nota.value.trim(),conf:false};
+  s.etapa="cita";addMsg({clienteId:c.id,de:"P",tipo:"cita",solId:s.id,cita:ct,txt:""});notif(c.id,"estado",`Te citamos el ${fd(ct.fecha)} a las ${ct.hora} para la entrega y la firma. Confírmalo en Mensajes.`);
+  log(`Cita con ${c.nombre}: ${ct.fecha} ${ct.hora}`);save();closeM();draw();return}
+ if(f.id==="fnew"){const k=db.cfg;const nombre=f.nombre.value.trim(),doc=f.doc.value.trim(),tel=f.tel.value.trim(),dir=f.dir.value.trim();const monto=num(f.monto.value),plazo=Math.round(num(f.plazo.value)),un=f.unidad.value;const err=m=>{$("#nerr").textContent=m};
+  if(!(monto>=k.montoMin&&monto<=k.montoMax)){err(`El valor debe estar entre ${money(k.montoMin)} y ${money(k.montoMax)}.`);return}
+  if(!(plazo>=1&&plazo<=(un==="M"?k.plazoMax:k.plazoMax*2))){err(`El plazo máximo es ${k.plazoMax} meses.`);return}
+  if(tel.replace(/\D/g,"").length<7){err("Revisa el teléfono.");return}
+  const c={id:uid(),nombre,doc,tel,dir,ref:"",notas:"",estado:"prospecto",origen:"app"};db.clientes.push(c);
+  db.sols.push({id:uid(),clienteId:c.id,monto,plazo,unidad:un,fecha:today(),etapa:"recibida"});
+  addMsg({clienteId:c.id,de:"C",tipo:"solicitud",txt:`Hola, estoy interesado en un préstamo de ${money(monto)} a ${plazoTxt(plazo,un)}.`});
+  log(`Nueva solicitud de ${nombre}: ${money(monto)}`);ui.cid=c.id;ui.nuevo=false;ui.tab="c_msg";save();draw();toast("¡Solicitud enviada! El prestamista te responderá por aquí.")}
+});
 /* ---- calculadora de interés simple del cliente ---- */
 function calcSimple(monto,plazo,unidad){const cu=buildCuotas(monto,db.cfg.tasaSimple,unidad,plazo,today(),"S");const tot=cu.reduce((a,q)=>a+q.valor,0);return{cu,tot,int:tot-monto}}
 const plazoMaxU=()=>ui.calc.unidad==="M"?db.cfg.plazoMax:db.cfg.plazoMax*2;
@@ -2724,6 +2817,8 @@ document.addEventListener("click",e=>{const t=e.target;let b;
 });
 document.addEventListener("input",e=>{const t=e.target;
  if(t.id==="mtxt"){ui.draft=t.value;return}
+ if(t.dataset&&t.dataset.money!==undefined){const d=t.value.replace(/\D/g,"");t.value=d?Number(d).toLocaleString("es-CO"):""}
+ if(t.closest&&t.closest("#fplan")){prevPlan();return}
  if(t.id==="mmonto"){const d=t.value.replace(/\D/g,"");t.value=d?Number(d).toLocaleString("es-CO"):"";ui.pmonto=t.value;return}
  if(t.id==="cm"){const d=t.value.replace(/\D/g,"");t.value=d?Number(d).toLocaleString("es-CO"):"";ui.calc.monto=Number(d)||0;const r=$("#cr");if(r)r.value=ui.calc.monto;refCalc();return}
  if(t.id==="cr"){ui.calc.monto=+t.value;$("#cm").value=ui.calc.monto.toLocaleString("es-CO");refCalc()}
@@ -2808,7 +2903,7 @@ document.addEventListener("click",e=>{const t=e.target;let b;
  if(t.id==="vbtn"){const code=$("#vcode").value.trim().toUpperCase();const pg=db.pagos.find(x=>x.codigo===code);const ids=misPrest().map(p=>p.id);
   $("#vres").innerHTML=pg?`<div class="alert ok">✅ Recibo <b>${pg.num}</b> auténtico: ${money(pg.monto)} el ${fd(pg.fecha)}${ids.includes(pg.prestamoId)?"":" (de otro cliente)"}.</div>`:`<div class="alert bad">❌ No encontramos un recibo con ese código.</div>`;return}
 });
-$("#who").addEventListener("change",e=>{ui.cid=e.target.value;ui.pend=[];ui.draft="";draw()});
+$("#who").addEventListener("change",e=>{if(e.target.value==="__new"){ui.nuevo=true}else{ui.nuevo=false;ui.cid=e.target.value}ui.pend=[];ui.draft="";draw()});
 document.addEventListener("input",e=>{
  if(e.target.closest("#fpre"))prevPre();
  if(e.target.dataset&&e.target.dataset.sim){const v=num(e.target.value);$("#sres").innerHTML=simular(e.target.dataset.sim,v)}
@@ -2821,7 +2916,7 @@ document.addEventListener("submit",e=>{e.preventDefault();const f=e.target;
   const p=crearPrestamo({clienteId:f.cid.value,capital:cap,tasa,periodo:f.per.value,n,inicio:f.ini.value||today(),metodo:f.met.value});
   log(`Préstamo creado: ${money(cap)} a ${cli(p.clienteId).nombre}`);save();openM(detallePre(p));draw();return}
  if(f.id==="fpag"){const p=pres(f.dataset.id);const m=num(f.monto.value);if(m<=0)return;const pg=registrarPago(p,m,f.medio.value,f.nota.value);if(f.dataset.msg){const mm=db.msgs.find(x=>x.id===f.dataset.msg);if(mm)mm.reg=pg.num}save();openM(reciboHtml(pg));draw();return}
- if(f.id==="fcfg"){const d=Object.fromEntries(new FormData(f));const c=db.cfg;const ts=num(d.tasaSimple);if(ts>0&&ea(ts)>(num(d.tope)||c.tope)){alert("El interés de la calculadora supera el tope de usura. Bájalo para poder guardar.");return}Object.assign(c,{tasaSimple:ts>0?ts:c.tasaSimple,montoMin:num(d.montoMin)||c.montoMin,montoMax:num(d.montoMax)||c.montoMax,plazoMax:Math.max(1,Math.round(num(d.plazoMax))||c.plazoMax),prestamista:d.prestamista,tel:d.tel,tope:num(d.tope)||c.tope,medios:d.medios,ini:num(d.ini),fin:num(d.fin),satIni:num(d.satIni),satFin:num(d.satFin),festivos:d.festivos,maxContactos:Math.max(1,Math.round(num(d.maxContactos))||2),ignorarHorario:!!d.ign});log("Configuración actualizada");save();draw();alert("Configuración guardada");return}
+ if(f.id==="fcfg"){const d=Object.fromEntries(new FormData(f));const c=db.cfg;const ts=num(d.tasaSimple);if(ts>0&&ea(ts)>(num(d.tope)||c.tope)){alert("El interés de la calculadora supera el tope de usura. Bájalo para poder guardar.");return}Object.assign(c,{tasaSimple:ts>0?ts:c.tasaSimple,montoMin:num(d.montoMin)||c.montoMin,montoMax:num(d.montoMax)||c.montoMax,plazoMax:Math.max(1,Math.round(num(d.plazoMax))||c.plazoMax),prestamista:d.prestamista,docsReq:d.docsReq||c.docsReq,lugar:d.lugar||c.lugar,tel:d.tel,tope:num(d.tope)||c.tope,medios:d.medios,ini:num(d.ini),fin:num(d.fin),satIni:num(d.satIni),satFin:num(d.satFin),festivos:d.festivos,maxContactos:Math.max(1,Math.round(num(d.maxContactos))||2),ignorarHorario:!!d.ign});log("Configuración actualizada");save();draw();alert("Configuración guardada");return}
 });
 /* ============ calculadora flotante ============ */
 (function(){
