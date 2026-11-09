@@ -2490,7 +2490,7 @@ const cli=id=>db.clientes.find(c=>c.id===id);
 const pres=id=>db.prestamos.find(p=>p.id===id);
 function seed(){
  const t=today();
- db={cfg:{prestamista:"Prestamista de ejemplo",tel:"",tope:25,tasaSimple:1.5,montoMin:100000,montoMax:5000000,plazoMax:12,docsReq:"Cédula de ciudadanía (ambos lados), Comprobante de ingresos o certificado laboral, Recibo de servicio público, Dos referencias personales (nombre y teléfono)",lugar:"Oficina del prestamista (escribe aquí la dirección)",ini:7,fin:19,satIni:8,satFin:15,festivos:"",maxContactos:2,ignorarHorario:false,medios:"Efectivo, Nequi, Daviplata"},clientes:[],prestamos:[],pagos:[],notifs:[],contactos:[],log:[],msgs:[],sols:[]};
+ db={cfg:{prestamista:"Prestamista de ejemplo",tel:"",tope:25,tasaSimple:1.5,montoMin:100000,montoMax:5000000,plazoMax:12,docsReq:"Cédula original, Comprobante de ingresos o certificado laboral, Recibo de un servicio público, Dos referencias personales (nombre y teléfono)",lugar:"Oficina del prestamista (escribe aquí la dirección)",ini:7,fin:19,satIni:8,satFin:15,festivos:"",maxContactos:2,ignorarHorario:false,medios:"Efectivo, Nequi, Daviplata"},clientes:[],prestamos:[],pagos:[],notifs:[],contactos:[],log:[],msgs:[],sols:[]};
  const C=(n,d,tel,dir,ref)=>{const c={id:uid(),nombre:n,doc:d,tel,dir,ref,notas:"",estado:"cliente"};db.clientes.push(c);return c};
  const c1=C("María Fernanda Rojas","1.110.000.001","3001112233","Barrio Jordán, Mz 4 Cs 12","Vecina: Ana Gómez");
  const c2=C("Carlos Andrés Peña","1.110.000.002","3002223344","Calle 60 # 5-20, Centro","Tienda La Esquina");
@@ -2509,8 +2509,7 @@ function seed(){
  const H=3600e3,M=(o)=>{db.msgs.push(Object.assign({id:uid(),adj:[],leido:false},o))};
  const s2={id:uid(),clienteId:c2.id,monto:500000,plazo:4,unidad:"M",fecha:today(),etapa:"recibida"};db.sols.push(s2);
  M({clienteId:c2.id,de:"C",t:Date.now()-5*H,tipo:"solicitud",txt:"Hola, quiero solicitar un préstamo de $500.000 a 4 meses.",leido:true});
- M({clienteId:c2.id,de:"P",t:Date.now()-4*H,txt:"Hola Carlos, con gusto. Envíame por aquí una foto de tu cédula por los dos lados.",leido:true});
- M({clienteId:c2.id,de:"C",t:Date.now()-1*H,tipo:"doc",txt:"Aquí está mi cédula.",adj:[{nombre:"cedula.jpg",mime:"image/svg+xml",data:ph("Cédula (ejemplo)","#DCEBF7")}]});
+ M({clienteId:c2.id,de:"P",t:Date.now()-4*H,txt:"Hola Carlos, con gusto. Ya te preparo unas opciones de crédito.",leido:true});
  M({clienteId:c1.id,de:"C",t:Date.now()-2*H,tipo:"pago",monto:200000,prestamoId:p1.id,txt:"Ya pagué la cuota por Nequi.",adj:[{nombre:"comprobante-nequi.jpg",mime:"image/svg+xml",data:ph("Comprobante Nequi (ejemplo)","#F3E1F7")}]});
  const c5=C("Andrea Ruiz Londoño","1.110.000.005","3005556677","Barrio La Pola, Cs 21","");c5.estado="prospecto";c5.origen="app";
  db.sols.push({id:uid(),clienteId:c5.id,monto:4000000,plazo:12,unidad:"M",fecha:today(),etapa:"recibida"});
@@ -2588,7 +2587,7 @@ function vMas(){const c=db.cfg;return `<h1>Más</h1>
  <label class="f">Monto mínimo que puede pedir ($)<input name="montoMin" value="${c.montoMin.toLocaleString("es-CO")}" inputmode="numeric"></label>
  <label class="f">Monto máximo que puede pedir ($)<input name="montoMax" value="${c.montoMax.toLocaleString("es-CO")}" inputmode="numeric"></label>
  <label class="f">Plazo máximo (meses)<input name="plazoMax" value="${c.plazoMax}" inputmode="numeric"></label>
- <label class="f" style="grid-column:1/-1">Documentos que pides para el estudio (separados por coma)<input name="docsReq" value="${esc(c.docsReq)}"></label>
+ <label class="f" style="grid-column:1/-1">Documentos que el cliente debe llevar a la cita de firma (separados por coma)<input name="docsReq" value="${esc(c.docsReq)}"></label>
  <label class="f" style="grid-column:1/-1">Lugar de entrega y firma<input name="lugar" value="${esc(c.lugar)}"></label>
  <label class="f">Horario L–V: desde (h)<input name="ini" value="${c.ini}" inputmode="numeric"></label>
  <label class="f">Horario L–V: hasta (h)<input name="fin" value="${c.fin}" inputmode="numeric"></label>
@@ -2605,7 +2604,7 @@ function vMas(){const c=db.cfg;return `<h1>Más</h1>
 function misPrest(){return db.prestamos.filter(p=>p.clienteId===ui.cid)}
 function vCRes(){const c=cli(ui.cid);if(!c)return`<div class="card empty">Sin clientes.</div>`;const L=misPrest();const s=solUlt(c.id);const sa=s&&s.etapa!=="desembolsada"?s:null;
  return `<h1>Hola, ${esc(c.nombre.split(" ")[0])} 👋</h1><p style="color:var(--mut);margin:-4px 0 10px">Aquí ves cómo va tu crédito con ${esc(db.cfg.prestamista)}.</p>
- ${sa?`<div class="card" style="margin-bottom:10px"><div class="row"><h2 class="sp">Tu solicitud de ${money(sa.monto)}</h2><span class="pill ${sa.etapa==="rechazada"?"bad":"warn"}">${ETIQ[sa.etapa]}</span></div>${stepsHtml(sa.etapa)}<p style="margin:4px 0 8px;color:var(--mut)">${ETXT[sa.etapa]}</p><button class="btn sec sm" data-go="c_msg">💬 Enviar documentos o escribir</button></div>`:""}
+ ${sa?`<div class="card" style="margin-bottom:10px"><div class="row"><h2 class="sp">Tu solicitud de ${money(sa.monto)}</h2><span class="pill ${sa.etapa==="rechazada"?"bad":"warn"}">${ETIQ[sa.etapa]}</span></div>${stepsHtml(sa.etapa)}<p style="margin:4px 0 8px;color:var(--mut)">${ETXT[sa.etapa]}</p><button class="btn sec sm" data-go="c_msg">💬 Ver mis opciones y mensajes</button></div>`:""}
  ${L.map(p=>{const q=proxima(p),pag=totalPrest(p)-saldoPrest(p),v=vencidas(p);const d=q?diffDays(q.fecha,today()):null;const k=p.cuotas.filter(x=>x.pagado>=x.valor).length;
  return `<div class="card" style="margin-bottom:10px"><div class="row"><h2 class="sp">Préstamo de ${money(p.capital)}</h2><span class="pill ${!q?"ok":v.length?"bad":"ok"}">${!q?"Pagado ✔":v.length?"Pago pendiente":"Al día"}</span></div>
  ${stepsGen(["Entregado",`En pago (${k}/${p.n})`,"Pagado"],!q?3:1)}
@@ -2629,10 +2628,10 @@ function simular(pid,x){const p=pres(pid);const r=periodRate(p);const cuotasPend
  const K2=Math.max(0,K-x);const nc=r===0?K2/cuotasPend:K2*r/(1-Math.pow(1+r,-cuotasPend));const B=x+nc*cuotasPend;const ah=A-B;
  return `<div class="grid kpis"><div class="card kpi"><small>Sin abono pagarías</small><b>${money(A)}</b></div><div class="card kpi"><small>Con abono pagarías</small><b>${money(B)}</b></div><div class="card kpi ok"><small>Te ahorras</small><b>${money(Math.max(0,ah))}</b></div></div><div class="alert info" style="margin-top:8px">Tu cuota bajaría a aproximadamente <b>${money(nc)}</b> (${cuotasPend} cuotas restantes).</div>`}
 /* ============ seguimiento, mensajes y calculadora del cliente ============ */
-const ETAPAS=["Solicitud","Plan de cuotas","Documentos","Cita y entrega"];
-const ETAPA_IDX={recibida:1,plan:1,aceptada:2,docs:3,cita:3,desembolsada:4,rechazada:0};
-const ETIQ={recibida:"Recibida",plan:"Plan enviado",aceptada:"Plan aceptado",docs:"Validada",cita:"Con cita",desembolsada:"Entregada",rechazada:"Cerrada"};
-const ETXT={recibida:"Recibimos tu solicitud. El prestamista te enviará un plan de cuotas por Mensajes.",plan:"Te enviamos un plan de cuotas. Revísalo en Mensajes y dinos si lo aceptas.",aceptada:"Aceptaste el plan. Ahora te pediremos los documentos para el estudio.",docs:"Tus documentos están validados. Pronto te citaremos para la entrega y la firma.",cita:"Tienes una cita para firmar y recibir el dinero. Mira la fecha en Mensajes.",desembolsada:"El dinero fue entregado.",rechazada:"La solicitud se cerró. Escríbenos si quieres saber el motivo."};
+const ETAPAS=["Solicitud","Opciones de crédito","Cita, firma y entrega"];
+const ETAPA_IDX={recibida:1,plan:1,aceptada:2,docs:2,cita:2,desembolsada:3,rechazada:0};
+const ETIQ={recibida:"Recibida",plan:"Opciones enviadas",aceptada:"Opción elegida",docs:"Opción elegida",cita:"Con cita",desembolsada:"Entregada",rechazada:"Cerrada"};
+const ETXT={recibida:"Recibimos tu solicitud. El prestamista te enviará opciones de crédito por Mensajes.",plan:"Te enviamos opciones de crédito. Revísalas en Mensajes y elige la que más te sirva.",aceptada:"Elegiste tu opción. Pronto te diremos cuándo pasar a firmar los documentos y recibir el dinero.",docs:"Elegiste tu opción. Pronto te diremos cuándo pasar a firmar los documentos y recibir el dinero.",cita:"Tienes una cita para firmar y recibir el dinero. Mira la fecha en Mensajes.",desembolsada:"El dinero fue entregado.",rechazada:"La solicitud se cerró. Escríbenos si quieres saber el motivo."};
 const docsLista=()=>String(db.cfg.docsReq||"").split(",").map(x=>x.trim()).filter(Boolean);
 function notif(cid,tipo,txt){db.notifs.unshift({id:uid(),clienteId:cid,fecha:new Date().toISOString(),tipo,txt})}
 const citaDe=cid=>msgsDe(cid).filter(m=>m.tipo==="cita").slice(-1)[0];
@@ -2651,7 +2650,10 @@ const hora=t=>new Date(t).toLocaleString("es-CO",{dateStyle:"short",timeStyle:"s
 function bubble(m,rol){
  if(m.de==="S")return `<div class="sys">${esc(m.txt)}</div>`;
  const wide=h=>`<div class="msg wide">${h}<small class="mt">${hora(m.t)}</small></div>`;
- if(m.tipo==="plan"){const pl=m.plan;return wide(`<div style="margin-bottom:6px">${esc(m.txt)}</div>${planHtml(pl)}<div class="row" style="margin-top:8px">${rol==="C"&&pl.estado==="enviado"?`<button class="btn sm" data-plan="${m.id}|ok">✅ Acepto el plan</button><button class="btn gh sm" data-plan="${m.id}|no">No me interesa</button>`:""}<button class="btn sec sm" data-printplan="${m.id}">🖨️ Imprimir</button></div>`)}
+ if(m.tipo==="plan"){const pl=m.plan;const vivo=pl.grupo&&msgsDe(m.clienteId).some(x=>x.tipo==="plan"&&x.plan.grupo===pl.grupo&&x.plan.estado==="enviado");
+  const bts=rol==="C"&&pl.estado==="enviado"?(pl.op?`<button class="btn sm" data-plan="${m.id}|ok">✅ Quiero esta opción</button>`:`<button class="btn sm" data-plan="${m.id}|ok">✅ Acepto el plan</button><button class="btn gh sm" data-plan="${m.id}|no">No me interesa</button>`):"";
+  const nin=rol==="C"&&pl.op&&pl.op===pl.nop&&vivo?`<button class="btn gh sm" data-plan="${m.id}|ninguna">Ninguna me sirve</button>`:"";
+  return wide(`${pl.op?`<div class="tagm">💡 Opción ${pl.op} de ${pl.nop}</div>`:""}<div style="margin-bottom:6px">${esc(m.txt)}</div>${planHtml(pl)}<div class="row" style="margin-top:8px">${bts}${nin}<button class="btn sec sm" data-printplan="${m.id}">🖨️ Imprimir</button></div>`)}
  if(m.tipo==="docreq"){const s=db.sols.find(x=>x.id===m.solId);const ok=(s&&s.docsOk)||[];return wide(`<div class="tagm">📄 Documentos para el estudio</div><div>${esc(m.txt)}</div><ul class="chk">${m.items.map(i=>`<li>${ok.includes(i)?"✅":"⬜"} ${esc(i)}</li>`).join("")}</ul>`)}
  if(m.tipo==="cita"){const ct=m.cita;return wide(`<div class="tagm">📅 Cita para la entrega y la firma</div><div class="pgrid"><div><small>Fecha</small><b>${fd(ct.fecha)}</b></div><div><small>Hora</small><b>${esc(ct.hora)}</b></div><div style="grid-column:1/-1"><small>Lugar</small><b>${esc(ct.lugar)}</b></div></div>${ct.nota?`<div style="margin-bottom:6px">${esc(ct.nota)}</div>`:""}${ct.conf?`<div style="font-weight:800">✅ El cliente confirmó su asistencia</div>`:rol==="C"?`<button class="btn sm" data-citaok="${m.id}">✔ Confirmo mi asistencia</button>`:`<div style="font-size:.85rem;color:var(--mut)">⏳ Esperando confirmación del cliente</div>`}`)}
  const mine=m.de===rol;
@@ -2675,9 +2677,9 @@ function composer(rol,cid){const pend=ui.pend||[];const L=db.prestamos.filter(p=
  <div id="merr" style="color:var(--bad);font-weight:700;font-size:.85rem;margin-top:6px"></div>
  <small style="color:var(--mut)">Fotos o PDF (máx. 3 por mensaje).${CLOUD?"":" En la demostración se guardan en este celular."}</small></div>`}
 function vCMsg(){const c=cli(ui.cid);if(!c)return`<div class="card empty">Sin clientes.</div>`;marcarLeidos("C",c.id);const s=solUlt(c.id);
- return `<h1>Mensajes</h1><p style="color:var(--mut);margin:-4px 0 6px">Escríbele a ${esc(db.cfg.prestamista)}. Aquí envías tus documentos y los comprobantes de pago de tus cuotas.</p>
+ return `<h1>Mensajes</h1><p style="color:var(--mut);margin:-4px 0 6px">Escríbele a ${esc(db.cfg.prestamista)}. Aquí recibes tus opciones de crédito, eliges la tuya y envías los comprobantes de pago de tus cuotas.</p>
  ${s&&s.etapa!=="desembolsada"?`<div class="card">${stepsHtml(s.etapa)}<small style="color:var(--mut)">${ETXT[s.etapa]}</small></div>`:""}${hilo(c.id,"C")}${composer("C",c.id)}`}
-function solPanel(s){const A={recibida:[["plan","📋 Enviar plan de cuotas"],["rechazar","✖ Rechazar"]],plan:[["plan","📋 Enviar plan modificado"],["rechazar","✖ Rechazar"]],aceptada:[["docreq","📄 Pedir documentos"],["docs","✔ Documentos validados"],["rechazar","✖ Rechazar"]],docs:[["cita","📅 Citar para entrega y firma"],["rechazar","✖ Rechazar"]],cita:[["desembolsar","💵 Firmado: entregar dinero"],["cita","📅 Reprogramar"],["rechazar","✖ Rechazar"]]}[s.etapa]||[];
+function solPanel(s){const A={recibida:[["plan","📋 Enviar opciones de crédito"],["rechazar","✖ Rechazar"]],plan:[["plan","📋 Enviar nuevas opciones"],["rechazar","✖ Rechazar"]],aceptada:[["cita","📅 Citar para entrega y firma"],["plan","📋 Enviar otras opciones"],["rechazar","✖ Rechazar"]],docs:[["cita","📅 Citar para entrega y firma"],["rechazar","✖ Rechazar"]],cita:[["desembolsar","💵 Firmado: entregar dinero"],["cita","📅 Reprogramar"],["rechazar","✖ Rechazar"]]}[s.etapa]||[];
  const items=s.docsReq||[],ok=s.docsOk||[],ct=citaDe(s.clienteId);
  return `<div class="card" style="margin-top:8px"><div class="row"><b class="sp">Solicitud: ${money(s.monto)} · ${plazoTxt(s.plazo,s.unidad)}${s.tasa?" · "+String(s.tasa).replace(".",",")+"%":""}</b><span class="pill ${s.etapa==="rechazada"?"bad":s.etapa==="desembolsada"?"ok":"warn"}">${ETIQ[s.etapa]}</span></div>${stepsHtml(s.etapa)}
  ${items.length?`<div style="margin:0 0 8px;font-size:.88rem"><b>Documentos:</b> ${items.map(i=>`${ok.includes(i)?"✅":"⬜"} ${esc(i)}`).join(" · ")}</div>`:""}
@@ -2685,9 +2687,9 @@ function solPanel(s){const A={recibida:[["plan","📋 Enviar plan de cuotas"],["
  ${A.length?`<div class="row">${A.map(([a,l])=>`<button class="btn ${a==="rechazar"?"gh":a==="cita"&&s.etapa==="cita"?"sec":""} sm" data-sol="${s.id}|${a}">${l}</button>`).join("")}</div>`:""}</div>`}
 function chatP(cid){const c=cli(cid);marcarLeidos("P",cid);const s=solAbierta(cid);
  return `<div class="row"><button class="btn gh sm" data-chatback>← Mensajes</button><h2 class="sp" style="margin:0">${esc(c.nombre)}</h2>${c.estado==="prospecto"?`<span class="pill warn">Solicitante</span>`:""}${c.tel?`<a class="btn sec sm" style="text-decoration:none" href="tel:${esc(c.tel)}" aria-label="Llamar">📞</a>`:""}</div>
- ${s?solPanel(s):`<div class="card" style="margin-top:8px"><div class="row"><span class="sp" style="color:var(--mut)">Sin solicitud abierta.</span><button class="btn sm" data-newplan="${cid}">📋 Enviar plan de cuotas</button></div></div>`}${hilo(cid,"P")}${composer("P",cid)}`}
+ ${s?solPanel(s):`<div class="card" style="margin-top:8px"><div class="row"><span class="sp" style="color:var(--mut)">Sin solicitud abierta.</span><button class="btn sm" data-newplan="${cid}">📋 Enviar opciones de crédito</button></div></div>`}${hilo(cid,"P")}${composer("P",cid)}`}
 function planHtml(pl,firmas){const k=pl.cli,e=ea(pl.tasa);
- return `<div class="plan"><div class="row"><b class="sp">📋 Plan de cuotas</b><span class="pill ${pl.estado==="aceptado"?"ok":pl.estado==="enviado"?"warn":"gray"}">${{enviado:"Pendiente de respuesta",aceptado:"Aceptado",rechazado:"No aceptado",reemplazado:"Reemplazado"}[pl.estado]}</span></div>
+ return `<div class="plan"><div class="row"><b class="sp">📋 ${pl.op?"Opción "+pl.op+" · "+plazoTxt(pl.plazo,pl.unidad):"Plan de cuotas"}</b><span class="pill ${pl.estado==="aceptado"?"ok":pl.estado==="enviado"?"warn":"gray"}">${{enviado:pl.op?"Para elegir":"Pendiente de respuesta",aceptado:pl.op?"Elegida":"Aceptado",noelegido:"No elegida",rechazado:"No aceptado",reemplazado:"Reemplazado"}[pl.estado]}</span></div>
  <div class="pgrid"><div><small>Prestamista</small><b>${esc(pl.prestamista)}</b></div><div><small>Fecha</small><b>${fd(pl.fecha)}</b></div>
  <div><small>Nombre</small><b>${esc(k.nombre)}</b></div><div><small>Cédula</small><b>${esc(k.doc||"—")}</b></div>
  <div><small>Dirección</small><b>${esc(k.dir||"—")}</b></div><div><small>Teléfono</small><b>${esc(k.tel||"—")}</b></div>
@@ -2697,24 +2699,31 @@ function planHtml(pl,firmas){const k=pl.cli,e=ea(pl.tasa);
  <div class="scroll" style="max-height:220px"><table class="t"><thead><tr><th>#</th><th>Fecha</th><th>Cuota</th><th>Capital</th><th>Interés</th></tr></thead><tbody>${pl.cuotas.map(q=>`<tr><td>${q.n}</td><td>${fd(q.fecha)}</td><td>${money(q.valor)}</td><td>${money(q.capital)}</td><td>${money(q.interes)}</td></tr>`).join("")}</tbody></table></div>
  <small style="color:var(--mut)">Las fechas se ajustan a la fecha real de entrega del dinero.</small>
  ${firmas?`<div style="display:flex;gap:30px;margin-top:46px"><div style="flex:1;border-top:1px solid #000;padding-top:4px;font-size:.85rem">Firma del cliente<br>C.C. ${esc(k.doc||"")}</div><div style="flex:1;border-top:1px solid #000;padding-top:4px;font-size:.85rem">Firma del prestamista<br>${esc(pl.prestamista)}</div></div>`:""}</div>`}
-function formPlan(cid){const c=cli(cid);const s=solAbierta(cid);const d=s?{monto:s.monto,plazo:s.plazo,unidad:s.unidad,tasa:s.tasa||db.cfg.tasaSimple}:{monto:1000000,plazo:6,unidad:"M",tasa:db.cfg.tasaSimple};
- return `<h2>Plan de cuotas</h2><p style="margin:0 0 8px;color:var(--mut)">Revisa los datos. Al enviarlo, el cliente lo ve en Mensajes y puede aceptarlo.</p><form id="fplan" data-cid="${cid}" class="form">
- <label class="f">Nombre<input name="nombre" required value="${esc(c.nombre)}"></label><label class="f">Cédula<input name="doc" required value="${esc(c.doc)}"></label>
- <label class="f">Dirección<input name="dir" required value="${esc(c.dir)}"></label><label class="f">Teléfono<input name="tel" required inputmode="tel" value="${esc(c.tel)}"></label>
- <label class="f">Monto ($)<input name="monto" data-money inputmode="numeric" value="${d.monto.toLocaleString("es-CO")}"></label><label class="f">Tasa mensual simple (%)<input name="tasa" inputmode="decimal" value="${String(d.tasa).replace(".",",")}"></label>
- <label class="f">Plazo<input name="plazo" inputmode="numeric" value="${d.plazo}"></label><label class="f">Cuotas<select name="unidad"><option value="M"${d.unidad==="M"?" selected":""}>Mensuales</option><option value="Q"${d.unidad==="Q"?" selected":""}>Quincenales</option></select></label>
- <div id="plprev" style="grid-column:1/-1"></div><div style="grid-column:1/-1"><button class="btn" type="submit" id="plsend" disabled>Enviar plan al cliente</button></div></form>`}
-function prevPlan(){const f=$("#fplan");if(!f)return;const monto=num(f.monto.value),tasa=num(f.tasa.value),plazo=Math.round(num(f.plazo.value)),un=f.unidad.value;const box=$("#plprev"),btn=$("#plsend");
- if(!(monto>0&&tasa>=0&&plazo>0)){box.innerHTML="";btn.disabled=true;return}
- const cu=buildCuotas(monto,tasa,un,plazo,today(),"S");const tot=cu.reduce((a,q)=>a+q.valor,0);const e=ea(tasa);const sobre=e>num(db.cfg.tope);
- box.innerHTML=`${sobre?`<div class="alert bad">🚫 Esta tasa equivale a <b>${e.toFixed(1)}% E.A.</b> y supera el tope de usura (${db.cfg.tope}%). Bájala para poder enviar el plan.</div>`:`<div class="alert ok">✅ ${e.toFixed(1)}% E.A. (dentro del tope de ${db.cfg.tope}%).</div>`}<div class="grid kpis" style="margin-top:8px"><div class="card kpi"><small>Cuota aprox.</small><b>${money(cu[0].valor)}</b></div><div class="card kpi"><small>Total a pagar</small><b>${money(tot)}</b></div><div class="card kpi"><small>Intereses</small><b>${money(tot-monto)}</b></div></div>`;btn.disabled=sobre}
-function formCita(cid){const ult=citaDe(cid);const d=ult?ult.cita:{fecha:addDays(today(),1),hora:"10:00",lugar:db.cfg.lugar||"",nota:"Trae tu cédula original. Firmaremos el pagaré y el contrato y ahí te entregamos el dinero."};
+function opcDef(p){p=Math.max(1,p||1);return p<=2?[p,p+1,p+2]:[Math.max(1,Math.round(p/2)),p,Math.round(p*1.5)]}
+function formPlan(cid){const c=cli(cid);const s=solAbierta(cid);const d=s?{monto:s.monto,plazo:s.plazo,unidad:s.unidad,tasa:s.tasa||db.cfg.tasaSimple}:{monto:1000000,plazo:6,unidad:"M",tasa:db.cfg.tasaSimple};const ops=opcDef(d.plazo),tz=String(d.tasa).replace(".",",");
+ return `<h2>Opciones de crédito</h2><p style="margin:0 0 8px;color:var(--mut)">Arma 2 o 3 opciones con plazos diferentes. El cliente recibe cada una por separado en Mensajes y elige la que más le sirva.${s?` Pidió <b>${money(s.monto)}</b> a <b>${plazoTxt(s.plazo,s.unidad)}</b>.`:""}</p><form id="fplan" data-cid="${cid}" class="form">
+ <label class="f">Nombre<input name="nombre" required value="${esc(c.nombre)}"></label><label class="f">Cédula<input name="doc" value="${esc(c.doc)}"></label>
+ <label class="f">Dirección<input name="dir" value="${esc(c.dir)}"></label><label class="f">Teléfono<input name="tel" required inputmode="tel" value="${esc(c.tel)}"></label>
+ <label class="f">Monto ($)<input name="monto" data-money inputmode="numeric" value="${d.monto.toLocaleString("es-CO")}"></label><label class="f">Cuotas<select name="unidad"><option value="M"${d.unidad==="M"?" selected":""}>Mensuales</option><option value="Q"${d.unidad==="Q"?" selected":""}>Quincenales</option></select></label>
+ ${[1,2,3].map(k=>`<div class="card" style="grid-column:1/-1;padding:10px"><div class="row" style="margin-bottom:6px"><b class="sp">Opción ${k}</b>${k===1?`<small style="color:var(--mut)">siempre se envía</small>`:`<label style="display:flex;gap:6px;align-items:center;font-weight:600"><input type="checkbox" name="inc${k}" checked style="width:auto"> Enviar</label>`}</div>
+ <div class="row" style="flex-wrap:nowrap;gap:8px"><label class="f" style="flex:1">Plazo<input name="plazo${k}" inputmode="numeric" value="${ops[k-1]}"></label><label class="f" style="flex:1">Tasa mensual (%)<input name="tasa${k}" inputmode="decimal" value="${tz}"></label></div><div id="plprev${k}"></div></div>`).join("")}
+ <div id="plprev" style="grid-column:1/-1"></div><div style="grid-column:1/-1"><button class="btn" type="submit" id="plsend" disabled>Enviar opciones al cliente</button></div></form>`}
+function opcForm(f){const monto=num(f.monto.value),un=f.unidad.value;const out=[];[1,2,3].forEach(k=>{if(k>1&&!f["inc"+k].checked)return;out.push({k,monto,un,tasa:num(f["tasa"+k].value),plazo:Math.round(num(f["plazo"+k].value))})});return out}
+function prevPlan(){const f=$("#fplan");if(!f)return;const btn=$("#plsend"),box=$("#plprev");const L=opcForm(f);let ok=L.length>0,sobre=false;
+ [1,2,3].forEach(k=>{const el=$("#plprev"+k);if(el)el.innerHTML=""});
+ L.forEach(o=>{const el=$("#plprev"+o.k);if(!(o.monto>0&&o.tasa>=0&&o.plazo>0)){ok=false;el.innerHTML=`<small style="color:var(--bad);font-weight:700">Revisa el monto, el plazo y la tasa.</small>`;return}
+  const cu=buildCuotas(o.monto,o.tasa,o.un,o.plazo,today(),"S"),tot=cu.reduce((a,q)=>a+q.valor,0),e=ea(o.tasa),s=e>num(db.cfg.tope);if(s)sobre=true;
+  el.innerHTML=`${s?`<div class="alert bad" style="margin:6px 0">🚫 ${e.toFixed(1)}% E.A. supera el tope de usura (${db.cfg.tope}%). Baja la tasa.</div>`:""}<div style="font-size:.9rem">${plazoTxt(o.plazo,o.un)} · cuota <b>${money(cu[0].valor)}</b> · total <b>${money(tot)}</b> · intereses ${money(tot-o.monto)} · ${e.toFixed(1)}% E.A.</div>`});
+ const pz=L.map(o=>o.plazo+o.un);const rep=pz.length!==new Set(pz).size;
+ box.innerHTML=rep?`<div class="alert warn">Dos opciones tienen el mismo plazo. Cambia uno para que el cliente vea alternativas diferentes.</div>`:"";
+ btn.disabled=!ok||sobre||rep;btn.textContent=L.length>1?`Enviar ${L.length} opciones al cliente`:"Enviar 1 opción al cliente"}
+function formCita(cid){const ult=citaDe(cid);const dl=docsLista();const d=ult?ult.cita:{fecha:addDays(today(),1),hora:"10:00",lugar:db.cfg.lugar||"",nota:(dl.length?"Para la firma trae: "+dl.join("; ")+".":"Trae tu cédula original.")+" Firmaremos el pagaré y el contrato y ahí te entregamos el dinero."};
  return `<h2>Citar al cliente</h2><p style="margin:0 0 8px;color:var(--mut)">Se envía por Mensajes para la entrega del dinero y la firma de los documentos físicos.</p><form id="fcita" data-cid="${cid}" class="form">
  <label class="f">Fecha<input type="date" name="fecha" required min="${today()}" value="${d.fecha}"></label><label class="f">Hora<input type="time" name="hora" required value="${d.hora}"></label>
  <label class="f" style="grid-column:1/-1">Lugar<input name="lugar" required value="${esc(d.lugar)}" placeholder="Dirección donde se firma"></label>
  <label class="f" style="grid-column:1/-1">Nota para el cliente<textarea name="nota" rows="3">${esc(d.nota)}</textarea></label>
  <div style="grid-column:1/-1"><button class="btn" type="submit">Enviar cita</button></div></form>`}
-function vNuevo(cl){const k=cl?(ui.pubCfg||db.cfg):db.cfg;return `<h1>Pide tu préstamo</h1><p style="color:var(--mut);margin:-4px 0 10px">Cuéntanos quién eres y qué necesitas. ${esc(k.prestamista)} te responde por Mensajes con un plan de cuotas.</p>
+function vNuevo(cl){const k=cl?(ui.pubCfg||db.cfg):db.cfg;return `<h1>Pide tu préstamo</h1><p style="color:var(--mut);margin:-4px 0 10px">Cuéntanos quién eres y qué necesitas. ${esc(k.prestamista)} te responde por Mensajes con opciones de crédito para que elijas.</p>
  <form id="${cl?"fcreg":"fnew"}" class="card form"><label class="f">Nombre completo<input name="nombre" required></label><label class="f">Cédula<input name="doc" required inputmode="numeric"></label>
  <label class="f">Teléfono / WhatsApp<input name="tel" required inputmode="tel"></label><label class="f">Dirección o barrio<input name="dir" required></label>${cl?`<label class="f">Correo<input type="email" name="email" required autocomplete="email"></label><label class="f">Contraseña (mínimo 6)<input type="password" name="pass" required minlength="6" autocomplete="new-password"></label>`:""}
  <label class="f">¿Cuánto necesitas? ($)<input name="monto" data-money required inputmode="numeric" placeholder="4.000.000"></label>
@@ -2736,7 +2745,7 @@ function cambiarSol(id,acc){const s=db.sols.find(x=>x.id===id);if(!s)return;cons
  addMsg({clienteId:c.id,de:"S",txt});notif(c.id,"estado",txt);log(`Solicitud de ${c.nombre}: ${ETIQ[s.etapa]}`);save();draw()}
 function vMsg(){if(ui.chat&&cli(ui.chat))return chatP(ui.chat);
  const rows=db.clientes.map(c=>({c,ms:msgsDe(c.id)})).sort((a,b)=>((b.ms.slice(-1)[0]||{}).t||0)-((a.ms.slice(-1)[0]||{}).t||0));
- return `<h1>Mensajes</h1><p style="color:var(--mut);margin:-4px 0 8px">Documentos, comprobantes de pago y solicitudes de tus clientes.</p><div class="list">${rows.map(({c,ms})=>{const u=ms.filter(m=>m.de==="C"&&!m.leido).length;const l=ms.slice(-1)[0];const s=solUlt(c.id);
+ return `<h1>Mensajes</h1><p style="color:var(--mut);margin:-4px 0 8px">Solicitudes, opciones de crédito y comprobantes de pago de tus clientes.</p><div class="list">${rows.map(({c,ms})=>{const u=ms.filter(m=>m.de==="C"&&!m.leido).length;const l=ms.slice(-1)[0];const s=solUlt(c.id);
  return `<div class="item" data-chat="${c.id}" style="cursor:pointer"><span class="dot ${u?"warn":"ok"}"></span><div class="info"><b>${esc(c.nombre)}</b><small>${l?esc((l.de==="P"?"Tú: ":"")+(l.txt||(l.adj.length?"📎 Adjunto":""))):"Sin mensajes todavía"}</small></div>${s&&s.etapa!=="desembolsada"&&s.etapa!=="rechazada"?`<span class="pill warn">Solicitud</span>`:""}${u?`<span class="pill bad">${u}</span>`:""}</div>`}).join("")||`<div class="card empty">Agrega clientes para chatear.</div>`}</div>`}
 function leerArchivo(f){return new Promise((res,rej)=>{
  if(f.type.startsWith("image/")){const r=new FileReader();r.onerror=()=>rej("No se pudo leer el archivo.");r.onload=()=>{const im=new Image();im.onerror=()=>rej("No se pudo leer la imagen.");im.onload=()=>{let k=Math.min(1,(CLOUD?800:900)/Math.max(im.width,im.height)),q=CLOUD?.6:.7,d;const cv=document.createElement("canvas");for(let n=0;n<5;n++){cv.width=Math.max(1,Math.round(im.width*k));cv.height=Math.max(1,Math.round(im.height*k));cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);d=cv.toDataURL("image/jpeg",q);if(!CLOUD||d.length<=280000)break;k*=.8;q=Math.max(.4,q-.08)}res({nombre:f.name.replace(/\.\w+$/,"")+".jpg",mime:"image/jpeg",data:d})};im.src=r.result};r.readAsDataURL(f)}
@@ -2756,22 +2765,30 @@ function enviar(){const rol=ui.mode,cid=rol==="C"?ui.cid:ui.chat;if(!cid)return;
 document.addEventListener("click",e=>{const t=e.target;let b;
  if(b=t.closest("[data-newplan]")){openM(formPlan(b.dataset.newplan));prevPlan();return}
  if(b=t.closest("[data-printplan]")){const m=db.msgs.find(x=>x.id===b.dataset.printplan);if(m)openM(planHtml(m.plan,true)+`<div class="row noprint" style="margin-top:12px"><button class="btn" onclick="window.print()">🖨️ Imprimir para firmar</button></div>`);return}
- if(b=t.closest("[data-plan]")){const[id,a]=b.dataset.plan.split("|");const m=db.msgs.find(x=>x.id===id);if(!m)return;const c=cli(m.clienteId);const s=db.sols.find(x=>x.id===m.solId);
-  if(a==="ok"){m.plan.estado="aceptado";if(s){Object.assign(s,{monto:m.plan.monto,plazo:m.plan.plazo,unidad:m.plan.unidad,tasa:m.plan.tasa,etapa:"aceptada"})}
-   addMsg({clienteId:c.id,de:"C",txt:`✅ Acepto el plan de cuotas: ${money(m.plan.monto)} a ${plazoTxt(m.plan.plazo,m.plan.unidad)}.`});log(`${c.nombre} aceptó el plan de cuotas`);toast("¡Listo! El prestamista te pedirá los documentos.")}
-  else{if(!confirm("¿Seguro que no te interesa este plan?"))return;m.plan.estado="rechazado";if(s)s.etapa="rechazada";addMsg({clienteId:c.id,de:"C",txt:"No me interesa el plan de cuotas. Gracias."});log(`${c.nombre} no aceptó el plan`)}
+ if(b=t.closest("[data-plan]")){const[id,a]=b.dataset.plan.split("|");const m=db.msgs.find(x=>x.id===id);if(!m)return;const c=cli(m.clienteId);const s=db.sols.find(x=>x.id===m.solId);const pl=m.plan;
+  const grupo=pl.grupo?db.msgs.filter(x=>x.tipo==="plan"&&x.plan.grupo===pl.grupo):[m];
+  if(a==="ok"){if(pl.op&&!confirm(`¿Eliges la opción ${pl.op}: ${money(pl.monto)} a ${plazoTxt(pl.plazo,pl.unidad)}, con cuotas de ${money(pl.cuotas[0].valor)}?`))return;
+   grupo.forEach(x=>{if(x!==m&&x.plan.estado==="enviado")x.plan.estado="noelegido"});pl.estado="aceptado";
+   if(s){Object.assign(s,{monto:pl.monto,plazo:pl.plazo,unidad:pl.unidad,tasa:pl.tasa,etapa:"aceptada"})}
+   addMsg({clienteId:c.id,de:"C",txt:pl.op?`✅ Quiero la opción ${pl.op}: ${money(pl.monto)} a ${plazoTxt(pl.plazo,pl.unidad)}, con cuotas de ${money(pl.cuotas[0].valor)}.`:`✅ Acepto el plan de cuotas: ${money(pl.monto)} a ${plazoTxt(pl.plazo,pl.unidad)}.`});
+   log(`${c.nombre} eligió ${pl.op?"la opción "+pl.op:"el plan"}: ${plazoTxt(pl.plazo,pl.unidad)}`);toast("¡Listo! El prestamista te avisará cuándo pasar a firmar y recibir el dinero.")}
+  else if(a==="ninguna"){if(!confirm("¿Ninguna opción te sirve? Le pediremos al prestamista otras opciones."))return;grupo.forEach(x=>{if(x.plan.estado==="enviado")x.plan.estado="rechazado"});
+   addMsg({clienteId:c.id,de:"C",txt:"Ninguna de las opciones me sirve. ¿Me puedes enviar otras?"});log(`${c.nombre} pidió otras opciones`)}
+  else{if(!confirm("¿Seguro que no te interesa este plan?"))return;pl.estado="rechazado";if(s)s.etapa="rechazada";addMsg({clienteId:c.id,de:"C",txt:"No me interesa el plan de cuotas. Gracias."});log(`${c.nombre} no aceptó el plan`)}
   save();draw();return}
  if(b=t.closest("[data-citaok]")){const m=db.msgs.find(x=>x.id===b.dataset.citaok);if(!m)return;m.cita.conf=true;addMsg({clienteId:m.clienteId,de:"C",txt:`✅ Confirmo mi asistencia a la cita del ${fd(m.cita.fecha)} a las ${m.cita.hora}.`});log(`${cli(m.clienteId).nombre} confirmó la cita`);save();draw();return}
  if(b=t.closest("[data-cf]")){ui.cf=b.dataset.cf;draw();return}
 });
 document.addEventListener("submit",e=>{const f=e.target;
- if(f.id==="fplan"){const c=cli(f.dataset.cid);const monto=num(f.monto.value),tasa=num(f.tasa.value),plazo=Math.round(num(f.plazo.value)),un=f.unidad.value;if(!(monto>0&&plazo>0)||ea(tasa)>num(db.cfg.tope))return;
+ if(f.id==="fplan"){const c=cli(f.dataset.cid);const L=opcForm(f);if(!L.length||L.some(o=>!(o.monto>0&&o.plazo>0)||ea(o.tasa)>num(db.cfg.tope)))return;
   Object.assign(c,{nombre:f.nombre.value.trim()||c.nombre,doc:f.doc.value.trim(),dir:f.dir.value.trim(),tel:f.tel.value.trim()});
-  const cu=buildCuotas(monto,tasa,un,plazo,today(),"S");const tot=cu.reduce((a,q)=>a+q.valor,0);
-  let s=solAbierta(c.id);if(!s){s={id:uid(),t:Date.now(),clienteId:c.id,fecha:today()};db.sols.push(s)}Object.assign(s,{monto,plazo,unidad:un,tasa,etapa:"plan"});
+  let s=solAbierta(c.id);if(!s){s={id:uid(),t:Date.now(),clienteId:c.id,fecha:today(),plazo:L[0].plazo,unidad:L[0].un};db.sols.push(s)}Object.assign(s,{monto:L[0].monto,tasa:L[0].tasa,etapa:"plan"});
   db.msgs.filter(m=>m.tipo==="plan"&&m.clienteId===c.id&&m.plan.estado==="enviado").forEach(m=>m.plan.estado="reemplazado");
-  addMsg({clienteId:c.id,de:"P",tipo:"plan",solId:s.id,txt:"Te envío el plan de cuotas con las condiciones del préstamo. Revísalo y dime si lo aceptas.",plan:{prestamista:db.cfg.prestamista,fecha:today(),monto,plazo,unidad:un,tasa,total:tot,int:tot-monto,cuotas:cu,cli:{nombre:c.nombre,doc:c.doc,dir:c.dir,tel:c.tel},estado:"enviado"}});
-  notif(c.id,"estado","Te enviamos un plan de cuotas. Revísalo en Mensajes.");log(`Plan de cuotas enviado a ${c.nombre}: ${money(monto)}`);save();closeM();draw();return}
+  const g=uid(),n=L.length,t0=Date.now();
+  L.forEach((o,i)=>{const cu=buildCuotas(o.monto,o.tasa,o.un,o.plazo,today(),"S");const tot=cu.reduce((a,q)=>a+q.valor,0);
+   const txt=(i===0?(n>1?`Te envío ${n} opciones de crédito para que elijas la que más te sirva. `:"Te envío una opción de crédito. "):"")+`Opción ${i+1}: ${money(o.monto)} a ${plazoTxt(o.plazo,o.un)}, cuotas de ${money(cu[0].valor)}.`;
+   addMsg({t:t0+i,clienteId:c.id,de:"P",tipo:"plan",solId:s.id,txt,plan:{prestamista:db.cfg.prestamista,fecha:today(),monto:o.monto,plazo:o.plazo,unidad:o.un,tasa:o.tasa,total:tot,int:tot-o.monto,cuotas:cu,cli:{nombre:c.nombre,doc:c.doc,dir:c.dir,tel:c.tel},estado:"enviado",grupo:g,op:i+1,nop:n}})});
+  notif(c.id,"estado",n>1?`Te enviamos ${n} opciones de crédito. Elige la que más te sirva en Mensajes.`:"Te enviamos una opción de crédito. Revísala en Mensajes.");log(`${n} opción(es) de crédito enviadas a ${c.nombre}: ${money(L[0].monto)}`);save();closeM();draw();toast("Opciones enviadas al cliente");return}
  if(f.id==="fcita"){const c=cli(f.dataset.cid);const s=solAbierta(c.id);if(!s)return;const ct={fecha:f.fecha.value,hora:f.hora.value,lugar:f.lugar.value.trim(),nota:f.nota.value.trim(),conf:false};
   s.etapa="cita";addMsg({clienteId:c.id,de:"P",tipo:"cita",solId:s.id,cita:ct,txt:""});notif(c.id,"estado",`Te citamos el ${fd(ct.fecha)} a las ${ct.hora} para la entrega y la firma. Confírmalo en Mensajes.`);
   log(`Cita con ${c.nombre}: ${ct.fecha} ${ct.hora}`);save();closeM();draw();return}
@@ -2818,7 +2835,7 @@ document.addEventListener("click",e=>{const t=e.target;let b;
   const s=ui.calc;const sol={id:uid(),t:Date.now(),clienteId:c.id,monto:s.monto,plazo:s.plazo,unidad:s.unidad,fecha:today(),etapa:"recibida"};db.sols.push(sol);
   const {cu,tot}=calcSimple(s.monto,s.plazo,s.unidad);
   addMsg({clienteId:c.id,de:"C",tipo:"solicitud",txt:`Hola, quiero solicitar un préstamo de ${money(s.monto)} a ${s.plazo} ${s.unidad==="M"?(s.plazo===1?"mes":"meses"):(s.plazo===1?"quincena":"quincenas")}. Según la calculadora serían cuotas de aprox. ${money(cu[0].valor)} (total ${money(tot)}).`});
-  log(`Solicitud de ${c.nombre}: ${money(s.monto)}`);save();ui.tab="c_msg";draw();toast("¡Solicitud enviada! Ahora adjunta tus documentos.");return}
+  log(`Solicitud de ${c.nombre}: ${money(s.monto)}`);save();ui.tab="c_msg";draw();toast("¡Solicitud enviada! El prestamista te enviará opciones de crédito por aquí.");return}
 });
 document.addEventListener("input",e=>{const t=e.target;
  if(t.id==="mtxt"){ui.draft=t.value;return}
@@ -2969,7 +2986,7 @@ const FBV="10.14.1";
 let FA=null,FS=null,fauth=null,fdb=null;
 const sync={ok:false,uid:null,pid:null,role:null,email:"",base:{},cfgFp:"",init:{},unsubs:[],timer:null,busy:false,again:false,signing:false,loaded:false,pend:new Set(),redrawLater:false,errShown:false};
 const COLS_W={prestamista:["clientes","prestamos","pagos","sols","msgs","notifs","contactos","log"],cliente:["clientes","sols","msgs"]};
-function cfgDefault(nombre){return{prestamista:nombre||"Tu negocio",tel:"",tope:25,tasaSimple:1.5,montoMin:100000,montoMax:5000000,plazoMax:12,docsReq:"Cédula de ciudadanía (ambos lados), Comprobante de ingresos o certificado laboral, Recibo de servicio público, Dos referencias personales (nombre y teléfono)",lugar:"",ini:7,fin:19,satIni:8,satFin:15,festivos:"",maxContactos:2,ignorarHorario:false,medios:"Efectivo, Nequi, Daviplata"}}
+function cfgDefault(nombre){return{prestamista:nombre||"Tu negocio",tel:"",tope:25,tasaSimple:1.5,montoMin:100000,montoMax:5000000,plazoMax:12,docsReq:"Cédula original, Comprobante de ingresos o certificado laboral, Recibo de un servicio público, Dos referencias personales (nombre y teléfono)",lugar:"",ini:7,fin:19,satIni:8,satFin:15,festivos:"",maxContactos:2,ignorarHorario:false,medios:"Efectivo, Nequi, Daviplata"}}
 const emptyDb=()=>({cfg:cfgDefault(),clientes:[],prestamos:[],pagos:[],sols:[],msgs:[],notifs:[],contactos:[],log:[]});
 /* ---- huellas para detectar qué cambió ---- */
 const cl=v=>v===undefined?undefined:JSON.parse(JSON.stringify(v));
