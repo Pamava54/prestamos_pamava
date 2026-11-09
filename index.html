@@ -1,0 +1,2701 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F766E">
+<title>Préstamos · PAMAVA soluciones</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--p:#0F766E;--pd:#0B4F4A;--ps:#D9F2EE;--g:#F5B700;--gs:#FFF4CC;--ink:#17262B;--mut:#5B6B70;--bg:#F3F7F6;--card:#fff;--line:#DCE6E4;--ok:#15803D;--okb:#DCFCE7;--warn:#B45309;--warnb:#FEF3C7;--bad:#B91C1C;--badb:#FEE2E2;--r:16px}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:84px}
+button,input,select,textarea{font:inherit;color:inherit}
+.wm{position:fixed;inset:0;z-index:5;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='200'%3E%3Ctext x='170' y='110' text-anchor='middle' transform='rotate(-24 170 100)' font-family='Arial,sans-serif' font-size='28' font-weight='700' fill='%230B4F4A'%3EPAMAVA soluciones%3C/text%3E%3C/svg%3E")}
+header.top{position:sticky;top:0;z-index:20;background:var(--pd);color:#fff;padding:10px 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.brand{display:flex;gap:10px;align-items:center;font-weight:800;font-size:1.05rem;flex:1;min-width:180px}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--g);color:var(--pd);display:grid;place-items:center;font-weight:900}
+.brand small{display:block;font-weight:600;opacity:.8;font-size:.72rem}
+.seg{display:flex;background:rgba(255,255,255,.15);border-radius:999px;padding:3px}
+.seg button{border:0;background:none;color:#fff;padding:6px 14px;border-radius:999px;font-weight:700;cursor:pointer}
+.seg button[aria-pressed=true]{background:#fff;color:var(--pd)}
+.who{background:rgba(255,255,255,.15);border:0;border-radius:10px;padding:6px 8px;color:#fff;max-width:200px}
+.who option{color:#000}
+main{max-width:980px;margin:0 auto;padding:14px;position:relative;z-index:6}
+h1{font-size:1.35rem;margin:6px 0 10px}h2{font-size:1.1rem;margin:0 0 8px}h3{font-size:1rem;margin:0}
+.grid{display:grid;gap:10px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;box-shadow:0 2px 0 var(--line)}
+.kpi small{color:var(--mut);font-weight:700;display:block}.kpi b{font-size:1.35rem;display:block;margin-top:2px}
+.kpi.ok b{color:var(--ok)}.kpi.bad b{color:var(--bad)}.kpi.warn b{color:var(--warn)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.sp{flex:1}
+.btn{border:0;border-radius:12px;padding:9px 14px;font-weight:800;cursor:pointer;background:var(--p);color:#fff}
+.btn.sec{background:var(--ps);color:var(--pd)}.btn.gh{background:#fff;border:2px solid var(--line);color:var(--ink)}
+.btn.sm{padding:6px 10px;font-size:.85rem;border-radius:10px}.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.warn{background:var(--g);color:#3A2B00}
+.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:.78rem;font-weight:800}
+.pill.ok{background:var(--okb);color:var(--ok)}.pill.warn{background:var(--warnb);color:var(--warn)}.pill.bad{background:var(--badb);color:var(--bad)}.pill.gray{background:#E5EDEB;color:var(--mut)}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.item .info{flex:1;min-width:0}.item .info b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.item .info small{color:var(--mut)}
+.dot{width:12px;height:12px;border-radius:50%;flex:0 0 12px}.dot.ok{background:#22C55E}.dot.warn{background:#F59E0B}.dot.bad{background:#EF4444}
+.bar{height:8px;border-radius:99px;background:#E5EDEB;overflow:hidden}.bar i{display:block;height:100%;background:var(--p)}
+label.f{display:flex;flex-direction:column;gap:3px;font-weight:700;font-size:.88rem}
+input,select,textarea{border:2px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff;width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--p)}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.alert{border-radius:12px;padding:9px 12px;font-weight:700;font-size:.9rem}
+.alert.bad{background:var(--badb);color:var(--bad)}.alert.warn{background:var(--warnb);color:var(--warn)}.alert.ok{background:var(--okb);color:var(--ok)}.alert.info{background:var(--ps);color:var(--pd)}
+table.t{width:100%;border-collapse:collapse;font-size:.88rem}
+table.t th,table.t td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+table.t th:first-child,table.t td:first-child{text-align:left}
+table.t th{background:var(--ps);color:var(--pd);position:sticky;top:0}
+.scroll{overflow:auto;max-height:46vh;border:1px solid var(--line);border-radius:12px}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:25;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+nav.tabs button{flex:1;border:0;background:none;padding:8px 2px;font-size:.72rem;font-weight:700;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+nav.tabs button span{font-size:1.25rem;line-height:1}nav.tabs button[aria-selected=true]{color:var(--p)}
+#modal{position:fixed;inset:0;z-index:60;background:rgba(10,30,28,.55);display:none;align-items:flex-end;justify-content:center}
+#modal.on{display:flex}
+#modal .box{background:#fff;width:100%;max-width:640px;max-height:92vh;overflow:auto;border-radius:22px 22px 0 0;padding:16px;position:relative}
+@media(min-width:700px){#modal{align-items:center}#modal .box{border-radius:22px}}
+.x{position:absolute;right:10px;top:8px;border:0;background:var(--ps);color:var(--pd);width:34px;height:34px;border-radius:50%;font-size:1.1rem;cursor:pointer;font-weight:900}
+.recibo{border:2px dashed var(--p);border-radius:16px;padding:14px;background:#fff}
+.recibo .big{font-size:1.8rem;font-weight:900;color:var(--pd)}
+.recibo .qr{display:flex;gap:12px;align-items:center;margin-top:10px}.recibo .qr svg{width:110px;height:110px;flex:0 0 110px}
+.code{font-family:ui-monospace,monospace;font-weight:800;letter-spacing:.08em;background:var(--gs);padding:2px 8px;border-radius:8px}
+.empty{text-align:center;color:var(--mut);padding:22px}
+.fab{position:fixed;right:14px;bottom:92px;z-index:30;width:54px;height:54px;border-radius:50%;border:0;background:var(--g);color:#3A2B00;font-size:1.5rem;box-shadow:0 6px 16px rgba(0,0,0,.25);cursor:pointer}
+#calc{position:fixed;z-index:40;right:14px;bottom:156px;width:272px;background:#0B1F22;color:#fff;border-radius:18px;box-shadow:0 12px 30px rgba(0,0,0,.4);display:none;touch-action:none}
+#calc.on{display:block}
+#calc .hd{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;cursor:move;font-weight:800;font-size:.85rem;background:#12373A;border-radius:18px 18px 0 0}
+#calc .hd button{background:none;border:0;color:#fff;font-size:1rem;cursor:pointer}
+#calc .tabs2{display:flex;gap:4px;padding:6px 8px 0}.tabs2 button{flex:1;border:0;border-radius:8px;padding:4px;background:#12373A;color:#cfe;font-weight:700;font-size:.78rem;cursor:pointer}.tabs2 button.on{background:var(--g);color:#3A2B00}
+#cexp{padding:6px 12px 0;text-align:right;color:#8fb;font-size:.8rem;min-height:18px;word-break:break-all}
+#cout{padding:0 12px 6px;text-align:right;font-size:1.7rem;font-weight:800;word-break:break-all}
+#ckeys{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:6px 8px 10px}
+#ckeys button{border:0;border-radius:10px;padding:11px 0;background:#1B4A4E;color:#fff;font-size:1.05rem;font-weight:700;cursor:pointer}
+#ckeys button.op{background:#2A6F73}#ckeys button.eq{background:var(--g);color:#3A2B00}#ckeys button.cl{background:#8E2D2D}
+#cprest{padding:8px 12px 12px;display:none;gap:6px;flex-direction:column;color:#fff}
+#cprest input,#cprest select{background:#12373A;border-color:#1B4A4E;color:#fff;padding:6px 8px}
+#cprest .res{background:#12373A;border-radius:10px;padding:8px;font-size:.9rem}
+.foot{text-align:center;color:var(--mut);font-size:.8rem;padding:14px}
+.h-scroll{overflow-x:auto}
+@media print{header.top,nav.tabs,.fab,#calc,.x,.noprint,.wm{display:none!important}#modal{position:static;background:none;display:block}#modal .box{box-shadow:none;max-height:none;padding:0}body{background:#fff}main{display:none}}
+</style></head><body>
+<div class="wm" aria-hidden="true"></div>
+<header class="top">
+ <div class="brand"><div class="logo">$</div><div><span id="appName">Préstamos</span><small>por PAMAVA soluciones · prototipo</small></div></div>
+ <select class="who" id="who" aria-label="Cliente a mostrar" style="display:none"></select>
+ <div class="seg" role="group" aria-label="Vista"><button id="mP" aria-pressed="true">Prestamista</button><button id="mC" aria-pressed="false">Cliente</button></div>
+</header>
+<main id="app"></main>
+<button class="fab" id="calcBtn" aria-label="Abrir calculadora (Alt+C)" title="Calculadora (Alt+C)">🧮</button>
+<div id="calc" role="dialog" aria-label="Calculadora">
+ <div class="hd" id="chd"><span>🧮 Calculadora</span><button id="cx" aria-label="Cerrar">✕</button></div>
+ <div class="tabs2"><button id="cT1" class="on">Normal</button><button id="cT2">Préstamo</button></div>
+ <div id="cnorm"><div id="cexp"></div><div id="cout">0</div><div id="ckeys"></div></div>
+ <div id="cprest">
+  <label class="f">Capital<input id="pc" inputmode="numeric" placeholder="1.000.000"></label>
+  <div class="row"><label class="f sp">Interés mensual %<input id="pt" inputmode="decimal" placeholder="1,8"></label><label class="f sp">N.º cuotas<input id="pn" inputmode="numeric" placeholder="6"></label></div>
+  <label class="f">Cobro<select id="pp"><option value="M">Mensual</option><option value="Q">Quincenal</option></select></label>
+  <div class="res" id="pres">Escribe capital, interés y cuotas.</div>
+ </div>
+</div>
+<nav class="tabs" id="tabs"></nav>
+<div id="modal"><div class="box" id="mbox"></div></div>
+<script>
+//---------------------------------------------------------------------
+//
+// QR Code Generator for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//  http://www.opensource.org/licenses/mit-license.php
+//
+// The word 'QR Code' is registered trademark of
+// DENSO WAVE INCORPORATED
+//  http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+
+var qrcode = function() {
+
+  //---------------------------------------------------------------------
+  // qrcode
+  //---------------------------------------------------------------------
+
+  /**
+   * qrcode
+   * @param typeNumber 1 to 40
+   * @param errorCorrectionLevel 'L','M','Q','H'
+   */
+  var qrcode = function(typeNumber, errorCorrectionLevel) {
+
+    var PAD0 = 0xEC;
+    var PAD1 = 0x11;
+
+    var _typeNumber = typeNumber;
+    var _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
+    var _modules = null;
+    var _moduleCount = 0;
+    var _dataCache = null;
+    var _dataList = [];
+
+    var _this = {};
+
+    var makeImpl = function(test, maskPattern) {
+
+      _moduleCount = _typeNumber * 4 + 17;
+      _modules = function(moduleCount) {
+        var modules = new Array(moduleCount);
+        for (var row = 0; row < moduleCount; row += 1) {
+          modules[row] = new Array(moduleCount);
+          for (var col = 0; col < moduleCount; col += 1) {
+            modules[row][col] = null;
+          }
+        }
+        return modules;
+      }(_moduleCount);
+
+      setupPositionProbePattern(0, 0);
+      setupPositionProbePattern(_moduleCount - 7, 0);
+      setupPositionProbePattern(0, _moduleCount - 7);
+      setupPositionAdjustPattern();
+      setupTimingPattern();
+      setupTypeInfo(test, maskPattern);
+
+      if (_typeNumber >= 7) {
+        setupTypeNumber(test);
+      }
+
+      if (_dataCache == null) {
+        _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
+      }
+
+      mapData(_dataCache, maskPattern);
+    };
+
+    var setupPositionProbePattern = function(row, col) {
+
+      for (var r = -1; r <= 7; r += 1) {
+
+        if (row + r <= -1 || _moduleCount <= row + r) continue;
+
+        for (var c = -1; c <= 7; c += 1) {
+
+          if (col + c <= -1 || _moduleCount <= col + c) continue;
+
+          if ( (0 <= r && r <= 6 && (c == 0 || c == 6) )
+              || (0 <= c && c <= 6 && (r == 0 || r == 6) )
+              || (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+            _modules[row + r][col + c] = true;
+          } else {
+            _modules[row + r][col + c] = false;
+          }
+        }
+      }
+    };
+
+    var getBestMaskPattern = function() {
+
+      var minLostPoint = 0;
+      var pattern = 0;
+
+      for (var i = 0; i < 8; i += 1) {
+
+        makeImpl(true, i);
+
+        var lostPoint = QRUtil.getLostPoint(_this);
+
+        if (i == 0 || minLostPoint > lostPoint) {
+          minLostPoint = lostPoint;
+          pattern = i;
+        }
+      }
+
+      return pattern;
+    };
+
+    var setupTimingPattern = function() {
+
+      for (var r = 8; r < _moduleCount - 8; r += 1) {
+        if (_modules[r][6] != null) {
+          continue;
+        }
+        _modules[r][6] = (r % 2 == 0);
+      }
+
+      for (var c = 8; c < _moduleCount - 8; c += 1) {
+        if (_modules[6][c] != null) {
+          continue;
+        }
+        _modules[6][c] = (c % 2 == 0);
+      }
+    };
+
+    var setupPositionAdjustPattern = function() {
+
+      var pos = QRUtil.getPatternPosition(_typeNumber);
+
+      for (var i = 0; i < pos.length; i += 1) {
+
+        for (var j = 0; j < pos.length; j += 1) {
+
+          var row = pos[i];
+          var col = pos[j];
+
+          if (_modules[row][col] != null) {
+            continue;
+          }
+
+          for (var r = -2; r <= 2; r += 1) {
+
+            for (var c = -2; c <= 2; c += 1) {
+
+              if (r == -2 || r == 2 || c == -2 || c == 2
+                  || (r == 0 && c == 0) ) {
+                _modules[row + r][col + c] = true;
+              } else {
+                _modules[row + r][col + c] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var setupTypeNumber = function(test) {
+
+      var bits = QRUtil.getBCHTypeNumber(_typeNumber);
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+      }
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+      }
+    };
+
+    var setupTypeInfo = function(test, maskPattern) {
+
+      var data = (_errorCorrectionLevel << 3) | maskPattern;
+      var bits = QRUtil.getBCHTypeInfo(data);
+
+      // vertical
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 6) {
+          _modules[i][8] = mod;
+        } else if (i < 8) {
+          _modules[i + 1][8] = mod;
+        } else {
+          _modules[_moduleCount - 15 + i][8] = mod;
+        }
+      }
+
+      // horizontal
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 8) {
+          _modules[8][_moduleCount - i - 1] = mod;
+        } else if (i < 9) {
+          _modules[8][15 - i - 1 + 1] = mod;
+        } else {
+          _modules[8][15 - i - 1] = mod;
+        }
+      }
+
+      // fixed module
+      _modules[_moduleCount - 8][8] = (!test);
+    };
+
+    var mapData = function(data, maskPattern) {
+
+      var inc = -1;
+      var row = _moduleCount - 1;
+      var bitIndex = 7;
+      var byteIndex = 0;
+      var maskFunc = QRUtil.getMaskFunction(maskPattern);
+
+      for (var col = _moduleCount - 1; col > 0; col -= 2) {
+
+        if (col == 6) col -= 1;
+
+        while (true) {
+
+          for (var c = 0; c < 2; c += 1) {
+
+            if (_modules[row][col - c] == null) {
+
+              var dark = false;
+
+              if (byteIndex < data.length) {
+                dark = ( ( (data[byteIndex] >>> bitIndex) & 1) == 1);
+              }
+
+              var mask = maskFunc(row, col - c);
+
+              if (mask) {
+                dark = !dark;
+              }
+
+              _modules[row][col - c] = dark;
+              bitIndex -= 1;
+
+              if (bitIndex == -1) {
+                byteIndex += 1;
+                bitIndex = 7;
+              }
+            }
+          }
+
+          row += inc;
+
+          if (row < 0 || _moduleCount <= row) {
+            row -= inc;
+            inc = -inc;
+            break;
+          }
+        }
+      }
+    };
+
+    var createBytes = function(buffer, rsBlocks) {
+
+      var offset = 0;
+
+      var maxDcCount = 0;
+      var maxEcCount = 0;
+
+      var dcdata = new Array(rsBlocks.length);
+      var ecdata = new Array(rsBlocks.length);
+
+      for (var r = 0; r < rsBlocks.length; r += 1) {
+
+        var dcCount = rsBlocks[r].dataCount;
+        var ecCount = rsBlocks[r].totalCount - dcCount;
+
+        maxDcCount = Math.max(maxDcCount, dcCount);
+        maxEcCount = Math.max(maxEcCount, ecCount);
+
+        dcdata[r] = new Array(dcCount);
+
+        for (var i = 0; i < dcdata[r].length; i += 1) {
+          dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset];
+        }
+        offset += dcCount;
+
+        var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+        var rawPoly = qrPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+        var modPoly = rawPoly.mod(rsPoly);
+        ecdata[r] = new Array(rsPoly.getLength() - 1);
+        for (var i = 0; i < ecdata[r].length; i += 1) {
+          var modIndex = i + modPoly.getLength() - ecdata[r].length;
+          ecdata[r][i] = (modIndex >= 0)? modPoly.getAt(modIndex) : 0;
+        }
+      }
+
+      var totalCodeCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalCodeCount += rsBlocks[i].totalCount;
+      }
+
+      var data = new Array(totalCodeCount);
+      var index = 0;
+
+      for (var i = 0; i < maxDcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < dcdata[r].length) {
+            data[index] = dcdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      for (var i = 0; i < maxEcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < ecdata[r].length) {
+            data[index] = ecdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      return data;
+    };
+
+    var createData = function(typeNumber, errorCorrectionLevel, dataList) {
+
+      var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectionLevel);
+
+      var buffer = qrBitBuffer();
+
+      for (var i = 0; i < dataList.length; i += 1) {
+        var data = dataList[i];
+        buffer.put(data.getMode(), 4);
+        buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+        data.write(buffer);
+      }
+
+      // calc num max data.
+      var totalDataCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalDataCount += rsBlocks[i].dataCount;
+      }
+
+      if (buffer.getLengthInBits() > totalDataCount * 8) {
+        throw 'code length overflow. ('
+          + buffer.getLengthInBits()
+          + '>'
+          + totalDataCount * 8
+          + ')';
+      }
+
+      // end code
+      if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+        buffer.put(0, 4);
+      }
+
+      // padding
+      while (buffer.getLengthInBits() % 8 != 0) {
+        buffer.putBit(false);
+      }
+
+      // padding
+      while (true) {
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD0, 8);
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD1, 8);
+      }
+
+      return createBytes(buffer, rsBlocks);
+    };
+
+    _this.addData = function(data, mode) {
+
+      mode = mode || 'Byte';
+
+      var newData = null;
+
+      switch(mode) {
+      case 'Numeric' :
+        newData = qrNumber(data);
+        break;
+      case 'Alphanumeric' :
+        newData = qrAlphaNum(data);
+        break;
+      case 'Byte' :
+        newData = qr8BitByte(data);
+        break;
+      case 'Kanji' :
+        newData = qrKanji(data);
+        break;
+      default :
+        throw 'mode:' + mode;
+      }
+
+      _dataList.push(newData);
+      _dataCache = null;
+    };
+
+    _this.isDark = function(row, col) {
+      if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+        throw row + ',' + col;
+      }
+      return _modules[row][col];
+    };
+
+    _this.getModuleCount = function() {
+      return _moduleCount;
+    };
+
+    _this.make = function() {
+      if (_typeNumber < 1) {
+        var typeNumber = 1;
+
+        for (; typeNumber < 40; typeNumber++) {
+          var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, _errorCorrectionLevel);
+          var buffer = qrBitBuffer();
+
+          for (var i = 0; i < _dataList.length; i++) {
+            var data = _dataList[i];
+            buffer.put(data.getMode(), 4);
+            buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+            data.write(buffer);
+          }
+
+          var totalDataCount = 0;
+          for (var i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount;
+          }
+
+          if (buffer.getLengthInBits() <= totalDataCount * 8) {
+            break;
+          }
+        }
+
+        _typeNumber = typeNumber;
+      }
+
+      makeImpl(false, getBestMaskPattern() );
+    };
+
+    _this.createTableTag = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var qrHtml = '';
+
+      qrHtml += '<table style="';
+      qrHtml += ' border-width: 0px; border-style: none;';
+      qrHtml += ' border-collapse: collapse;';
+      qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
+      qrHtml += '">';
+      qrHtml += '<tbody>';
+
+      for (var r = 0; r < _this.getModuleCount(); r += 1) {
+
+        qrHtml += '<tr>';
+
+        for (var c = 0; c < _this.getModuleCount(); c += 1) {
+          qrHtml += '<td style="';
+          qrHtml += ' border-width: 0px; border-style: none;';
+          qrHtml += ' border-collapse: collapse;';
+          qrHtml += ' padding: 0px; margin: 0px;';
+          qrHtml += ' width: ' + cellSize + 'px;';
+          qrHtml += ' height: ' + cellSize + 'px;';
+          qrHtml += ' background-color: ';
+          qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
+          qrHtml += ';';
+          qrHtml += '"/>';
+        }
+
+        qrHtml += '</tr>';
+      }
+
+      qrHtml += '</tbody>';
+      qrHtml += '</table>';
+
+      return qrHtml;
+    };
+
+    _this.createSvgTag = function(cellSize, margin, alt, title) {
+
+      var opts = {};
+      if (typeof arguments[0] == 'object') {
+        // Called by options.
+        opts = arguments[0];
+        // overwrite cellSize and margin.
+        cellSize = opts.cellSize;
+        margin = opts.margin;
+        alt = opts.alt;
+        title = opts.title;
+      }
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      // Compose alt property surrogate
+      alt = (typeof alt === 'string') ? {text: alt} : alt || {};
+      alt.text = alt.text || null;
+      alt.id = (alt.text) ? alt.id || 'qrcode-description' : null;
+
+      // Compose title property surrogate
+      title = (typeof title === 'string') ? {text: title} : title || {};
+      title.text = title.text || null;
+      title.id = (title.text) ? title.id || 'qrcode-title' : null;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var c, mc, r, mr, qrSvg='', rect;
+
+      rect = 'l' + cellSize + ',0 0,' + cellSize +
+        ' -' + cellSize + ',0 0,-' + cellSize + 'z ';
+
+      qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
+      qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : '';
+      qrSvg += ' viewBox="0 0 ' + size + ' ' + size + '" ';
+      qrSvg += ' preserveAspectRatio="xMinYMin meet"';
+      qrSvg += (title.text || alt.text) ? ' role="img" aria-labelledby="' +
+          escapeXml([title.id, alt.id].join(' ').trim() ) + '"' : '';
+      qrSvg += '>';
+      qrSvg += (title.text) ? '<title id="' + escapeXml(title.id) + '">' +
+          escapeXml(title.text) + '</title>' : '';
+      qrSvg += (alt.text) ? '<description id="' + escapeXml(alt.id) + '">' +
+          escapeXml(alt.text) + '</description>' : '';
+      qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
+      qrSvg += '<path d="';
+
+      for (r = 0; r < _this.getModuleCount(); r += 1) {
+        mr = r * cellSize + margin;
+        for (c = 0; c < _this.getModuleCount(); c += 1) {
+          if (_this.isDark(r, c) ) {
+            mc = c*cellSize+margin;
+            qrSvg += 'M' + mc + ',' + mr + rect;
+          }
+        }
+      }
+
+      qrSvg += '" stroke="transparent" fill="black"/>';
+      qrSvg += '</svg>';
+
+      return qrSvg;
+    };
+
+    _this.createDataURL = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      return createDataURL(size, size, function(x, y) {
+        if (min <= x && x < max && min <= y && y < max) {
+          var c = Math.floor( (x - min) / cellSize);
+          var r = Math.floor( (y - min) / cellSize);
+          return _this.isDark(r, c)? 0 : 1;
+        } else {
+          return 1;
+        }
+      } );
+    };
+
+    _this.createImgTag = function(cellSize, margin, alt) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+
+      var img = '';
+      img += '<img';
+      img += '\u0020src="';
+      img += _this.createDataURL(cellSize, margin);
+      img += '"';
+      img += '\u0020width="';
+      img += size;
+      img += '"';
+      img += '\u0020height="';
+      img += size;
+      img += '"';
+      if (alt) {
+        img += '\u0020alt="';
+        img += escapeXml(alt);
+        img += '"';
+      }
+      img += '/>';
+
+      return img;
+    };
+
+    var escapeXml = function(s) {
+      var escaped = '';
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charAt(i);
+        switch(c) {
+        case '<': escaped += '&lt;'; break;
+        case '>': escaped += '&gt;'; break;
+        case '&': escaped += '&amp;'; break;
+        case '"': escaped += '&quot;'; break;
+        default : escaped += c; break;
+        }
+      }
+      return escaped;
+    };
+
+    var _createHalfASCII = function(margin) {
+      var cellSize = 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r1, r2, p;
+
+      var blocks = {
+        '██': '█',
+        '█ ': '▀',
+        ' █': '▄',
+        '  ': ' '
+      };
+
+      var blocksLastLineNoMargin = {
+        '██': '▀',
+        '█ ': '▀',
+        ' █': ' ',
+        '  ': ' '
+      };
+
+      var ascii = '';
+      for (y = 0; y < size; y += 2) {
+        r1 = Math.floor((y - min) / cellSize);
+        r2 = Math.floor((y + 1 - min) / cellSize);
+        for (x = 0; x < size; x += 1) {
+          p = '█';
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r1, Math.floor((x - min) / cellSize))) {
+            p = ' ';
+          }
+
+          if (min <= x && x < max && min <= y+1 && y+1 < max && _this.isDark(r2, Math.floor((x - min) / cellSize))) {
+            p += ' ';
+          }
+          else {
+            p += '█';
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          ascii += (margin < 1 && y+1 >= max) ? blocksLastLineNoMargin[p] : blocks[p];
+        }
+
+        ascii += '\n';
+      }
+
+      if (size % 2 && margin > 0) {
+        return ascii.substring(0, ascii.length - size - 1) + Array(size+1).join('▀');
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.createASCII = function(cellSize, margin) {
+      cellSize = cellSize || 1;
+
+      if (cellSize < 2) {
+        return _createHalfASCII(margin);
+      }
+
+      cellSize -= 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r, p;
+
+      var white = Array(cellSize+1).join('██');
+      var black = Array(cellSize+1).join('  ');
+
+      var ascii = '';
+      var line = '';
+      for (y = 0; y < size; y += 1) {
+        r = Math.floor( (y - min) / cellSize);
+        line = '';
+        for (x = 0; x < size; x += 1) {
+          p = 1;
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r, Math.floor((x - min) / cellSize))) {
+            p = 0;
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          line += p ? white : black;
+        }
+
+        for (r = 0; r < cellSize; r += 1) {
+          ascii += line + '\n';
+        }
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.renderTo2dContext = function(context, cellSize) {
+      cellSize = cellSize || 2;
+      var length = _this.getModuleCount();
+      for (var row = 0; row < length; row++) {
+        for (var col = 0; col < length; col++) {
+          context.fillStyle = _this.isDark(row, col) ? 'black' : 'white';
+          context.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.stringToBytes
+  //---------------------------------------------------------------------
+
+  qrcode.stringToBytesFuncs = {
+    'default' : function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        bytes.push(c & 0xff);
+      }
+      return bytes;
+    }
+  };
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['default'];
+
+  //---------------------------------------------------------------------
+  // qrcode.createStringToBytes
+  //---------------------------------------------------------------------
+
+  /**
+   * @param unicodeData base64 string of byte array.
+   * [16bit Unicode],[16bit Bytes], ...
+   * @param numChars
+   */
+  qrcode.createStringToBytes = function(unicodeData, numChars) {
+
+    // create conversion map.
+
+    var unicodeMap = function() {
+
+      var bin = base64DecodeInputStream(unicodeData);
+      var read = function() {
+        var b = bin.read();
+        if (b == -1) throw 'eof';
+        return b;
+      };
+
+      var count = 0;
+      var unicodeMap = {};
+      while (true) {
+        var b0 = bin.read();
+        if (b0 == -1) break;
+        var b1 = read();
+        var b2 = read();
+        var b3 = read();
+        var k = String.fromCharCode( (b0 << 8) | b1);
+        var v = (b2 << 8) | b3;
+        unicodeMap[k] = v;
+        count += 1;
+      }
+      if (count != numChars) {
+        throw count + ' != ' + numChars;
+      }
+
+      return unicodeMap;
+    }();
+
+    var unknownChar = '?'.charCodeAt(0);
+
+    return function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        if (c < 128) {
+          bytes.push(c);
+        } else {
+          var b = unicodeMap[s.charAt(i)];
+          if (typeof b == 'number') {
+            if ( (b & 0xff) == b) {
+              // 1byte
+              bytes.push(b);
+            } else {
+              // 2bytes
+              bytes.push(b >>> 8);
+              bytes.push(b & 0xff);
+            }
+          } else {
+            bytes.push(unknownChar);
+          }
+        }
+      }
+      return bytes;
+    };
+  };
+
+  //---------------------------------------------------------------------
+  // QRMode
+  //---------------------------------------------------------------------
+
+  var QRMode = {
+    MODE_NUMBER :    1 << 0,
+    MODE_ALPHA_NUM : 1 << 1,
+    MODE_8BIT_BYTE : 1 << 2,
+    MODE_KANJI :     1 << 3
+  };
+
+  //---------------------------------------------------------------------
+  // QRErrorCorrectionLevel
+  //---------------------------------------------------------------------
+
+  var QRErrorCorrectionLevel = {
+    L : 1,
+    M : 0,
+    Q : 3,
+    H : 2
+  };
+
+  //---------------------------------------------------------------------
+  // QRMaskPattern
+  //---------------------------------------------------------------------
+
+  var QRMaskPattern = {
+    PATTERN000 : 0,
+    PATTERN001 : 1,
+    PATTERN010 : 2,
+    PATTERN011 : 3,
+    PATTERN100 : 4,
+    PATTERN101 : 5,
+    PATTERN110 : 6,
+    PATTERN111 : 7
+  };
+
+  //---------------------------------------------------------------------
+  // QRUtil
+  //---------------------------------------------------------------------
+
+  var QRUtil = function() {
+
+    var PATTERN_POSITION_TABLE = [
+      [],
+      [6, 18],
+      [6, 22],
+      [6, 26],
+      [6, 30],
+      [6, 34],
+      [6, 22, 38],
+      [6, 24, 42],
+      [6, 26, 46],
+      [6, 28, 50],
+      [6, 30, 54],
+      [6, 32, 58],
+      [6, 34, 62],
+      [6, 26, 46, 66],
+      [6, 26, 48, 70],
+      [6, 26, 50, 74],
+      [6, 30, 54, 78],
+      [6, 30, 56, 82],
+      [6, 30, 58, 86],
+      [6, 34, 62, 90],
+      [6, 28, 50, 72, 94],
+      [6, 26, 50, 74, 98],
+      [6, 30, 54, 78, 102],
+      [6, 28, 54, 80, 106],
+      [6, 32, 58, 84, 110],
+      [6, 30, 58, 86, 114],
+      [6, 34, 62, 90, 118],
+      [6, 26, 50, 74, 98, 122],
+      [6, 30, 54, 78, 102, 126],
+      [6, 26, 52, 78, 104, 130],
+      [6, 30, 56, 82, 108, 134],
+      [6, 34, 60, 86, 112, 138],
+      [6, 30, 58, 86, 114, 142],
+      [6, 34, 62, 90, 118, 146],
+      [6, 30, 54, 78, 102, 126, 150],
+      [6, 24, 50, 76, 102, 128, 154],
+      [6, 28, 54, 80, 106, 132, 158],
+      [6, 32, 58, 84, 110, 136, 162],
+      [6, 26, 54, 82, 110, 138, 166],
+      [6, 30, 58, 86, 114, 142, 170]
+    ];
+    var G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
+    var G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
+    var G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+
+    var _this = {};
+
+    var getBCHDigit = function(data) {
+      var digit = 0;
+      while (data != 0) {
+        digit += 1;
+        data >>>= 1;
+      }
+      return digit;
+    };
+
+    _this.getBCHTypeInfo = function(data) {
+      var d = data << 10;
+      while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15) ) );
+      }
+      return ( (data << 10) | d) ^ G15_MASK;
+    };
+
+    _this.getBCHTypeNumber = function(data) {
+      var d = data << 12;
+      while (getBCHDigit(d) - getBCHDigit(G18) >= 0) {
+        d ^= (G18 << (getBCHDigit(d) - getBCHDigit(G18) ) );
+      }
+      return (data << 12) | d;
+    };
+
+    _this.getPatternPosition = function(typeNumber) {
+      return PATTERN_POSITION_TABLE[typeNumber - 1];
+    };
+
+    _this.getMaskFunction = function(maskPattern) {
+
+      switch (maskPattern) {
+
+      case QRMaskPattern.PATTERN000 :
+        return function(i, j) { return (i + j) % 2 == 0; };
+      case QRMaskPattern.PATTERN001 :
+        return function(i, j) { return i % 2 == 0; };
+      case QRMaskPattern.PATTERN010 :
+        return function(i, j) { return j % 3 == 0; };
+      case QRMaskPattern.PATTERN011 :
+        return function(i, j) { return (i + j) % 3 == 0; };
+      case QRMaskPattern.PATTERN100 :
+        return function(i, j) { return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 == 0; };
+      case QRMaskPattern.PATTERN101 :
+        return function(i, j) { return (i * j) % 2 + (i * j) % 3 == 0; };
+      case QRMaskPattern.PATTERN110 :
+        return function(i, j) { return ( (i * j) % 2 + (i * j) % 3) % 2 == 0; };
+      case QRMaskPattern.PATTERN111 :
+        return function(i, j) { return ( (i * j) % 3 + (i + j) % 2) % 2 == 0; };
+
+      default :
+        throw 'bad maskPattern:' + maskPattern;
+      }
+    };
+
+    _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
+      var a = qrPolynomial([1], 0);
+      for (var i = 0; i < errorCorrectLength; i += 1) {
+        a = a.multiply(qrPolynomial([1, QRMath.gexp(i)], 0) );
+      }
+      return a;
+    };
+
+    _this.getLengthInBits = function(mode, type) {
+
+      if (1 <= type && type < 10) {
+
+        // 1 - 9
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 10;
+        case QRMode.MODE_ALPHA_NUM : return 9;
+        case QRMode.MODE_8BIT_BYTE : return 8;
+        case QRMode.MODE_KANJI     : return 8;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 27) {
+
+        // 10 - 26
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 12;
+        case QRMode.MODE_ALPHA_NUM : return 11;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 10;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 41) {
+
+        // 27 - 40
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 14;
+        case QRMode.MODE_ALPHA_NUM : return 13;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 12;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else {
+        throw 'type:' + type;
+      }
+    };
+
+    _this.getLostPoint = function(qrcode) {
+
+      var moduleCount = qrcode.getModuleCount();
+
+      var lostPoint = 0;
+
+      // LEVEL1
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount; col += 1) {
+
+          var sameCount = 0;
+          var dark = qrcode.isDark(row, col);
+
+          for (var r = -1; r <= 1; r += 1) {
+
+            if (row + r < 0 || moduleCount <= row + r) {
+              continue;
+            }
+
+            for (var c = -1; c <= 1; c += 1) {
+
+              if (col + c < 0 || moduleCount <= col + c) {
+                continue;
+              }
+
+              if (r == 0 && c == 0) {
+                continue;
+              }
+
+              if (dark == qrcode.isDark(row + r, col + c) ) {
+                sameCount += 1;
+              }
+            }
+          }
+
+          if (sameCount > 5) {
+            lostPoint += (3 + sameCount - 5);
+          }
+        }
+      };
+
+      // LEVEL2
+
+      for (var row = 0; row < moduleCount - 1; row += 1) {
+        for (var col = 0; col < moduleCount - 1; col += 1) {
+          var count = 0;
+          if (qrcode.isDark(row, col) ) count += 1;
+          if (qrcode.isDark(row + 1, col) ) count += 1;
+          if (qrcode.isDark(row, col + 1) ) count += 1;
+          if (qrcode.isDark(row + 1, col + 1) ) count += 1;
+          if (count == 0 || count == 4) {
+            lostPoint += 3;
+          }
+        }
+      }
+
+      // LEVEL3
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount - 6; col += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row, col + 1)
+              &&  qrcode.isDark(row, col + 2)
+              &&  qrcode.isDark(row, col + 3)
+              &&  qrcode.isDark(row, col + 4)
+              && !qrcode.isDark(row, col + 5)
+              &&  qrcode.isDark(row, col + 6) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount - 6; row += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row + 1, col)
+              &&  qrcode.isDark(row + 2, col)
+              &&  qrcode.isDark(row + 3, col)
+              &&  qrcode.isDark(row + 4, col)
+              && !qrcode.isDark(row + 5, col)
+              &&  qrcode.isDark(row + 6, col) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      // LEVEL4
+
+      var darkCount = 0;
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount; row += 1) {
+          if (qrcode.isDark(row, col) ) {
+            darkCount += 1;
+          }
+        }
+      }
+
+      var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+
+      return lostPoint;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // QRMath
+  //---------------------------------------------------------------------
+
+  var QRMath = function() {
+
+    var EXP_TABLE = new Array(256);
+    var LOG_TABLE = new Array(256);
+
+    // initialize tables
+    for (var i = 0; i < 8; i += 1) {
+      EXP_TABLE[i] = 1 << i;
+    }
+    for (var i = 8; i < 256; i += 1) {
+      EXP_TABLE[i] = EXP_TABLE[i - 4]
+        ^ EXP_TABLE[i - 5]
+        ^ EXP_TABLE[i - 6]
+        ^ EXP_TABLE[i - 8];
+    }
+    for (var i = 0; i < 255; i += 1) {
+      LOG_TABLE[EXP_TABLE[i] ] = i;
+    }
+
+    var _this = {};
+
+    _this.glog = function(n) {
+
+      if (n < 1) {
+        throw 'glog(' + n + ')';
+      }
+
+      return LOG_TABLE[n];
+    };
+
+    _this.gexp = function(n) {
+
+      while (n < 0) {
+        n += 255;
+      }
+
+      while (n >= 256) {
+        n -= 255;
+      }
+
+      return EXP_TABLE[n];
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrPolynomial
+  //---------------------------------------------------------------------
+
+  function qrPolynomial(num, shift) {
+
+    if (typeof num.length == 'undefined') {
+      throw num.length + '/' + shift;
+    }
+
+    var _num = function() {
+      var offset = 0;
+      while (offset < num.length && num[offset] == 0) {
+        offset += 1;
+      }
+      var _num = new Array(num.length - offset + shift);
+      for (var i = 0; i < num.length - offset; i += 1) {
+        _num[i] = num[i + offset];
+      }
+      return _num;
+    }();
+
+    var _this = {};
+
+    _this.getAt = function(index) {
+      return _num[index];
+    };
+
+    _this.getLength = function() {
+      return _num.length;
+    };
+
+    _this.multiply = function(e) {
+
+      var num = new Array(_this.getLength() + e.getLength() - 1);
+
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        for (var j = 0; j < e.getLength(); j += 1) {
+          num[i + j] ^= QRMath.gexp(QRMath.glog(_this.getAt(i) ) + QRMath.glog(e.getAt(j) ) );
+        }
+      }
+
+      return qrPolynomial(num, 0);
+    };
+
+    _this.mod = function(e) {
+
+      if (_this.getLength() - e.getLength() < 0) {
+        return _this;
+      }
+
+      var ratio = QRMath.glog(_this.getAt(0) ) - QRMath.glog(e.getAt(0) );
+
+      var num = new Array(_this.getLength() );
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        num[i] = _this.getAt(i);
+      }
+
+      for (var i = 0; i < e.getLength(); i += 1) {
+        num[i] ^= QRMath.gexp(QRMath.glog(e.getAt(i) ) + ratio);
+      }
+
+      // recursive call
+      return qrPolynomial(num, 0).mod(e);
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // QRRSBlock
+  //---------------------------------------------------------------------
+
+  var QRRSBlock = function() {
+
+    var RS_BLOCK_TABLE = [
+
+      // L
+      // M
+      // Q
+      // H
+
+      // 1
+      [1, 26, 19],
+      [1, 26, 16],
+      [1, 26, 13],
+      [1, 26, 9],
+
+      // 2
+      [1, 44, 34],
+      [1, 44, 28],
+      [1, 44, 22],
+      [1, 44, 16],
+
+      // 3
+      [1, 70, 55],
+      [1, 70, 44],
+      [2, 35, 17],
+      [2, 35, 13],
+
+      // 4
+      [1, 100, 80],
+      [2, 50, 32],
+      [2, 50, 24],
+      [4, 25, 9],
+
+      // 5
+      [1, 134, 108],
+      [2, 67, 43],
+      [2, 33, 15, 2, 34, 16],
+      [2, 33, 11, 2, 34, 12],
+
+      // 6
+      [2, 86, 68],
+      [4, 43, 27],
+      [4, 43, 19],
+      [4, 43, 15],
+
+      // 7
+      [2, 98, 78],
+      [4, 49, 31],
+      [2, 32, 14, 4, 33, 15],
+      [4, 39, 13, 1, 40, 14],
+
+      // 8
+      [2, 121, 97],
+      [2, 60, 38, 2, 61, 39],
+      [4, 40, 18, 2, 41, 19],
+      [4, 40, 14, 2, 41, 15],
+
+      // 9
+      [2, 146, 116],
+      [3, 58, 36, 2, 59, 37],
+      [4, 36, 16, 4, 37, 17],
+      [4, 36, 12, 4, 37, 13],
+
+      // 10
+      [2, 86, 68, 2, 87, 69],
+      [4, 69, 43, 1, 70, 44],
+      [6, 43, 19, 2, 44, 20],
+      [6, 43, 15, 2, 44, 16],
+
+      // 11
+      [4, 101, 81],
+      [1, 80, 50, 4, 81, 51],
+      [4, 50, 22, 4, 51, 23],
+      [3, 36, 12, 8, 37, 13],
+
+      // 12
+      [2, 116, 92, 2, 117, 93],
+      [6, 58, 36, 2, 59, 37],
+      [4, 46, 20, 6, 47, 21],
+      [7, 42, 14, 4, 43, 15],
+
+      // 13
+      [4, 133, 107],
+      [8, 59, 37, 1, 60, 38],
+      [8, 44, 20, 4, 45, 21],
+      [12, 33, 11, 4, 34, 12],
+
+      // 14
+      [3, 145, 115, 1, 146, 116],
+      [4, 64, 40, 5, 65, 41],
+      [11, 36, 16, 5, 37, 17],
+      [11, 36, 12, 5, 37, 13],
+
+      // 15
+      [5, 109, 87, 1, 110, 88],
+      [5, 65, 41, 5, 66, 42],
+      [5, 54, 24, 7, 55, 25],
+      [11, 36, 12, 7, 37, 13],
+
+      // 16
+      [5, 122, 98, 1, 123, 99],
+      [7, 73, 45, 3, 74, 46],
+      [15, 43, 19, 2, 44, 20],
+      [3, 45, 15, 13, 46, 16],
+
+      // 17
+      [1, 135, 107, 5, 136, 108],
+      [10, 74, 46, 1, 75, 47],
+      [1, 50, 22, 15, 51, 23],
+      [2, 42, 14, 17, 43, 15],
+
+      // 18
+      [5, 150, 120, 1, 151, 121],
+      [9, 69, 43, 4, 70, 44],
+      [17, 50, 22, 1, 51, 23],
+      [2, 42, 14, 19, 43, 15],
+
+      // 19
+      [3, 141, 113, 4, 142, 114],
+      [3, 70, 44, 11, 71, 45],
+      [17, 47, 21, 4, 48, 22],
+      [9, 39, 13, 16, 40, 14],
+
+      // 20
+      [3, 135, 107, 5, 136, 108],
+      [3, 67, 41, 13, 68, 42],
+      [15, 54, 24, 5, 55, 25],
+      [15, 43, 15, 10, 44, 16],
+
+      // 21
+      [4, 144, 116, 4, 145, 117],
+      [17, 68, 42],
+      [17, 50, 22, 6, 51, 23],
+      [19, 46, 16, 6, 47, 17],
+
+      // 22
+      [2, 139, 111, 7, 140, 112],
+      [17, 74, 46],
+      [7, 54, 24, 16, 55, 25],
+      [34, 37, 13],
+
+      // 23
+      [4, 151, 121, 5, 152, 122],
+      [4, 75, 47, 14, 76, 48],
+      [11, 54, 24, 14, 55, 25],
+      [16, 45, 15, 14, 46, 16],
+
+      // 24
+      [6, 147, 117, 4, 148, 118],
+      [6, 73, 45, 14, 74, 46],
+      [11, 54, 24, 16, 55, 25],
+      [30, 46, 16, 2, 47, 17],
+
+      // 25
+      [8, 132, 106, 4, 133, 107],
+      [8, 75, 47, 13, 76, 48],
+      [7, 54, 24, 22, 55, 25],
+      [22, 45, 15, 13, 46, 16],
+
+      // 26
+      [10, 142, 114, 2, 143, 115],
+      [19, 74, 46, 4, 75, 47],
+      [28, 50, 22, 6, 51, 23],
+      [33, 46, 16, 4, 47, 17],
+
+      // 27
+      [8, 152, 122, 4, 153, 123],
+      [22, 73, 45, 3, 74, 46],
+      [8, 53, 23, 26, 54, 24],
+      [12, 45, 15, 28, 46, 16],
+
+      // 28
+      [3, 147, 117, 10, 148, 118],
+      [3, 73, 45, 23, 74, 46],
+      [4, 54, 24, 31, 55, 25],
+      [11, 45, 15, 31, 46, 16],
+
+      // 29
+      [7, 146, 116, 7, 147, 117],
+      [21, 73, 45, 7, 74, 46],
+      [1, 53, 23, 37, 54, 24],
+      [19, 45, 15, 26, 46, 16],
+
+      // 30
+      [5, 145, 115, 10, 146, 116],
+      [19, 75, 47, 10, 76, 48],
+      [15, 54, 24, 25, 55, 25],
+      [23, 45, 15, 25, 46, 16],
+
+      // 31
+      [13, 145, 115, 3, 146, 116],
+      [2, 74, 46, 29, 75, 47],
+      [42, 54, 24, 1, 55, 25],
+      [23, 45, 15, 28, 46, 16],
+
+      // 32
+      [17, 145, 115],
+      [10, 74, 46, 23, 75, 47],
+      [10, 54, 24, 35, 55, 25],
+      [19, 45, 15, 35, 46, 16],
+
+      // 33
+      [17, 145, 115, 1, 146, 116],
+      [14, 74, 46, 21, 75, 47],
+      [29, 54, 24, 19, 55, 25],
+      [11, 45, 15, 46, 46, 16],
+
+      // 34
+      [13, 145, 115, 6, 146, 116],
+      [14, 74, 46, 23, 75, 47],
+      [44, 54, 24, 7, 55, 25],
+      [59, 46, 16, 1, 47, 17],
+
+      // 35
+      [12, 151, 121, 7, 152, 122],
+      [12, 75, 47, 26, 76, 48],
+      [39, 54, 24, 14, 55, 25],
+      [22, 45, 15, 41, 46, 16],
+
+      // 36
+      [6, 151, 121, 14, 152, 122],
+      [6, 75, 47, 34, 76, 48],
+      [46, 54, 24, 10, 55, 25],
+      [2, 45, 15, 64, 46, 16],
+
+      // 37
+      [17, 152, 122, 4, 153, 123],
+      [29, 74, 46, 14, 75, 47],
+      [49, 54, 24, 10, 55, 25],
+      [24, 45, 15, 46, 46, 16],
+
+      // 38
+      [4, 152, 122, 18, 153, 123],
+      [13, 74, 46, 32, 75, 47],
+      [48, 54, 24, 14, 55, 25],
+      [42, 45, 15, 32, 46, 16],
+
+      // 39
+      [20, 147, 117, 4, 148, 118],
+      [40, 75, 47, 7, 76, 48],
+      [43, 54, 24, 22, 55, 25],
+      [10, 45, 15, 67, 46, 16],
+
+      // 40
+      [19, 148, 118, 6, 149, 119],
+      [18, 75, 47, 31, 76, 48],
+      [34, 54, 24, 34, 55, 25],
+      [20, 45, 15, 61, 46, 16]
+    ];
+
+    var qrRSBlock = function(totalCount, dataCount) {
+      var _this = {};
+      _this.totalCount = totalCount;
+      _this.dataCount = dataCount;
+      return _this;
+    };
+
+    var _this = {};
+
+    var getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
+
+      switch(errorCorrectionLevel) {
+      case QRErrorCorrectionLevel.L :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+      case QRErrorCorrectionLevel.M :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+      case QRErrorCorrectionLevel.Q :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+      case QRErrorCorrectionLevel.H :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+      default :
+        return undefined;
+      }
+    };
+
+    _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
+
+      var rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
+
+      if (typeof rsBlock == 'undefined') {
+        throw 'bad rs block @ typeNumber:' + typeNumber +
+            '/errorCorrectionLevel:' + errorCorrectionLevel;
+      }
+
+      var length = rsBlock.length / 3;
+
+      var list = [];
+
+      for (var i = 0; i < length; i += 1) {
+
+        var count = rsBlock[i * 3 + 0];
+        var totalCount = rsBlock[i * 3 + 1];
+        var dataCount = rsBlock[i * 3 + 2];
+
+        for (var j = 0; j < count; j += 1) {
+          list.push(qrRSBlock(totalCount, dataCount) );
+        }
+      }
+
+      return list;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrBitBuffer
+  //---------------------------------------------------------------------
+
+  var qrBitBuffer = function() {
+
+    var _buffer = [];
+    var _length = 0;
+
+    var _this = {};
+
+    _this.getBuffer = function() {
+      return _buffer;
+    };
+
+    _this.getAt = function(index) {
+      var bufIndex = Math.floor(index / 8);
+      return ( (_buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+    };
+
+    _this.put = function(num, length) {
+      for (var i = 0; i < length; i += 1) {
+        _this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+      }
+    };
+
+    _this.getLengthInBits = function() {
+      return _length;
+    };
+
+    _this.putBit = function(bit) {
+
+      var bufIndex = Math.floor(_length / 8);
+      if (_buffer.length <= bufIndex) {
+        _buffer.push(0);
+      }
+
+      if (bit) {
+        _buffer[bufIndex] |= (0x80 >>> (_length % 8) );
+      }
+
+      _length += 1;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrNumber
+  //---------------------------------------------------------------------
+
+  var qrNumber = function(data) {
+
+    var _mode = QRMode.MODE_NUMBER;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _data;
+
+      var i = 0;
+
+      while (i + 2 < data.length) {
+        buffer.put(strToNum(data.substring(i, i + 3) ), 10);
+        i += 3;
+      }
+
+      if (i < data.length) {
+        if (data.length - i == 1) {
+          buffer.put(strToNum(data.substring(i, i + 1) ), 4);
+        } else if (data.length - i == 2) {
+          buffer.put(strToNum(data.substring(i, i + 2) ), 7);
+        }
+      }
+    };
+
+    var strToNum = function(s) {
+      var num = 0;
+      for (var i = 0; i < s.length; i += 1) {
+        num = num * 10 + chatToNum(s.charAt(i) );
+      }
+      return num;
+    };
+
+    var chatToNum = function(c) {
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      }
+      throw 'illegal char :' + c;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrAlphaNum
+  //---------------------------------------------------------------------
+
+  var qrAlphaNum = function(data) {
+
+    var _mode = QRMode.MODE_ALPHA_NUM;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var s = _data;
+
+      var i = 0;
+
+      while (i + 1 < s.length) {
+        buffer.put(
+          getCode(s.charAt(i) ) * 45 +
+          getCode(s.charAt(i + 1) ), 11);
+        i += 2;
+      }
+
+      if (i < s.length) {
+        buffer.put(getCode(s.charAt(i) ), 6);
+      }
+    };
+
+    var getCode = function(c) {
+
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      } else if ('A' <= c && c <= 'Z') {
+        return c.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+      } else {
+        switch (c) {
+        case ' ' : return 36;
+        case '$' : return 37;
+        case '%' : return 38;
+        case '*' : return 39;
+        case '+' : return 40;
+        case '-' : return 41;
+        case '.' : return 42;
+        case '/' : return 43;
+        case ':' : return 44;
+        default :
+          throw 'illegal char :' + c;
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qr8BitByte
+  //---------------------------------------------------------------------
+
+  var qr8BitByte = function(data) {
+
+    var _mode = QRMode.MODE_8BIT_BYTE;
+    var _data = data;
+    var _bytes = qrcode.stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _bytes.length;
+    };
+
+    _this.write = function(buffer) {
+      for (var i = 0; i < _bytes.length; i += 1) {
+        buffer.put(_bytes[i], 8);
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrKanji
+  //---------------------------------------------------------------------
+
+  var qrKanji = function(data) {
+
+    var _mode = QRMode.MODE_KANJI;
+    var _data = data;
+
+    var stringToBytes = qrcode.stringToBytesFuncs['SJIS'];
+    if (!stringToBytes) {
+      throw 'sjis not supported.';
+    }
+    !function(c, code) {
+      // self test for sjis support.
+      var test = stringToBytes(c);
+      if (test.length != 2 || ( (test[0] << 8) | test[1]) != code) {
+        throw 'sjis not supported.';
+      }
+    }('\u53cb', 0x9746);
+
+    var _bytes = stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return ~~(_bytes.length / 2);
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _bytes;
+
+      var i = 0;
+
+      while (i + 1 < data.length) {
+
+        var c = ( (0xff & data[i]) << 8) | (0xff & data[i + 1]);
+
+        if (0x8140 <= c && c <= 0x9FFC) {
+          c -= 0x8140;
+        } else if (0xE040 <= c && c <= 0xEBBF) {
+          c -= 0xC140;
+        } else {
+          throw 'illegal char at ' + (i + 1) + '/' + c;
+        }
+
+        c = ( (c >>> 8) & 0xff) * 0xC0 + (c & 0xff);
+
+        buffer.put(c, 13);
+
+        i += 2;
+      }
+
+      if (i < data.length) {
+        throw 'illegal char at ' + (i + 1);
+      }
+    };
+
+    return _this;
+  };
+
+  //=====================================================================
+  // GIF Support etc.
+  //
+
+  //---------------------------------------------------------------------
+  // byteArrayOutputStream
+  //---------------------------------------------------------------------
+
+  var byteArrayOutputStream = function() {
+
+    var _bytes = [];
+
+    var _this = {};
+
+    _this.writeByte = function(b) {
+      _bytes.push(b & 0xff);
+    };
+
+    _this.writeShort = function(i) {
+      _this.writeByte(i);
+      _this.writeByte(i >>> 8);
+    };
+
+    _this.writeBytes = function(b, off, len) {
+      off = off || 0;
+      len = len || b.length;
+      for (var i = 0; i < len; i += 1) {
+        _this.writeByte(b[i + off]);
+      }
+    };
+
+    _this.writeString = function(s) {
+      for (var i = 0; i < s.length; i += 1) {
+        _this.writeByte(s.charCodeAt(i) );
+      }
+    };
+
+    _this.toByteArray = function() {
+      return _bytes;
+    };
+
+    _this.toString = function() {
+      var s = '';
+      s += '[';
+      for (var i = 0; i < _bytes.length; i += 1) {
+        if (i > 0) {
+          s += ',';
+        }
+        s += _bytes[i];
+      }
+      s += ']';
+      return s;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64EncodeOutputStream
+  //---------------------------------------------------------------------
+
+  var base64EncodeOutputStream = function() {
+
+    var _buffer = 0;
+    var _buflen = 0;
+    var _length = 0;
+    var _base64 = '';
+
+    var _this = {};
+
+    var writeEncoded = function(b) {
+      _base64 += String.fromCharCode(encode(b & 0x3f) );
+    };
+
+    var encode = function(n) {
+      if (n < 0) {
+        // error.
+      } else if (n < 26) {
+        return 0x41 + n;
+      } else if (n < 52) {
+        return 0x61 + (n - 26);
+      } else if (n < 62) {
+        return 0x30 + (n - 52);
+      } else if (n == 62) {
+        return 0x2b;
+      } else if (n == 63) {
+        return 0x2f;
+      }
+      throw 'n:' + n;
+    };
+
+    _this.writeByte = function(n) {
+
+      _buffer = (_buffer << 8) | (n & 0xff);
+      _buflen += 8;
+      _length += 1;
+
+      while (_buflen >= 6) {
+        writeEncoded(_buffer >>> (_buflen - 6) );
+        _buflen -= 6;
+      }
+    };
+
+    _this.flush = function() {
+
+      if (_buflen > 0) {
+        writeEncoded(_buffer << (6 - _buflen) );
+        _buffer = 0;
+        _buflen = 0;
+      }
+
+      if (_length % 3 != 0) {
+        // padding
+        var padlen = 3 - _length % 3;
+        for (var i = 0; i < padlen; i += 1) {
+          _base64 += '=';
+        }
+      }
+    };
+
+    _this.toString = function() {
+      return _base64;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64DecodeInputStream
+  //---------------------------------------------------------------------
+
+  var base64DecodeInputStream = function(str) {
+
+    var _str = str;
+    var _pos = 0;
+    var _buffer = 0;
+    var _buflen = 0;
+
+    var _this = {};
+
+    _this.read = function() {
+
+      while (_buflen < 8) {
+
+        if (_pos >= _str.length) {
+          if (_buflen == 0) {
+            return -1;
+          }
+          throw 'unexpected end of file./' + _buflen;
+        }
+
+        var c = _str.charAt(_pos);
+        _pos += 1;
+
+        if (c == '=') {
+          _buflen = 0;
+          return -1;
+        } else if (c.match(/^\s$/) ) {
+          // ignore if whitespace.
+          continue;
+        }
+
+        _buffer = (_buffer << 6) | decode(c.charCodeAt(0) );
+        _buflen += 6;
+      }
+
+      var n = (_buffer >>> (_buflen - 8) ) & 0xff;
+      _buflen -= 8;
+      return n;
+    };
+
+    var decode = function(c) {
+      if (0x41 <= c && c <= 0x5a) {
+        return c - 0x41;
+      } else if (0x61 <= c && c <= 0x7a) {
+        return c - 0x61 + 26;
+      } else if (0x30 <= c && c <= 0x39) {
+        return c - 0x30 + 52;
+      } else if (c == 0x2b) {
+        return 62;
+      } else if (c == 0x2f) {
+        return 63;
+      } else {
+        throw 'c:' + c;
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // gifImage (B/W)
+  //---------------------------------------------------------------------
+
+  var gifImage = function(width, height) {
+
+    var _width = width;
+    var _height = height;
+    var _data = new Array(width * height);
+
+    var _this = {};
+
+    _this.setPixel = function(x, y, pixel) {
+      _data[y * _width + x] = pixel;
+    };
+
+    _this.write = function(out) {
+
+      //---------------------------------
+      // GIF Signature
+
+      out.writeString('GIF87a');
+
+      //---------------------------------
+      // Screen Descriptor
+
+      out.writeShort(_width);
+      out.writeShort(_height);
+
+      out.writeByte(0x80); // 2bit
+      out.writeByte(0);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Global Color Map
+
+      // black
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+
+      // white
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+
+      //---------------------------------
+      // Image Descriptor
+
+      out.writeString(',');
+      out.writeShort(0);
+      out.writeShort(0);
+      out.writeShort(_width);
+      out.writeShort(_height);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Local Color Map
+
+      //---------------------------------
+      // Raster Data
+
+      var lzwMinCodeSize = 2;
+      var raster = getLZWRaster(lzwMinCodeSize);
+
+      out.writeByte(lzwMinCodeSize);
+
+      var offset = 0;
+
+      while (raster.length - offset > 255) {
+        out.writeByte(255);
+        out.writeBytes(raster, offset, 255);
+        offset += 255;
+      }
+
+      out.writeByte(raster.length - offset);
+      out.writeBytes(raster, offset, raster.length - offset);
+      out.writeByte(0x00);
+
+      //---------------------------------
+      // GIF Terminator
+      out.writeString(';');
+    };
+
+    var bitOutputStream = function(out) {
+
+      var _out = out;
+      var _bitLength = 0;
+      var _bitBuffer = 0;
+
+      var _this = {};
+
+      _this.write = function(data, length) {
+
+        if ( (data >>> length) != 0) {
+          throw 'length over';
+        }
+
+        while (_bitLength + length >= 8) {
+          _out.writeByte(0xff & ( (data << _bitLength) | _bitBuffer) );
+          length -= (8 - _bitLength);
+          data >>>= (8 - _bitLength);
+          _bitBuffer = 0;
+          _bitLength = 0;
+        }
+
+        _bitBuffer = (data << _bitLength) | _bitBuffer;
+        _bitLength = _bitLength + length;
+      };
+
+      _this.flush = function() {
+        if (_bitLength > 0) {
+          _out.writeByte(_bitBuffer);
+        }
+      };
+
+      return _this;
+    };
+
+    var getLZWRaster = function(lzwMinCodeSize) {
+
+      var clearCode = 1 << lzwMinCodeSize;
+      var endCode = (1 << lzwMinCodeSize) + 1;
+      var bitLength = lzwMinCodeSize + 1;
+
+      // Setup LZWTable
+      var table = lzwTable();
+
+      for (var i = 0; i < clearCode; i += 1) {
+        table.add(String.fromCharCode(i) );
+      }
+      table.add(String.fromCharCode(clearCode) );
+      table.add(String.fromCharCode(endCode) );
+
+      var byteOut = byteArrayOutputStream();
+      var bitOut = bitOutputStream(byteOut);
+
+      // clear code
+      bitOut.write(clearCode, bitLength);
+
+      var dataIndex = 0;
+
+      var s = String.fromCharCode(_data[dataIndex]);
+      dataIndex += 1;
+
+      while (dataIndex < _data.length) {
+
+        var c = String.fromCharCode(_data[dataIndex]);
+        dataIndex += 1;
+
+        if (table.contains(s + c) ) {
+
+          s = s + c;
+
+        } else {
+
+          bitOut.write(table.indexOf(s), bitLength);
+
+          if (table.size() < 0xfff) {
+
+            if (table.size() == (1 << bitLength) ) {
+              bitLength += 1;
+            }
+
+            table.add(s + c);
+          }
+
+          s = c;
+        }
+      }
+
+      bitOut.write(table.indexOf(s), bitLength);
+
+      // end code
+      bitOut.write(endCode, bitLength);
+
+      bitOut.flush();
+
+      return byteOut.toByteArray();
+    };
+
+    var lzwTable = function() {
+
+      var _map = {};
+      var _size = 0;
+
+      var _this = {};
+
+      _this.add = function(key) {
+        if (_this.contains(key) ) {
+          throw 'dup key:' + key;
+        }
+        _map[key] = _size;
+        _size += 1;
+      };
+
+      _this.size = function() {
+        return _size;
+      };
+
+      _this.indexOf = function(key) {
+        return _map[key];
+      };
+
+      _this.contains = function(key) {
+        return typeof _map[key] != 'undefined';
+      };
+
+      return _this;
+    };
+
+    return _this;
+  };
+
+  var createDataURL = function(width, height, getPixel) {
+    var gif = gifImage(width, height);
+    for (var y = 0; y < height; y += 1) {
+      for (var x = 0; x < width; x += 1) {
+        gif.setPixel(x, y, getPixel(x, y) );
+      }
+    }
+
+    var b = byteArrayOutputStream();
+    gif.write(b);
+
+    var base64 = base64EncodeOutputStream();
+    var bytes = b.toByteArray();
+    for (var i = 0; i < bytes.length; i += 1) {
+      base64.writeByte(bytes[i]);
+    }
+    base64.flush();
+
+    return 'data:image/gif;base64,' + base64;
+  };
+
+  //---------------------------------------------------------------------
+  // returns qrcode function.
+
+  return qrcode;
+}();
+
+// multibyte support
+!function() {
+
+  qrcode.stringToBytesFuncs['UTF-8'] = function(s) {
+    // http://stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array
+    function toUTF8Array(str) {
+      var utf8 = [];
+      for (var i=0; i < str.length; i++) {
+        var charcode = str.charCodeAt(i);
+        if (charcode < 0x80) utf8.push(charcode);
+        else if (charcode < 0x800) {
+          utf8.push(0xc0 | (charcode >> 6),
+              0x80 | (charcode & 0x3f));
+        }
+        else if (charcode < 0xd800 || charcode >= 0xe000) {
+          utf8.push(0xe0 | (charcode >> 12),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+        // surrogate pair
+        else {
+          i++;
+          // UTF-16 encodes 0x10000-0x10FFFF by
+          // subtracting 0x10000 and splitting the
+          // 20 bits of 0x0-0xFFFFF into two halves
+          charcode = 0x10000 + (((charcode & 0x3ff)<<10)
+            | (str.charCodeAt(i) & 0x3ff));
+          utf8.push(0xf0 | (charcode >>18),
+              0x80 | ((charcode>>12) & 0x3f),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+      }
+      return utf8;
+    }
+    return toUTF8Array(s);
+  };
+
+}();
+
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+      define([], factory);
+  } else if (typeof exports === 'object') {
+      module.exports = factory();
+  }
+}(function () {
+    return qrcode;
+}));
+
+</script>
+<script>
+"use strict";
+/* ============ CONFIGURACIÓN DE MARCA (se cambia aquí cuando definan el nombre) ============ */
+const BRAND={nombre:"Préstamos · PAMAVA soluciones"};
+/* ============ utilidades ============ */
+const $=(s,e=document)=>e.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const COP=new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0});
+const money=n=>COP.format(Math.round(n||0));
+const num=v=>{const s=String(v??"").replace(/\./g,"").replace(",",".");const n=parseFloat(s);return isFinite(n)?n:0};
+const pad=n=>String(n).padStart(2,"0");
+const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const pd=s=>{const[a,b,c]=s.split("-").map(Number);return new Date(a,b-1,c,12)};
+const today=()=>iso(new Date());
+const addDays=(s,n)=>{const d=pd(s);d.setDate(d.getDate()+n);return iso(d)};
+const addMonths=(s,n)=>{const d=pd(s),day=d.getDate();d.setDate(1);d.setMonth(d.getMonth()+n);const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();d.setDate(Math.min(day,last));return iso(d)};
+const diffDays=(a,b)=>Math.round((pd(a)-pd(b))/864e5);
+const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const fd=s=>{const d=pd(s);return `${d.getDate()} ${MES[d.getMonth()]} ${d.getFullYear()}`};
+const uid=()=>Math.random().toString(36).slice(2,9);
+const hash=t=>{let h=5381;for(const c of t)h=((h<<5)+h+c.charCodeAt(0))>>>0;return h.toString(36).toUpperCase().padStart(7,"0").slice(0,7)};
+/* ============ datos ============ */
+const LS="pamava_prestamos_demo_v1";
+let db,ui={mode:"P",tab:"resumen",cid:null};
+const MEDIOS=["Efectivo","Nequi","Daviplata","Transferencia bancaria"];
+function periodRate(p){return p.periodo==="M"?p.tasa/100:p.tasa/200}
+function buildCuotas(cap,tasa,periodo,n,inicio,metodo){
+ const r=periodo==="M"?tasa/100:tasa/200;let cuotas=[];
+ if(metodo==="F"){const c=r===0?cap/n:cap*r/(1-Math.pow(1+r,-n));let saldo=cap;
+  for(let i=1;i<=n;i++){const int=Math.round(saldo*r);let cu=Math.round(c);let capi=cu-int;if(i===n){capi=Math.round(saldo);cu=capi+int}saldo-=capi;cuotas.push({n:i,valor:cu,capital:capi,interes:int,pagado:0})}}
+ else{const int=cap*(tasa/100)*(periodo==="M"?n:n/2);const ci=Math.round(int/n),cc=Math.round(cap/n);
+  for(let i=1;i<=n;i++){let capi=i===n?cap-cc*(n-1):cc;cuotas.push({n:i,valor:capi+ci,capital:capi,interes:ci,pagado:0})}}
+ cuotas.forEach((q,i)=>q.fecha=periodo==="M"?addMonths(inicio,i+1):addDays(inicio,15*(i+1)));
+ return cuotas}
+const ea=(tasaMes)=>(Math.pow(1+tasaMes/100,12)-1)*100;
+function aplicarPago(p,monto){let rest=monto;const ap=[];for(const q of p.cuotas){if(rest<=0)break;const deb=q.valor-q.pagado;if(deb<=0)continue;const t=Math.min(rest,deb);q.pagado+=t;rest-=t;ap.push({n:q.n,monto:t})}return {ap,sobrante:rest}}
+function saldoPrest(p){return p.cuotas.reduce((s,q)=>s+q.valor-q.pagado,0)}
+function totalPrest(p){return p.cuotas.reduce((s,q)=>s+q.valor,0)}
+function saldoCap(p){return p.cuotas.reduce((s,q)=>s+q.capital*(1-q.pagado/q.valor),0)}
+function vencidas(p){const t=today();return p.cuotas.filter(q=>q.pagado<q.valor&&q.fecha<t)}
+function proxima(p){return p.cuotas.find(q=>q.pagado<q.valor)}
+function estadoPrest(p){if(saldoPrest(p)<=0)return"pagado";return vencidas(p).length?"mora":"aldia"}
+function log(t){db.log.unshift({t:new Date().toISOString(),x:t});db.log=db.log.slice(0,200)}
+function save(){try{localStorage.setItem(LS,JSON.stringify(db))}catch(e){}}
+function crearPrestamo(o){const p={id:uid(),clienteId:o.clienteId,capital:o.capital,tasa:o.tasa,periodo:o.periodo,n:o.n,inicio:o.inicio,metodo:o.metodo,cuotas:buildCuotas(o.capital,o.tasa,o.periodo,o.n,o.inicio,o.metodo)};db.prestamos.push(p);return p}
+function registrarPago(p,monto,medio,nota,fecha){const {ap}=aplicarPago(p,monto);const n=db.pagos.length+1;
+ const pg={id:uid(),prestamoId:p.id,fecha:fecha||today(),monto,medio,nota,num:"R-"+String(n).padStart(4,"0"),ap,saldoDespues:saldoPrest(p)};
+ pg.codigo=hash([pg.num,pg.prestamoId,pg.monto,pg.fecha].join("|"));db.pagos.push(pg);
+ const c=cli(p.clienteId);db.notifs.unshift({id:uid(),clienteId:c.id,fecha:new Date().toISOString(),tipo:"pago",txt:`Recibimos su pago de ${money(monto)} (${medio}). Recibo ${pg.num}. Saldo pendiente: ${money(pg.saldoDespues)}. ¡Gracias!`});
+ log(`Pago ${pg.num} de ${money(monto)} de ${c.nombre}`);save();return pg}
+const cli=id=>db.clientes.find(c=>c.id===id);
+const pres=id=>db.prestamos.find(p=>p.id===id);
+function seed(){
+ const t=today();
+ db={cfg:{prestamista:"Prestamista de ejemplo",tel:"",tope:25,ini:7,fin:19,satIni:8,satFin:15,festivos:"",maxContactos:2,ignorarHorario:false,medios:"Efectivo, Nequi, Daviplata"},clientes:[],prestamos:[],pagos:[],notifs:[],contactos:[],log:[]};
+ const C=(n,d,tel,dir,ref)=>{const c={id:uid(),nombre:n,doc:d,tel,dir,ref,notas:""};db.clientes.push(c);return c};
+ const c1=C("María Fernanda Rojas","1.110.000.001","3001112233","Barrio Jordán, Mz 4 Cs 12","Vecina: Ana Gómez");
+ const c2=C("Carlos Andrés Peña","1.110.000.002","3002223344","Calle 60 # 5-20, Centro","Tienda La Esquina");
+ const c3=C("Luz Marina Castro","1.110.000.003","3003334455","Barrio Arkacentro, Cs 8","Hijo: Pedro");
+ const c4=C("Jorge Iván Mora","1.110.000.004","3004445566","Vía Picaleña, Km 2","Hermano: Luis");
+ const p1=crearPrestamo({clienteId:c1.id,capital:1000000,tasa:1.8,periodo:"M",n:6,inicio:addDays(t,-70),metodo:"F"});
+ const p2=crearPrestamo({clienteId:c2.id,capital:600000,tasa:1.5,periodo:"Q",n:8,inicio:addDays(t,-30),metodo:"F"});
+ const p3=crearPrestamo({clienteId:c3.id,capital:2000000,tasa:1.7,periodo:"M",n:10,inicio:addDays(t,-100),metodo:"F"});
+ const p4=crearPrestamo({clienteId:c4.id,capital:400000,tasa:1.5,periodo:"Q",n:6,inicio:addDays(t,-3),metodo:"S"});
+ registrarPago(p1,p1.cuotas[0].valor+Math.round(p1.cuotas[1].valor/2),"Nequi","",addDays(t,-12));
+ registrarPago(p2,p2.cuotas[0].valor,"Efectivo","",addDays(t,-15));
+ registrarPago(p3,p3.cuotas[0].valor+p3.cuotas[1].valor+p3.cuotas[2].valor,"Transferencia bancaria","",addDays(t,-9));
+ db.notifs=[];db.log=[];log("Datos de demostración cargados");
+ db.notifs.push({id:uid(),clienteId:c1.id,fecha:new Date().toISOString(),tipo:"recordatorio",txt:"Recordatorio amable: su cuota 2 está pendiente por completar. Si ya pagó, envíenos el soporte. Si necesita acordar una nueva fecha, escríbanos."});
+ save()}
+function load(){try{db=JSON.parse(localStorage.getItem(LS))}catch(e){db=null}if(!db||!db.clientes)seed()}
+/* ============ horario y límite de contacto ============ */
+function permitido(now=new Date()){
+ if(db.cfg.ignorarHorario)return{ok:true};
+ const d=now.getDay(),h=now.getHours()+now.getMinutes()/60;const c=db.cfg;
+ const fest=String(c.festivos||"").split(",").map(s=>s.trim()).filter(Boolean);
+ if(fest.includes(iso(now)))return{ok:false,msg:"Hoy es festivo: no se permite contactar para cobrar."};
+ if(d===0)return{ok:false,msg:"Los domingos no se permite contactar para cobrar."};
+ const [a,b]=d===6?[c.satIni,c.satFin]:[c.ini,c.fin];
+ if(h<a||h>=b)return{ok:false,msg:`Fuera del horario permitido (${d===6?"sábados":"lunes a viernes"} de ${a}:00 a ${b}:00).`};
+ return{ok:true}}
+function contactosSemana(cid){const lim=Date.now()-7*864e5;return db.contactos.filter(x=>x.clienteId===cid&&x.t>lim).length}
+/* ============ vistas ============ */
+const TABS_P=[["resumen","📊","Resumen"],["cobros","💵","Cobros"],["clientes","👥","Clientes"],["prestamos","📒","Préstamos"],["mas","⚙️","Más"]];
+const TABS_C=[["c_res","🏠","Mi préstamo"],["c_av","🔔","Avisos"],["c_rec","🧾","Recibos"],["c_sim","📈","Simular"]];
+function setMode(m){ui.mode=m;ui.tab=m==="P"?"resumen":"c_res";if(m==="C"&&!ui.cid)ui.cid=db.clientes[0]?.id;draw()}
+function draw(){
+ $("#appName").textContent=BRAND.nombre;document.title=BRAND.nombre;
+ $("#mP").setAttribute("aria-pressed",ui.mode==="P");$("#mC").setAttribute("aria-pressed",ui.mode==="C");
+ const who=$("#who");who.style.display=ui.mode==="C"?"":"none";who.innerHTML=db.clientes.map(c=>`<option value="${c.id}"${c.id===ui.cid?" selected":""}>${esc(c.nombre)}</option>`).join("");
+ const T=ui.mode==="P"?TABS_P:TABS_C;$("#tabs").innerHTML=T.map(([k,i,l])=>`<button data-tab="${k}" aria-selected="${ui.tab===k}"><span>${i}</span>${l}</button>`).join("");
+ const V={resumen:vResumen,cobros:vCobros,clientes:vClientes,prestamos:vPrestamos,mas:vMas,c_res:vCRes,c_av:vCAv,c_rec:vCRec,c_sim:vCSim};
+ $("#app").innerHTML=(V[ui.tab]||vResumen)()+`<div class="foot">Prototipo con datos de demostración · PAMAVA soluciones</div>`;
+ save()}
+function semaforo(cid){let peor=0;db.prestamos.filter(p=>p.clienteId===cid).forEach(p=>vencidas(p).forEach(q=>{peor=Math.max(peor,diffDays(today(),q.fecha))}));return peor===0?"ok":peor<=7?"warn":"bad"}
+function vResumen(){
+ const ps=db.prestamos;const prest=ps.reduce((s,p)=>s+p.capital,0),cobrar=ps.reduce((s,p)=>s+saldoPrest(p),0),rec=db.pagos.reduce((s,p)=>s+p.monto,0);
+ const mora=ps.reduce((s,p)=>s+vencidas(p).reduce((a,q)=>a+q.valor-q.pagado,0),0);
+ const gan=ps.reduce((s,p)=>s+p.cuotas.reduce((a,q)=>a+q.interes,0),0);
+ const sano=cobrar?Math.round((1-mora/cobrar)*100):100;const t=today();
+ const hoy=ps.flatMap(p=>p.cuotas.filter(q=>q.pagado<q.valor&&q.fecha===t).map(q=>({p,q})));
+ const recHoy=db.pagos.filter(x=>x.fecha===t).reduce((s,x)=>s+x.monto,0);
+ return `<h1>Resumen</h1>
+ <div class="grid kpis"><div class="card kpi"><small>Dinero prestado</small><b>${money(prest)}</b></div><div class="card kpi"><small>Por cobrar</small><b>${money(cobrar)}</b></div><div class="card kpi ok"><small>Recuperado</small><b>${money(rec)}</b></div><div class="card kpi ${mora?"bad":"ok"}"><small>En mora</small><b>${money(mora)}</b></div><div class="card kpi"><small>Intereses totales</small><b>${money(gan)}</b></div><div class="card kpi ${sano>=90?"ok":sano>=75?"warn":"bad"}"><small>Salud de la cartera</small><b>${sano}%</b></div></div>
+ <div class="card" style="margin-top:10px"><div class="row"><h2 class="sp">Hoy</h2><span class="pill gray">Recaudado hoy ${money(recHoy)}</span></div>
+ ${hoy.length?`<div class="list">${hoy.map(({p,q})=>`<div class="item"><span class="dot ${semaforo(p.clienteId)}"></span><div class="info"><b>${esc(cli(p.clienteId).nombre)}</b><small>Cuota ${q.n} de ${p.n}</small></div><b>${money(q.valor-q.pagado)}</b></div>`).join("")}</div>`:`<div class="empty">No hay cuotas que venzan hoy.</div>`}
+ <div style="margin-top:8px"><button class="btn sec" data-go="cobros">Ver cobros y vencidos →</button></div></div>
+ <div class="card" style="margin-top:10px"><h2>Clientes por comportamiento</h2><div class="list">${db.clientes.map(c=>`<div class="item"><span class="dot ${semaforo(c.id)}"></span><div class="info"><b>${esc(c.nombre)}</b><small>${db.prestamos.filter(p=>p.clienteId===c.id).length} préstamo(s)</small></div><span class="pill ${semaforo(c.id)}">${{ok:"Al día",warn:"Atraso leve",bad:"En mora"}[semaforo(c.id)]}</span></div>`).join("")||`<div class="empty">Aún no hay clientes.</div>`}</div></div>`}
+function listaCobros(){const t=today();return db.prestamos.flatMap(p=>p.cuotas.filter(q=>q.pagado<q.valor&&q.fecha<=t).map(q=>({p,q,atraso:diffDays(t,q.fecha)}))).sort((a,b)=>(cli(a.p.clienteId).dir||"").localeCompare(cli(b.p.clienteId).dir||""))}
+function vCobros(){
+ const L=listaCobros();const tot=L.reduce((s,x)=>s+x.q.valor-x.q.pagado,0);const h=permitido();
+ return `<h1>Cobros de hoy y vencidos</h1>
+ <div class="alert ${h.ok?"ok":"warn"}">${h.ok?"✅ Estás dentro del horario permitido para contactar.":"⏰ "+esc(h.msg)+" Los recordatorios por WhatsApp quedan bloqueados."}</div>
+ <div class="row" style="margin:10px 0"><span class="pill gray">${L.length} cuota(s)</span><span class="pill warn">Total ${money(tot)}</span><span class="sp"></span><span style="color:var(--mut);font-size:.82rem">Ordenado por dirección (ruta)</span></div>
+ <div class="list">${L.map(({p,q,atraso})=>{const c=cli(p.clienteId);const cs=contactosSemana(c.id);return `<div class="card"><div class="row"><span class="dot ${atraso>7?"bad":atraso>0?"warn":"ok"}"></span><div class="sp"><b>${esc(c.nombre)}</b><br><small style="color:var(--mut)">📍 ${esc(c.dir||"Sin dirección")}</small></div><div style="text-align:right"><b>${money(q.valor-q.pagado)}</b><br><small>${atraso>0?`<span style="color:var(--bad)">${atraso} día(s) de atraso</span>`:"vence hoy"}</small></div></div>
+ <div class="row" style="margin-top:8px"><span class="pill gray">Cuota ${q.n}/${p.n} · ${fd(q.fecha)}</span><span class="pill ${cs>=db.cfg.maxContactos?"bad":"gray"}">Contactos esta semana: ${cs}/${db.cfg.maxContactos}</span><span class="sp"></span><button class="btn sec sm" data-remind="${p.id}|${q.n}">Recordar</button><button class="btn sm" data-pay="${p.id}">Registrar pago</button></div></div>`}).join("")||`<div class="card empty">🎉 No hay cobros pendientes para hoy.</div>`}</div>`}
+function vClientes(){return `<div class="row"><h1 class="sp">Clientes</h1><button class="btn" data-newcli>+ Nuevo</button></div>
+ <div class="list">${db.clientes.map(c=>{const ps=db.prestamos.filter(p=>p.clienteId===c.id);const deuda=ps.reduce((s,p)=>s+saldoPrest(p),0);return `<div class="item" data-cli="${c.id}" style="cursor:pointer"><span class="dot ${semaforo(c.id)}"></span><div class="info"><b>${esc(c.nombre)}</b><small>${esc(c.tel)} · ${esc(c.dir||"")}</small></div><div style="text-align:right"><b>${money(deuda)}</b><br><small>${ps.length} préstamo(s)</small></div></div>`}).join("")||`<div class="card empty">Agrega tu primer cliente.</div>`}</div>`}
+function vPrestamos(){return `<div class="row"><h1 class="sp">Préstamos</h1><button class="btn" data-newpre>+ Nuevo</button></div>
+ <div class="list">${db.prestamos.map(p=>{const c=cli(p.clienteId),pag=totalPrest(p)-saldoPrest(p),e=estadoPrest(p);return `<div class="card" data-pre="${p.id}" style="cursor:pointer"><div class="row"><b class="sp">${esc(c.nombre)}</b><span class="pill ${e==="pagado"?"ok":e==="mora"?"bad":"ok"}">${e==="pagado"?"Pagado":e==="mora"?"En mora":"Al día"}</span></div>
+ <div class="row" style="margin:4px 0"><small style="color:var(--mut)">${money(p.capital)} · ${p.tasa}% mensual · ${p.n} cuotas ${p.periodo==="M"?"mensuales":"quincenales"}</small></div>
+ <div class="bar"><i style="width:${Math.round(pag/totalPrest(p)*100)}%"></i></div><div class="row" style="margin-top:4px"><small>Pagado ${money(pag)}</small><span class="sp"></span><small><b>Debe ${money(saldoPrest(p))}</b></small></div></div>`}).join("")||`<div class="card empty">Aún no hay préstamos.</div>`}</div>`}
+function vMas(){const c=db.cfg;return `<h1>Más</h1>
+ <div class="card"><h2>Configuración</h2><form id="fcfg" class="form">
+ <label class="f">Nombre del prestamista o negocio<input name="prestamista" value="${esc(c.prestamista)}"></label>
+ <label class="f">Teléfono / WhatsApp<input name="tel" value="${esc(c.tel)}" inputmode="tel"></label>
+ <label class="f">Tope de usura vigente (% E.A.)<input name="tope" value="${c.tope}" inputmode="decimal"></label>
+ <label class="f">Medios de pago que recibe<input name="medios" value="${esc(c.medios)}"></label>
+ <label class="f">Horario L–V: desde (h)<input name="ini" value="${c.ini}" inputmode="numeric"></label>
+ <label class="f">Horario L–V: hasta (h)<input name="fin" value="${c.fin}" inputmode="numeric"></label>
+ <label class="f">Sábado: desde (h)<input name="satIni" value="${c.satIni}" inputmode="numeric"></label>
+ <label class="f">Sábado: hasta (h)<input name="satFin" value="${c.satFin}" inputmode="numeric"></label>
+ <label class="f">Festivos (AAAA-MM-DD, separados por coma)<input name="festivos" value="${esc(c.festivos)}" placeholder="2026-12-08, 2026-12-25"></label>
+ <label class="f">Máx. contactos por cliente / semana<input name="maxContactos" value="${c.maxContactos}" inputmode="numeric"></label>
+ <label class="f" style="flex-direction:row;align-items:center;gap:8px;grid-column:1/-1"><input type="checkbox" name="ign" ${c.ignorarHorario?"checked":""} style="width:auto"> Ignorar horario (solo para probar la demostración)</label>
+ <div style="grid-column:1/-1"><button class="btn" type="submit">Guardar configuración</button></div></form>
+ <p class="alert warn" style="margin-top:10px">⚠️ El tope de usura (25 %) y los horarios son <b>valores de ejemplo</b>. Actualiza el tope con el certificado vigente de la Superfinanciera y verifica los horarios con el texto de la Ley 2300 de 2023.</p></div>
+ <div class="card" style="margin-top:10px"><h2>Bitácora</h2><p style="color:var(--mut);margin:0 0 6px;font-size:.85rem">Registro de todo lo que pasa en la cuenta.</p><div class="scroll"><table class="t"><tbody>${db.log.map(l=>`<tr><td style="white-space:normal">${esc(l.x)}</td><td>${new Date(l.t).toLocaleString("es-CO",{dateStyle:"short",timeStyle:"short"})}</td></tr>`).join("")||`<tr><td>Sin movimientos</td><td></td></tr>`}</tbody></table></div></div>
+ <div class="card" style="margin-top:10px"><h2>Demostración</h2><button class="btn gh" id="reset">↺ Restablecer datos de ejemplo</button></div>`}
+/* ---- cliente ---- */
+function misPrest(){return db.prestamos.filter(p=>p.clienteId===ui.cid)}
+function vCRes(){const c=cli(ui.cid);if(!c)return`<div class="card empty">Sin clientes.</div>`;const L=misPrest();
+ return `<h1>Hola, ${esc(c.nombre.split(" ")[0])} 👋</h1><p style="color:var(--mut);margin:-4px 0 10px">Aquí ves tu préstamo con ${esc(db.cfg.prestamista)}.</p>
+ ${L.map(p=>{const q=proxima(p),pag=totalPrest(p)-saldoPrest(p),v=vencidas(p);const d=q?diffDays(q.fecha,today()):null;
+ return `<div class="card" style="margin-bottom:10px"><div class="row"><h2 class="sp">Préstamo de ${money(p.capital)}</h2><span class="pill ${!q?"ok":v.length?"bad":"ok"}">${!q?"Pagado ✔":v.length?"Pago pendiente":"Al día"}</span></div>
+ <div class="grid kpis" style="margin:8px 0"><div class="card kpi"><small>Saldo por pagar</small><b>${money(saldoPrest(p))}</b></div><div class="card kpi ok"><small>Ya pagaste</small><b>${money(pag)}</b></div></div>
+ <div class="bar"><i style="width:${Math.round(pag/totalPrest(p)*100)}%"></i></div><small style="color:var(--mut)">${Math.round(pag/totalPrest(p)*100)}% pagado</small>
+ ${q?`<div class="alert ${v.length?"bad":d<=3?"warn":"info"}" style="margin-top:10px">${v.length?`Tienes ${v.length} cuota(s) atrasada(s). `:""}Próxima cuota (${q.n} de ${p.n}): <b>${money(q.valor-q.pagado)}</b> · ${d<0?`venció hace ${-d} día(s)`:d===0?"vence hoy":`vence en ${d} día(s)`} (${fd(q.fecha)})</div>`:""}
+ <h3 style="margin:12px 0 6px">Tus cuotas</h3><div class="scroll"><table class="t"><thead><tr><th>#</th><th>Fecha</th><th>Valor</th><th>Pagado</th><th>Estado</th></tr></thead><tbody>${p.cuotas.map(q=>{const ok=q.pagado>=q.valor,ve=!ok&&q.fecha<today();return `<tr><td>${q.n}</td><td>${fd(q.fecha)}</td><td>${money(q.valor)}</td><td>${money(q.pagado)}</td><td><span class="pill ${ok?"ok":ve?"bad":q.pagado?"warn":"gray"}">${ok?"Pagada":ve?"Atrasada":q.pagado?"Parcial":"Pendiente"}</span></td></tr>`}).join("")}</tbody></table></div></div>`}).join("")||`<div class="card empty">No tienes préstamos activos.</div>`}`}
+function vCAv(){const L=db.notifs.filter(n=>n.clienteId===ui.cid);return `<h1>Avisos</h1><div class="list">${L.map(n=>`<div class="card"><div class="row"><span class="pill ${n.tipo==="pago"?"ok":"warn"}">${n.tipo==="pago"?"Pago recibido":"Recordatorio"}</span><span class="sp"></span><small style="color:var(--mut)">${new Date(n.fecha).toLocaleString("es-CO",{dateStyle:"medium",timeStyle:"short"})}</small></div><p style="margin:6px 0 0">${esc(n.txt)}</p></div>`).join("")||`<div class="card empty">No tienes avisos.</div>`}</div><p class="alert info" style="margin-top:10px">En la versión real estos avisos llegan como notificación al celular, aunque la app esté cerrada.</p>`}
+function vCRec(){const ids=misPrest().map(p=>p.id);const L=db.pagos.filter(x=>ids.includes(x.prestamoId)).reverse();
+ return `<h1>Mis recibos</h1><div class="list">${L.map(x=>`<div class="item" data-rec="${x.id}" style="cursor:pointer"><span style="font-size:1.4rem">🧾</span><div class="info"><b>${x.num} · ${money(x.monto)}</b><small>${fd(x.fecha)} · ${esc(x.medio)}</small></div><span class="code">${x.codigo}</span></div>`).join("")||`<div class="card empty">Aún no tienes pagos registrados.</div>`}</div>
+ <div class="card" style="margin-top:10px"><h2>Verificar un recibo</h2><p style="color:var(--mut);margin:0 0 6px;font-size:.88rem">Escribe el código de 7 caracteres que aparece en el recibo.</p><div class="row"><input id="vcode" placeholder="Ej: 1A2B3C4" style="max-width:200px;text-transform:uppercase"><button class="btn" id="vbtn">Verificar</button></div><div id="vres" style="margin-top:8px"></div></div>`}
+function vCSim(){const L=misPrest().filter(p=>saldoPrest(p)>0);if(!L.length)return`<h1>Simular abono</h1><div class="card empty">No tienes saldo por pagar.</div>`;
+ const p=L[0];return `<h1>Simular un abono extra</h1><div class="card"><p style="margin:0 0 8px;color:var(--mut)">Mira cuánto puedes ahorrar si pagas un valor adicional hoy. Es solo una simulación.</p>
+ <label class="f">¿Cuánto abonarías extra hoy?<input id="sx" inputmode="numeric" placeholder="100.000" data-sim="${p.id}"></label><div id="sres" style="margin-top:10px"></div></div>`}
+function simular(pid,x){const p=pres(pid);const r=periodRate(p);const cuotasPend=p.cuotas.filter(q=>q.pagado<q.valor).length;const A=saldoPrest(p);const K=saldoCap(p);
+ if(!x||x<=0)return`<div class="alert info">Escribe un valor para ver el resultado.</div>`;
+ if(p.metodo==="S")return`<div class="alert warn">Este préstamo tiene <b>interés fijo</b> acordado: un abono extra reduce tu saldo, pero no baja los intereses. Puedes hablar con el prestamista para acordar un descuento por pago anticipado.</div>`;
+ if(x>=A)return`<div class="alert ok">Con ${money(x)} <b>terminas de pagar</b> hoy tu préstamo (debes ${money(A)}).</div>`;
+ const K2=Math.max(0,K-x);const nc=r===0?K2/cuotasPend:K2*r/(1-Math.pow(1+r,-cuotasPend));const B=x+nc*cuotasPend;const ah=A-B;
+ return `<div class="grid kpis"><div class="card kpi"><small>Sin abono pagarías</small><b>${money(A)}</b></div><div class="card kpi"><small>Con abono pagarías</small><b>${money(B)}</b></div><div class="card kpi ok"><small>Te ahorras</small><b>${money(Math.max(0,ah))}</b></div></div><div class="alert info" style="margin-top:8px">Tu cuota bajaría a aproximadamente <b>${money(nc)}</b> (${cuotasPend} cuotas restantes).</div>`}
+/* ============ modales ============ */
+function openM(html){$("#mbox").innerHTML=`<button class="x" data-close aria-label="Cerrar">✕</button>${html}`;$("#modal").classList.add("on")}
+function closeM(){$("#modal").classList.remove("on")}
+function qrSvg(t){const q=qrcode(0,"M");q.addData(t);q.make();return q.createSvgTag({cellSize:4,margin:0,scalable:true})}
+function reciboHtml(pg){const p=pres(pg.prestamoId),c=cli(p.clienteId);const url=`VERIFICA:${pg.codigo}`;
+ return `<h2>Recibo de pago</h2><div class="recibo" id="recibo"><div class="row"><b class="sp">${esc(BRAND.nombre)}</b><span class="pill ok">PAGO RECIBIDO</span></div>
+ <div class="big">${money(pg.monto)}</div><div>Recibo <b>${pg.num}</b> · ${fd(pg.fecha)}</div><hr style="border:0;border-top:1px dashed var(--line)">
+ <div>Cliente: <b>${esc(c.nombre)}</b></div><div>Medio de pago: <b>${esc(pg.medio)}</b></div>${pg.nota?`<div>Nota: ${esc(pg.nota)}</div>`:""}
+ <div>Se aplicó a la(s) cuota(s): <b>${pg.ap.map(a=>a.n).join(", ")||"—"}</b></div><div>Saldo pendiente: <b>${money(pg.saldoDespues)}</b></div>
+ <div class="qr">${qrSvg(url)}<div><small>Código de verificación</small><br><span class="code">${pg.codigo}</span><br><small style="color:var(--mut)">Verifícalo en la app, sección Recibos.</small></div></div>
+ <div style="margin-top:8px;color:var(--mut);font-size:.8rem">Emitido con tecnología PAMAVA soluciones</div></div>
+ <div class="row noprint" style="margin-top:10px"><button class="btn" onclick="window.print()">🖨️ Imprimir</button><a class="btn sec" style="text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/57${(c.tel||"").replace(/\D/g,"")}?text=${encodeURIComponent(`Recibo ${pg.num}: pago de ${money(pg.monto)} recibido el ${fd(pg.fecha)}. Saldo pendiente: ${money(pg.saldoDespues)}. Código de verificación: ${pg.codigo}. ${db.cfg.prestamista}`)}">💬 Enviar por WhatsApp</a></div>`}
+function formCli(c){c=c||{};return `<h2>${c.id?"Editar":"Nuevo"} cliente</h2><form id="fcli" class="form" data-id="${c.id||""}">
+ <label class="f">Nombre completo<input name="nombre" required value="${esc(c.nombre)}"></label><label class="f">Documento<input name="doc" value="${esc(c.doc)}"></label>
+ <label class="f">Teléfono / WhatsApp<input name="tel" inputmode="tel" required value="${esc(c.tel)}"></label><label class="f">Dirección o barrio<input name="dir" value="${esc(c.dir)}"></label>
+ <label class="f">Referencia<input name="ref" value="${esc(c.ref)}"></label><label class="f">Notas<input name="notas" value="${esc(c.notas)}"></label>
+ <label class="f" style="flex-direction:row;gap:8px;align-items:flex-start;grid-column:1/-1"><input type="checkbox" required style="width:auto;margin-top:4px"> <span style="font-weight:600">El cliente autoriza el tratamiento de sus datos personales (Ley 1581 de 2012) y ser contactado por los canales y horarios permitidos.</span></label>
+ <div style="grid-column:1/-1" class="row"><button class="btn" type="submit">Guardar</button>${c.id?`<button type="button" class="btn gh" data-newpre-for="${c.id}">+ Préstamo</button>`:""}</div></form>
+ <p style="color:var(--mut);font-size:.82rem">La referencia personal queda solo como dato; la app no la usa para cobrar ni contactarla.</p>`}
+function formPre(cid){return `<h2>Nuevo préstamo</h2><form id="fpre" class="form">
+ <label class="f">Cliente<select name="cid">${db.clientes.map(c=>`<option value="${c.id}"${c.id===cid?" selected":""}>${esc(c.nombre)}</option>`).join("")}</select></label>
+ <label class="f">Capital prestado ($)<input name="cap" inputmode="numeric" required placeholder="1.000.000"></label>
+ <label class="f">Interés mensual (%)<input name="tasa" inputmode="decimal" required placeholder="1,8"></label>
+ <label class="f">Cobro<select name="per"><option value="M">Mensual</option><option value="Q">Quincenal (cada 15 días)</option></select></label>
+ <label class="f">N.º de cuotas<input name="n" inputmode="numeric" required placeholder="6"></label>
+ <label class="f">Fecha de inicio<input type="date" name="ini" value="${today()}"></label>
+ <label class="f" style="grid-column:1/-1">Forma de cálculo<select name="met"><option value="F">Cuota fija (interés sobre saldo)</option><option value="S">Interés fijo (simple sobre el capital)</option></select></label>
+ <div id="pprev" style="grid-column:1/-1"></div><div style="grid-column:1/-1"><button class="btn" type="submit" id="psave" disabled>Crear préstamo</button></div></form>`}
+function prevPre(){const f=$("#fpre");if(!f)return;const cap=num(f.cap.value),tasa=num(f.tasa.value),n=Math.round(num(f.n.value));const box=$("#pprev"),btn=$("#psave");
+ if(!(cap>0&&tasa>=0&&n>0)){box.innerHTML="";btn.disabled=true;return}
+ const cu=buildCuotas(cap,tasa,f.per.value,n,f.ini.value||today(),f.met.value);const tot=cu.reduce((s,q)=>s+q.valor,0);const e=ea(tasa);const sobre=e>num(db.cfg.tope);
+ box.innerHTML=`${sobre?`<div class="alert bad">🚫 Esta tasa equivale a <b>${e.toFixed(1)}% E.A.</b> y supera el tope de usura configurado (${db.cfg.tope}%). Cobrar por encima del tope puede ser un delito. Baja la tasa para poder crear el préstamo.</div>`:`<div class="alert ok">✅ Tasa equivalente: ${e.toFixed(1)}% E.A. (dentro del tope de ${db.cfg.tope}%).</div>`}
+ <div class="grid kpis" style="margin-top:8px"><div class="card kpi"><small>Cuota</small><b>${money(cu[0].valor)}</b></div><div class="card kpi"><small>Total a pagar</small><b>${money(tot)}</b></div><div class="card kpi"><small>Intereses</small><b>${money(tot-cap)}</b></div></div>`;btn.disabled=sobre}
+function detallePre(p){const c=cli(p.clienteId);const pagos=db.pagos.filter(x=>x.prestamoId===p.id).reverse();
+ return `<h2>${esc(c.nombre)}</h2><div class="row" style="margin-bottom:8px"><span class="pill gray">${money(p.capital)}</span><span class="pill gray">${p.tasa}% mensual</span><span class="pill gray">${p.n} cuotas ${p.periodo==="M"?"mensuales":"quincenales"}</span><span class="pill gray">${p.metodo==="F"?"Cuota fija":"Interés fijo"}</span></div>
+ <div class="grid kpis"><div class="card kpi"><small>Debe</small><b>${money(saldoPrest(p))}</b></div><div class="card kpi"><small>Saldo de capital</small><b>${money(saldoCap(p))}</b></div></div>
+ <div class="row" style="margin:10px 0"><button class="btn" data-pay="${p.id}" ${saldoPrest(p)<=0?"disabled":""}>Registrar pago</button></div>
+ <div class="scroll"><table class="t"><thead><tr><th>#</th><th>Fecha</th><th>Cuota</th><th>Capital</th><th>Interés</th><th>Pagado</th></tr></thead><tbody>${p.cuotas.map(q=>{const ok=q.pagado>=q.valor,ve=!ok&&q.fecha<today();return `<tr style="${ok?"color:var(--ok)":ve?"color:var(--bad);font-weight:700":""}"><td>${q.n}</td><td>${fd(q.fecha)}</td><td>${money(q.valor)}</td><td>${money(q.capital)}</td><td>${money(q.interes)}</td><td>${money(q.pagado)}</td></tr>`}).join("")}</tbody></table></div>
+ <h3 style="margin:12px 0 6px">Pagos registrados</h3><div class="list">${pagos.map(x=>`<div class="item" data-rec="${x.id}" style="cursor:pointer"><span>🧾</span><div class="info"><b>${x.num} · ${money(x.monto)}</b><small>${fd(x.fecha)} · ${esc(x.medio)}</small></div><span class="code">${x.codigo}</span></div>`).join("")||`<div class="empty">Sin pagos.</div>`}</div>`}
+function formPago(p){const q=proxima(p);const c=cli(p.clienteId);return `<h2>Registrar pago</h2><p style="margin:0 0 8px;color:var(--mut)">${esc(c.nombre)} · debe ${money(saldoPrest(p))}</p><form id="fpag" data-id="${p.id}" class="form">
+ <label class="f">Valor recibido ($)<input name="monto" inputmode="numeric" required value="${q?(q.valor-q.pagado).toLocaleString("es-CO"):""}"></label>
+ <label class="f">Medio de pago<select name="medio">${MEDIOS.map(m=>`<option>${m}</option>`).join("")}</select></label>
+ <label class="f" style="grid-column:1/-1">Nota (opcional)<input name="nota" placeholder="Ej: comprobante Nequi # 12345"></label>
+ <div style="grid-column:1/-1"><button class="btn" type="submit">Guardar y generar recibo</button></div></form>`}
+function formRecordar(p,n){const c=cli(p.clienteId),q=p.cuotas.find(x=>x.n===n);const ve=q.fecha<today();const h=permitido();const cs=contactosSemana(c.id);const bloq=!h.ok||cs>=db.cfg.maxContactos;
+ const txt=ve?`Hola ${c.nombre.split(" ")[0]}, le saludamos de ${db.cfg.prestamista}. Su cuota ${q.n} de ${p.n} por ${money(q.valor-q.pagado)} venció el ${fd(q.fecha)}. Si ya realizó el pago, ignore este mensaje y envíenos el soporte. Si necesita acordar una nueva fecha, escríbanos y lo resolvemos. Medios de pago: ${db.cfg.medios}. Gracias por su atención 🙏`:`Hola ${c.nombre.split(" ")[0]}, le recordamos con gusto que su cuota ${q.n} de ${p.n} por ${money(q.valor-q.pagado)} vence el ${fd(q.fecha)}. Puede pagar por: ${db.cfg.medios}. Gracias por su puntualidad 🙏 — ${db.cfg.prestamista}`;
+ return `<h2>Recordatorio para ${esc(c.nombre)}</h2><div class="alert ${h.ok?"ok":"warn"}">${h.ok?"✅ Horario permitido.":"⏰ "+esc(h.msg)}</div>${cs>=db.cfg.maxContactos?`<div class="alert bad" style="margin-top:6px">Ya contactaste a este cliente ${cs} vez/veces esta semana (límite ${db.cfg.maxContactos}).</div>`:""}
+ <label class="f" style="margin-top:8px">Mensaje (puedes editarlo, mantén un tono respetuoso)<textarea id="rtxt" rows="6">${esc(txt)}</textarea></label>
+ <div class="row" style="margin-top:10px"><button class="btn" id="rApp" data-rid="${p.id}|${n}" ${bloq?"disabled":""}>🔔 Enviar aviso en la app</button><button class="btn sec" id="rWa" data-rid="${p.id}|${n}" ${bloq?"disabled":""}>💬 Abrir WhatsApp</button></div>
+ <p style="color:var(--mut);font-size:.82rem;margin-bottom:0">Cada contacto se anota en la bitácora y cuenta para el límite semanal.</p>`}
+/* ============ eventos ============ */
+document.addEventListener("click",e=>{const t=e.target;let b;
+ if(t.closest("[data-close]")||t.id==="modal"){closeM();return}
+ if(b=t.closest("[data-tab]")){ui.tab=b.dataset.tab;draw();window.scrollTo(0,0);return}
+ if(b=t.closest("[data-go]")){ui.tab=b.dataset.go;draw();return}
+ if(t.id==="mP"){setMode("P");return}if(t.id==="mC"){setMode("C");return}
+ if(t.closest("[data-newcli]")){openM(formCli());return}
+ if(b=t.closest("[data-cli]")){const c=cli(b.dataset.cli);const ps=db.prestamos.filter(p=>p.clienteId===c.id);openM(formCli(c)+`<h3 style="margin:12px 0 6px">Préstamos</h3><div class="list">${ps.map(p=>`<div class="item" data-pre="${p.id}" style="cursor:pointer"><div class="info"><b>${money(p.capital)}</b><small>Debe ${money(saldoPrest(p))}</small></div></div>`).join("")||`<div class="empty">Sin préstamos.</div>`}</div>`);return}
+ if(t.closest("[data-newpre]")){if(!db.clientes.length){alert("Primero agrega un cliente.");return}openM(formPre());return}
+ if(b=t.closest("[data-newpre-for]")){openM(formPre(b.dataset.newpreFor));return}
+ if(b=t.closest("[data-pre]")){openM(detallePre(pres(b.dataset.pre)));return}
+ if(b=t.closest("[data-pay]")){openM(formPago(pres(b.dataset.pay)));return}
+ if(b=t.closest("[data-rec]")){const pg=db.pagos.find(x=>x.id===b.dataset.rec);openM(reciboHtml(pg));return}
+ if(b=t.closest("[data-remind]")){const[a,n]=b.dataset.remind.split("|");openM(formRecordar(pres(a),+n));return}
+ if(t.id==="rApp"||t.id==="rWa"){const[a,n]=t.dataset.rid.split("|");const p=pres(a),c=cli(p.clienteId),txt=$("#rtxt").value;
+  if(!permitido().ok||contactosSemana(c.id)>=db.cfg.maxContactos)return;
+  db.contactos.push({clienteId:c.id,t:Date.now(),canal:t.id==="rApp"?"app":"whatsapp"});
+  if(t.id==="rApp")db.notifs.unshift({id:uid(),clienteId:c.id,fecha:new Date().toISOString(),tipo:"recordatorio",txt});
+  else window.open(`https://wa.me/57${(c.tel||"").replace(/\D/g,"")}?text=${encodeURIComponent(txt)}`,"_blank");
+  log(`Recordatorio (${t.id==="rApp"?"app":"WhatsApp"}) a ${c.nombre}, cuota ${n}`);save();closeM();draw();return}
+ if(t.id==="reset"){if(confirm("¿Restablecer los datos de ejemplo? Se borra lo que hayas agregado.")){seed();draw()}return}
+ if(t.id==="vbtn"){const code=$("#vcode").value.trim().toUpperCase();const pg=db.pagos.find(x=>x.codigo===code);const ids=misPrest().map(p=>p.id);
+  $("#vres").innerHTML=pg?`<div class="alert ok">✅ Recibo <b>${pg.num}</b> auténtico: ${money(pg.monto)} el ${fd(pg.fecha)}${ids.includes(pg.prestamoId)?"":" (de otro cliente)"}.</div>`:`<div class="alert bad">❌ No encontramos un recibo con ese código.</div>`;return}
+});
+$("#who").addEventListener("change",e=>{ui.cid=e.target.value;draw()});
+document.addEventListener("input",e=>{
+ if(e.target.closest("#fpre"))prevPre();
+ if(e.target.dataset&&e.target.dataset.sim){const v=num(e.target.value);$("#sres").innerHTML=simular(e.target.dataset.sim,v)}
+});
+document.addEventListener("submit",e=>{e.preventDefault();const f=e.target;
+ if(f.id==="fcli"){const d=Object.fromEntries(new FormData(f));let c=f.dataset.id?cli(f.dataset.id):null;
+  if(c)Object.assign(c,{nombre:d.nombre,doc:d.doc,tel:d.tel,dir:d.dir,ref:d.ref,notas:d.notas});else{c={id:uid(),nombre:d.nombre,doc:d.doc,tel:d.tel,dir:d.dir,ref:d.ref,notas:d.notas};db.clientes.push(c)}
+  log(`Cliente guardado: ${c.nombre}`);save();closeM();draw();return}
+ if(f.id==="fpre"){const cap=num(f.cap.value),tasa=num(f.tasa.value),n=Math.round(num(f.n.value));if(ea(tasa)>num(db.cfg.tope))return;
+  const p=crearPrestamo({clienteId:f.cid.value,capital:cap,tasa,periodo:f.per.value,n,inicio:f.ini.value||today(),metodo:f.met.value});
+  log(`Préstamo creado: ${money(cap)} a ${cli(p.clienteId).nombre}`);save();openM(detallePre(p));draw();return}
+ if(f.id==="fpag"){const p=pres(f.dataset.id);const m=num(f.monto.value);if(m<=0)return;const pg=registrarPago(p,m,f.medio.value,f.nota.value);openM(reciboHtml(pg));draw();return}
+ if(f.id==="fcfg"){const d=Object.fromEntries(new FormData(f));const c=db.cfg;Object.assign(c,{prestamista:d.prestamista,tel:d.tel,tope:num(d.tope)||c.tope,medios:d.medios,ini:num(d.ini),fin:num(d.fin),satIni:num(d.satIni),satFin:num(d.satFin),festivos:d.festivos,maxContactos:Math.max(1,Math.round(num(d.maxContactos))||2),ignorarHorario:!!d.ign});log("Configuración actualizada");save();draw();alert("Configuración guardada");return}
+});
+/* ============ calculadora flotante ============ */
+(function(){
+ let ex="";const keys=["C","⌫","%","÷","7","8","9","×","4","5","6","−","1","2","3","+","±","0",",","="];
+ const K=$("#ckeys");K.innerHTML=keys.map(k=>`<button class="${"÷×−+".includes(k)?"op":k==="="?"eq":k==="C"?"cl":""}" data-k="${k}">${k}</button>`).join("");
+ const fmtTok=t=>{if(!/^\d*\.?\d*$/.test(t)||t==="")return t;const[a,b]=t.split(".");const ai=a?Number(a).toLocaleString("es-CO"):"0";return b!==undefined?ai+","+b:ai};
+ const show=()=>{$("#cout").textContent=ex?ex.replace(/[\d.]+/g,m=>fmtTok(m)).replace(/\*/g,"×").replace(/\//g,"÷").replace(/-/g,"−"):"0"};
+ const evalx=()=>{let s=ex.replace(/%/g,"/100");if(!/^[\d.+\-*/() ]+$/.test(s))return null;try{const v=Function('"use strict";return ('+s+')')();return isFinite(v)?+v.toFixed(8):null}catch(e){return null}};
+ const press=k=>{
+  if("0123456789".includes(k))ex+=k;
+  else if(k===","){const last=ex.split(/[+\-*/]/).pop();if(!last.includes("."))ex+=(last===""?"0":"")+"."}
+  else if(k==="C"){ex="";$("#cexp").textContent=""}
+  else if(k==="⌫")ex=ex.slice(0,-1);
+  else if(k==="%")ex+="%";
+  else if(k==="±"){const m=ex.match(/(-?[\d.]+)$/);if(m)ex=ex.slice(0,-m[1].length)+(m[1][0]==="-"?m[1].slice(1):"-"+m[1])}
+  else if("÷×−+".includes(k)){const op={"÷":"/","×":"*","−":"-","+":"+"}[k];if(ex==="")return;if(/[+\-*/]$/.test(ex))ex=ex.slice(0,-1);ex+=op}
+  else if(k==="="){const v=evalx();if(v!==null){$("#cexp").textContent=$("#cout").textContent+" =";ex=String(v)}}
+  show()};
+ K.addEventListener("click",e=>{const b=e.target.closest("[data-k]");if(b)press(b.dataset.k)});
+ const box=$("#calc");const open=()=>{box.classList.toggle("on")};
+ $("#calcBtn").onclick=open;$("#cx").onclick=()=>box.classList.remove("on");
+ document.addEventListener("keydown",e=>{
+  if(e.altKey&&(e.key==="c"||e.key==="C")){e.preventDefault();open();return}
+  if(!box.classList.contains("on")||$("#cnorm").style.display==="none")return;
+  if(["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName))return;
+  const m={"/":"÷","*":"×","-":"−","+":"+",".":",",",":",","Enter":"=","=":"=","Backspace":"⌫","Escape":"C"};
+  const k=/^\d$/.test(e.key)?e.key:m[e.key];if(k){e.preventDefault();press(k)}});
+ /* mover */
+ const hd=$("#chd");let drag=null;
+ hd.addEventListener("pointerdown",e=>{if(e.target.id==="cx")return;const r=box.getBoundingClientRect();drag={dx:e.clientX-r.left,dy:e.clientY-r.top};hd.setPointerCapture(e.pointerId)});
+ hd.addEventListener("pointermove",e=>{if(!drag)return;box.style.left=Math.max(0,Math.min(innerWidth-box.offsetWidth,e.clientX-drag.dx))+"px";box.style.top=Math.max(0,Math.min(innerHeight-60,e.clientY-drag.dy))+"px";box.style.right="auto";box.style.bottom="auto"});
+ hd.addEventListener("pointerup",()=>drag=null);
+ /* pestañas */
+ const t1=$("#cT1"),t2=$("#cT2");t1.onclick=()=>{t1.classList.add("on");t2.classList.remove("on");$("#cnorm").style.display="";$("#cprest").style.display="none"};
+ t2.onclick=()=>{t2.classList.add("on");t1.classList.remove("on");$("#cnorm").style.display="none";$("#cprest").style.display="flex";calcP()};
+ const calcP=()=>{const c=num($("#pc").value),t=num($("#pt").value),n=Math.round(num($("#pn").value)),per=$("#pp").value;const out=$("#pres");
+  if(!(c>0&&n>0)){out.textContent="Escribe capital, interés y cuotas.";return}
+  const cu=buildCuotas(c,t,per,n,today(),"F");const tot=cu.reduce((s,q)=>s+q.valor,0);
+  out.innerHTML=`Cuota: <b>${money(cu[0].valor)}</b><br>Total a pagar: <b>${money(tot)}</b><br>Intereses: <b>${money(tot-c)}</b><br>Tasa E.A.: <b>${ea(t).toFixed(1)}%</b>`};
+ $("#cprest").addEventListener("input",e=>{if(e.target.id==="pc"){const d=e.target.value.replace(/\D/g,"");e.target.value=d?Number(d).toLocaleString("es-CO"):""}calcP()});
+ show()})();
+/* ============ inicio ============ */
+load();ui.cid=db.clientes[0]?.id;draw();
+if("serviceWorker"in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script></body></html>
