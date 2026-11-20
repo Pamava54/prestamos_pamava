@@ -3054,7 +3054,7 @@ const vSplash=()=>`<div class="card empty" style="margin-top:40px"><div class="l
 function vInicio(){return `<div style="text-align:center;margin:18px 0 14px"><div class="logo" style="margin:0 auto 8px;width:56px;height:56px;font-size:1.6rem">$</div><h1 style="margin:0">${esc(BRAND.nombre)}</h1><p style="color:var(--mut);margin:4px 0 0">Préstamos claros, pagos al día.</p></div>
  ${ui.fbError?`<div class="alert warn" style="margin-bottom:10px">No se pudo conectar con el servidor. Revisa tu internet o prueba la demostración.</div>`:""}${ui.aviso?`<div class="alert bad" style="margin-bottom:10px">${esc(ui.aviso)}</div>`:""}
  <div class="list">${ui.pid&&!ui.fbError?`<div class="card"><small style="color:var(--mut)">Te invitó</small><h2 style="margin:0">${esc(ui.pubName||"Tu prestamista")}</h2><button class="btn" data-vista="cli" style="width:100%;margin-top:8px;padding:12px">👤 Soy cliente: entrar o registrarme</button></div>`:`<div class="card empty">¿Eres cliente? Pídele a tu prestamista el enlace de la app.</div>`}
- ${ui.fbError?"":`<button class="btn ${ui.pid?"gh":""}" data-vista="pres" style="padding:12px">🏦 Soy prestamista</button>`}<button class="btn gh" data-demo style="padding:12px">🧪 Probar la demostración</button></div>`}
+ ${ui.fbError||ui.soloCli?"":`<button class="btn ${ui.pid?"gh":""}" data-vista="pres" style="padding:12px">🏦 Soy prestamista</button>`}${ui.soloCli?"":`<button class="btn gh" data-demo style="padding:12px">🧪 Probar la demostración</button>`}</div>`}
 function vAuth(){const pres=ui.vista==="pres",crear=ui.modo==="crear";const volver=`<button class="btn gh sm" data-vista="inicio">← Volver</button>`;
  if(!pres&&crear)return volver+vNuevo(true);
  return `${volver}<h1 style="margin-top:10px">${pres?"Prestamista":"Cliente"}: ${crear?"crear cuenta":"entrar"}</h1>${!pres?`<p style="color:var(--mut);margin:-4px 0 8px">Con ${esc(ui.pubName||"tu prestamista")}</p>`:""}
@@ -3068,7 +3068,7 @@ function renderAuth(){hdrCloud();$("#tabs").style.display="none";$("#calcBtn").s
  const V={splash:vSplash,inicio:vInicio,pres:vAuth,cli:vAuth};$("#app").innerHTML=(V[ui.vista]||vInicio)()+`<div class="foot">PAMAVA soluciones</div>`}
 function hdrCloud(){const app=ui.vista==="app";document.querySelector(".seg").style.display=(app&&!CLOUD)?"":"none";if(!(app&&!CLOUD&&ui.mode==="C"))$("#who").style.display="none";
  $("#ubox").innerHTML=app?(CLOUD?`<small style="opacity:.85;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(sync.email)}</small><button class="who" id="salir">Salir</button>`:`<button class="who" data-home>← Inicio</button>`):""}
-function cuentaHtml(){const link=location.origin+location.pathname+"?p="+sync.pid;const m=`Hola, le comparto la aplicación de ${db.cfg.prestamista}. Desde ahí puede pedir su préstamo, ver su plan de cuotas, enviar sus documentos y comprobantes de pago y ver el estado de su crédito: ${link}`;
+function cuentaHtml(){const link=location.origin+location.pathname+"?p="+sync.pid;const m=`Hola, le comparto la aplicación de ${db.cfg.prestamista}. Desde ahí puede pedir su préstamo, elegir entre las opciones de crédito que le enviemos, ver su plan de cuotas, sus recibos y el estado de su crédito: ${link}`;
  return `<div class="card" style="margin-top:10px"><h2>Tu enlace para clientes</h2><p style="color:var(--mut);margin:0 0 8px;font-size:.88rem">Envía este enlace por WhatsApp o muestra el código QR. Con él, tus clientes se registran contigo.</p>
  <div class="code" style="display:block;word-break:break-all;font-size:.8rem;letter-spacing:0">${esc(link)}</div><div style="width:170px;margin:10px auto">${qrSvg(link)}</div>
  <div class="row"><button class="btn sec sm" id="copylink" data-link="${esc(link)}">📋 Copiar enlace</button><a class="btn sm" style="text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(m)}">💬 Enviar por WhatsApp</a></div></div>
@@ -3111,7 +3111,7 @@ document.addEventListener("submit",async e=>{const f=e.target;
 const uid2=uid;
 /* ---- arranque ---- */
 (async function boot(){
- try{const p=new URLSearchParams(location.search).get("p");if(p)localStorage.setItem("pamava_pid",p);ui.pid=p||localStorage.getItem("pamava_pid")||""}catch(e){ui.pid=""}
+ try{const qs=new URLSearchParams(location.search);if(qs.get("admin")){localStorage.removeItem("pamava_cli");localStorage.removeItem("pamava_pid")}const p=qs.get("p");if(p){localStorage.setItem("pamava_pid",p);localStorage.setItem("pamava_cli","1")}ui.pid=p||localStorage.getItem("pamava_pid")||"";ui.soloCli=!!ui.pid&&localStorage.getItem("pamava_cli")==="1"}catch(e){ui.pid="";ui.soloCli=false}
  ui.vista="splash";ui.modo="entrar";draw();
  const ok=await (async()=>{try{const base="https://www.gstatic.com/firebasejs/"+FBV+"/";const [a,b,c]=await Promise.all([import(base+"firebase-app.js"),import(base+"firebase-auth.js"),import(base+"firebase-firestore.js")]);
   FA=b;FS=c;const app=a.initializeApp(FBCFG);fauth=b.getAuth(app);fdb=c.initializeFirestore(app,{experimentalAutoDetectLongPolling:true});return true}catch(e){console.error("Firebase no cargó",e);return false}})();
