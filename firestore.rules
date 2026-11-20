@@ -1,0 +1,53 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function perfil() {
+      return getAfter(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data;
+    }
+    function esCliente(pid) {
+      return signedIn() && perfil().rol == 'cliente' && perfil().pid == pid;
+    }
+
+    // Perfil de cada usuario: solo el dueño lo lee; se crea una sola vez.
+    match /usuarios/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['rol', 'pid'])
+        && (request.resource.data.rol == 'cliente'
+            || (request.resource.data.rol == 'prestamista' && request.resource.data.pid == uid));
+      allow update, delete: if false;
+    }
+
+    // Documento del prestamista: la configuración es pública (la necesita el enlace de invitación).
+    match /prestamistas/{pid} {
+      allow read: if true;
+      allow create: if signedIn() && request.auth.uid == pid && request.resource.data.ownerUid == pid;
+      allow update: if signedIn() && request.auth.uid == pid;
+      allow delete: if false;
+
+      // Todo lo demás (clientes, préstamos, pagos, mensajes, bitácora...)
+      match /{col}/{id} {
+        // El prestamista dueño ve y maneja todo lo suyo.
+        allow read, write: if signedIn() && request.auth.uid == pid;
+
+        // El cliente solo ve lo que le pertenece.
+        allow read: if esCliente(pid) && (
+          (col == 'clientes' && id == request.auth.uid) ||
+          (col in ['prestamos', 'pagos', 'sols', 'msgs', 'notifs']
+            && resource.data.clienteId == request.auth.uid));
+
+        // El cliente solo crea y cambia su propio perfil, solicitudes y mensajes.
+        allow create: if esCliente(pid) && (
+          (col == 'clientes' && id == request.auth.uid) ||
+          (col in ['sols', 'msgs'] && request.resource.data.clienteId == request.auth.uid));
+        allow update: if esCliente(pid) && (
+          (col == 'clientes' && id == request.auth.uid) ||
+          (col in ['sols', 'msgs']
+            && resource.data.clienteId == request.auth.uid
+            && request.resource.data.clienteId == request.auth.uid));
+      }
+    }
+  }
+}

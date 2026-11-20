@@ -111,6 +111,7 @@ input[type=range]{padding:0;border:0;accent-color:var(--p);margin-top:8px}
 ul.chk{list-style:none;padding:0;margin:8px 0 0}ul.chk li{padding:3px 0}
 details.card summary{font-weight:800;cursor:pointer}
 @media print{header.top,nav.tabs,.fab,#calc,.x,.noprint,.wm{display:none!important}#modal{position:static;background:none;display:block}#modal .box{box-shadow:none;max-height:none;padding:0}body{background:#fff}main{display:none}}
+.bars{display:flex;gap:8px;align-items:flex-end;height:120px;margin:10px 0 4px}.bc{flex:1;text-align:center}.bb{height:100px;display:flex;gap:3px;align-items:flex-end;justify-content:center}.bb i{display:block;width:42%;border-radius:5px 5px 0 0;min-height:2px}.b1{background:#9fd8cf}.b2{background:#0f766e}.lg{font-size:.78rem;color:var(--mut);display:flex;align-items:center;gap:5px}.lg i{display:inline-block;width:12px;height:12px;border-radius:3px}
 </style></head><body>
 <div class="wm" aria-hidden="true"></div>
 <header class="top">
@@ -2557,10 +2558,10 @@ function vResumen(){
  const recHoy=db.pagos.filter(x=>x.fecha===t).reduce((s,x)=>s+x.monto,0);
  return `<h1>Resumen</h1>
  <div class="grid kpis"><div class="card kpi"><small>Dinero prestado</small><b>${money(prest)}</b></div><div class="card kpi"><small>Por cobrar</small><b>${money(cobrar)}</b></div><div class="card kpi ok"><small>Recuperado</small><b>${money(rec)}</b></div><div class="card kpi ${mora?"bad":"ok"}"><small>En mora</small><b>${money(mora)}</b></div><div class="card kpi"><small>Intereses totales</small><b>${money(gan)}</b></div><div class="card kpi ${sano>=90?"ok":sano>=75?"warn":"bad"}"><small>Salud de la cartera</small><b>${sano}%</b></div><div class="card kpi ${db.sols.some(x=>!["desembolsada","rechazada"].includes(x.etapa))?"warn":"ok"}" data-go="msg" style="cursor:pointer"><small>Solicitudes abiertas</small><b>${db.sols.filter(x=>!["desembolsada","rechazada"].includes(x.etapa)).length}</b></div></div>
- <div class="card" style="margin-top:10px"><div class="row"><h2 class="sp">Hoy</h2><span class="pill gray">Recaudado hoy ${money(recHoy)}</span></div>
+ ${prioridadMora()}<div class="card" style="margin-top:10px"><div class="row"><h2 class="sp">Hoy</h2><span class="pill gray">Recaudado hoy ${money(recHoy)}</span></div>
  ${hoy.length?`<div class="list">${hoy.map(({p,q})=>`<div class="item"><span class="dot ${semaforo(p.clienteId)}"></span><div class="info"><b>${esc(cli(p.clienteId).nombre)}</b><small>Cuota ${q.n} de ${p.n}</small></div><b>${money(q.valor-q.pagado)}</b></div>`).join("")}</div>`:`<div class="empty">No hay cuotas que venzan hoy.</div>`}
  <div style="margin-top:8px"><button class="btn sec" data-go="cobros">Ver cobros y vencidos →</button></div></div>
- <div class="card" style="margin-top:10px"><h2>Clientes por comportamiento</h2><div class="list">${db.clientes.filter(c=>c.estado!=="prospecto").map(c=>`<div class="item"><span class="dot ${semaforo(c.id)}"></span><div class="info"><b>${esc(c.nombre)}</b><small>${db.prestamos.filter(p=>p.clienteId===c.id).length} préstamo(s)</small></div><span class="pill ${semaforo(c.id)}">${{ok:"Al día",warn:"Atraso leve",bad:"En mora"}[semaforo(c.id)]}</span></div>`).join("")||`<div class="empty">Aún no hay clientes.</div>`}</div></div>`}
+ <div class="card" style="margin-top:10px"><h2>Clientes por comportamiento</h2><div class="list">${db.clientes.filter(c=>c.estado!=="prospecto").map(c=>`<div class="item"><span class="dot ${semaforo(c.id)}"></span><div class="info"><b>${esc(c.nombre)}</b><small>${db.prestamos.filter(p=>p.clienteId===c.id).length} préstamo(s)</small></div><span class="pill ${semaforo(c.id)}">${{ok:"Al día",warn:"Atraso leve",bad:"En mora"}[semaforo(c.id)]}</span></div>`).join("")||`<div class="empty">Aún no hay clientes.</div>`}</div></div>${reporte()}`}
 function listaCobros(){const t=today();return db.prestamos.flatMap(p=>p.cuotas.filter(q=>q.pagado<q.valor&&q.fecha<=t).map(q=>({p,q,atraso:diffDays(t,q.fecha)}))).sort((a,b)=>(cli(a.p.clienteId).dir||"").localeCompare(cli(b.p.clienteId).dir||""))}
 function vCobros(){
  const L=listaCobros();const tot=L.reduce((s,x)=>s+x.q.valor-x.q.pagado,0);const h=permitido();
@@ -2599,6 +2600,7 @@ function vMas(){const c=db.cfg;return `<h1>Más</h1>
  <div style="grid-column:1/-1"><button class="btn" type="submit">Guardar configuración</button></div></form>
  <p class="alert warn" style="margin-top:10px">⚠️ El tope de usura (25 %) y los horarios son <b>valores de ejemplo</b>. Actualiza el tope con el certificado vigente de la Superfinanciera y verifica los horarios con el texto de la Ley 2300 de 2023.</p></div>
  <div class="card" style="margin-top:10px"><h2>Bitácora</h2><p style="color:var(--mut);margin:0 0 6px;font-size:.85rem">Registro de todo lo que pasa en la cuenta.</p><div class="scroll"><table class="t"><tbody>${db.log.map(l=>`<tr><td style="white-space:normal">${esc(l.x)}</td><td>${new Date(l.t).toLocaleString("es-CO",{dateStyle:"short",timeStyle:"short"})}</td></tr>`).join("")||`<tr><td>Sin movimientos</td><td></td></tr>`}</tbody></table></div></div>
+ ${seguridadHtml()}
  ${CLOUD?cuentaHtml():`<div class="card" style="margin-top:10px"><h2>Demostración</h2><button class="btn gh" id="reset">↺ Restablecer datos de ejemplo</button></div>`}`}
 /* ---- cliente ---- */
 function misPrest(){return db.prestamos.filter(p=>p.clienteId===ui.cid)}
@@ -3117,6 +3119,94 @@ const uid2=uid;
  if(ui.pid){try{const s=await FS.getDoc(FS.doc(fdb,"prestamistas",ui.pid));if(s.exists()&&s.data().cfg){ui.pubCfg=s.data().cfg;ui.pubName=ui.pubCfg.prestamista}else ui.pid=""}catch(e){console.error(e)}}
  FA.onAuthStateChanged(fauth,u=>{if(sync.signing)return;if(u)entrar(u);else if(!ui.demo){salirLocal();ui.vista="inicio";draw()}});
 })();
+
+/* ============ PAMAVA v2: reportes, respaldo, PIN, prioridad de mora ============ */
+function mesesAtras(n){const r=[],d=new Date();d.setDate(1);for(let i=n-1;i>=0;i--){const x=new Date(d.getFullYear(),d.getMonth()-i,1);r.push(x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0"))}return r}
+function interesDePago(pg){const p=pres(pg.prestamoId);if(!p||!pg.ap)return 0;return pg.ap.reduce((s,a)=>{const q=p.cuotas.find(x=>x.n===a.n);return s+(q&&q.valor?a.monto*q.interes/q.valor:0)},0)}
+function reporte(){
+ const ms=mesesAtras(6),R={},P={},G={};ms.forEach(m=>{R[m]=0;P[m]=0;G[m]=0});
+ db.pagos.forEach(x=>{const m=String(x.fecha).slice(0,7);if(m in R){R[m]+=x.monto;G[m]+=interesDePago(x)}});
+ db.prestamos.forEach(p=>{const m=String(p.inicio).slice(0,7);if(m in P)P[m]+=p.capital});
+ const mx=Math.max(1,...ms.map(m=>Math.max(R[m],P[m])));
+ const ganTot=db.pagos.reduce((s,x)=>s+interesDePago(x),0);
+ const ganPrev=db.prestamos.reduce((s,p)=>s+p.cuotas.reduce((a,q)=>a+q.interes,0),0);
+ const cap=db.prestamos.reduce((s,p)=>s+p.capital,0);
+ const rent=cap?Math.round(ganTot/cap*1000)/10:0;
+ const mAct=ms[ms.length-1],mAnt=ms[ms.length-2];
+ const dif=R[mAnt]?Math.round((R[mAct]-R[mAnt])/R[mAnt]*100):null;
+ const bars=ms.map(m=>`<div class="bc"><div class="bb"><i class="b1" style="height:${Math.round(P[m]/mx*100)}%" title="Prestado ${money(P[m])}"></i><i class="b2" style="height:${Math.round(R[m]/mx*100)}%" title="Recaudado ${money(R[m])}"></i></div><small>${MES[+m.slice(5)-1]}</small></div>`).join("");
+ return `<div class="card" style="margin-top:10px"><h2>Reporte de los últimos 6 meses</h2>
+ <div class="bars">${bars}</div>
+ <div class="row" style="gap:12px;margin:2px 0 8px"><span class="lg"><i class="b1"></i> Prestado</span><span class="lg"><i class="b2"></i> Recaudado</span></div>
+ <div class="grid kpis"><div class="card kpi ok"><small>Ganancia cobrada (intereses)</small><b>${money(ganTot)}</b></div><div class="card kpi"><small>Ganancia por cobrar</small><b>${money(Math.max(0,ganPrev-ganTot))}</b></div><div class="card kpi"><small>Rentabilidad sobre lo prestado</small><b>${String(rent).replace(".",",")}%</b></div><div class="card kpi ${dif==null?"":dif>=0?"ok":"warn"}"><small>Recaudo este mes</small><b>${money(R[mAct])}</b><small>${dif==null?"Sin mes anterior":(dif>=0?"▲ ":"▼ ")+Math.abs(dif)+"% frente al mes pasado"}</small></div></div></div>`}
+function prioridadMora(){
+ const t=today(),por={};
+ db.prestamos.forEach(p=>vencidas(p).forEach(q=>{const c=cli(p.clienteId);if(!c)return;const o=por[c.id]||(por[c.id]={c,deuda:0,dias:0,p:p.id,n:q.n});o.deuda+=q.valor-q.pagado;const d=diffDays(t,q.fecha);if(d>o.dias){o.dias=d;o.p=p.id;o.n=q.n}}));
+ const L=Object.values(por).sort((a,b)=>b.dias-a.dias||b.deuda-a.deuda).slice(0,5);
+ if(!L.length)return"";
+ return `<div class="card" style="margin-top:10px"><h2>Cobrar primero</h2><p style="color:var(--mut);margin:0 0 8px;font-size:.85rem">Clientes en mora, del atraso más largo al más corto.</p><div class="list">${L.map(o=>`<div class="item"><span class="dot ${o.dias>7?"bad":"warn"}"></span><div class="info"><b>${esc(o.c.nombre)}</b><small>${o.dias} día(s) de atraso · debe ${money(o.deuda)}</small></div><div style="display:flex;gap:6px">${o.c.tel?`<a class="btn sec sm" style="text-decoration:none" href="tel:${esc(String(o.c.tel).replace(/[^+0-9]/g,""))}">Llamar</a>`:""}<button class="btn sm" data-remind="${o.p}|${o.n}">Recordar</button></div></div>`).join("")}</div></div>`}
+/* ---- exportar (Excel) y respaldo ---- */
+function csvTxt(rows){return "﻿"+rows.map(r=>r.map(v=>{v=String(v==null?"":v);return /[;"\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(";")).join("\r\n")}
+function bajar(nombre,txt,mime){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([txt],{type:mime||"text/csv;charset=utf-8"}));a.download=nombre;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},800)}
+function exportar(k){
+ const nom=id=>(cli(id)||{}).nombre||"";const f=today();let rows;
+ if(k==="clientes")rows=[["Nombre","Documento","Teléfono","Dirección","Correo","Estado"]].concat(db.clientes.map(c=>[c.nombre,c.doc,c.tel,c.dir,c.email,c.estado]));
+ else if(k==="prestamos")rows=[["Cliente","Capital","Tasa %","Periodo","Cuotas","Inicio","Método","Saldo pendiente","Estado"]].concat(db.prestamos.map(p=>[nom(p.clienteId),p.capital,String(p.tasa).replace(".",","),p.periodo==="M"?"Mensual":"Quincenal",p.n,p.inicio,p.metodo==="F"?"Cuota fija":"Interés simple",Math.round(saldoPrest(p)),estadoPrest(p)]));
+ else if(k==="cuotas"){rows=[["Cliente","Préstamo (inicio)","Cuota","Fecha","Valor","Capital","Interés","Pagado","Pendiente"]];db.prestamos.forEach(p=>p.cuotas.forEach(q=>rows.push([nom(p.clienteId),p.inicio,q.n,q.fecha,q.valor,q.capital,q.interes,q.pagado,q.valor-q.pagado])))}
+ else if(k==="pagos")rows=[["Recibo","Fecha","Cliente","Monto","Medio","Nota","Saldo después"]].concat(db.pagos.slice().sort((a,b)=>String(a.fecha).localeCompare(b.fecha)).map(x=>[x.num,x.fecha,nom(x.clienteId),x.monto,x.medio,x.nota||"",x.saldoDespues]));
+ else return;
+ bajar(`prestamos-${k}-${f}.csv`,csvTxt(rows));toast("Archivo descargado. Ábrelo con Excel.")}
+function respaldoGuardar(){bajar(`respaldo-prestamos-${today()}.json`,JSON.stringify({app:"pamava-prestamos",version:2,fecha:new Date().toISOString(),db}),"application/json");try{localStorage.setItem("pamava_bk",today())}catch(e){}toast("Respaldo descargado. Guárdalo en un lugar seguro (Drive o WhatsApp).");draw()}
+function respaldoRestaurar(file){
+ const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);const d=o.db||o;if(!d||!Array.isArray(d.clientes)||!Array.isArray(d.prestamos)||!Array.isArray(d.pagos))throw 0;
+  if(!confirm("Se reemplazarán TODOS los datos de esta demostración por los del respaldo. ¿Continuar?"))return;
+  db=d;["msgs","sols","notifs","contactos","log"].forEach(k=>{if(!db[k])db[k]=[]});if(!db.cfg)db.cfg=cfgDefault();ui.cid=db.clientes[0]&&db.clientes[0].id;save();draw();toast("Respaldo restaurado.")}catch(e){toast("Ese archivo no es un respaldo válido.")}};
+ r.readAsText(file)}
+function respaldoHtml(){
+ const ult=(()=>{try{return localStorage.getItem("pamava_bk")}catch(e){return null}})();const dias=ult?diffDays(today(),ult):null;
+ return `<div class="card" style="margin-top:10px"><h2>Respaldo y Excel</h2>
+ <div class="alert ${dias!=null&&dias<=7?"ok":"warn"}" style="margin-bottom:8px">${ult?(dias<=7?"✅ ":"⚠️ ")+"Último respaldo: "+fd(ult)+(dias>7?" (hace "+dias+" días)":""):"⚠️ Aún no has descargado un respaldo."}</div>
+ <button class="btn" data-bk="save" style="width:100%">💾 Descargar respaldo completo</button>
+ ${CLOUD?`<p style="color:var(--mut);font-size:.82rem;margin:6px 0 0">Tus datos ya viven en la nube. Este archivo es una copia extra por si algo sale mal.</p>`:`<button class="btn gh" data-bk="restore" style="width:100%;margin-top:8px">📂 Restaurar desde un respaldo</button><input type="file" id="bkfile" accept=".json,application/json" style="display:none">`}
+ <h3 style="margin:14px 0 6px">Descargar para Excel</h3><div class="row" style="flex-wrap:wrap;gap:8px"><button class="btn sec sm" data-exp="clientes">👥 Clientes</button><button class="btn sec sm" data-exp="prestamos">📒 Préstamos</button><button class="btn sec sm" data-exp="cuotas">📅 Cuotas</button><button class="btn sec sm" data-exp="pagos">🧾 Pagos</button></div></div>`}
+function seguridadHtml(){const on=!!pinGet();return respaldoHtml()+`<div class="card" style="margin-top:10px"><h2>Seguridad</h2><p style="margin:0 0 8px;color:var(--mut);font-size:.88rem">${on?"🔒 El PIN está activo en este teléfono. Se pide al abrir la app y después de 1 minuto fuera de ella.":"Protege la app con un PIN de 4 números. Se pide al abrirla, para que nadie vea tus clientes si te prestan el celular."}</p>
+ <div class="row" style="gap:8px;flex-wrap:wrap">${on?`<button class="btn sec sm" data-pin="change">Cambiar PIN</button><button class="btn gh sm" data-pin="off">Quitar PIN</button>`:`<button class="btn" data-pin="set">🔒 Activar PIN</button>`}</div></div>`}
+/* ---- PIN ---- */
+const PINK="pamava_pin";
+function pinGet(){try{return JSON.parse(localStorage.getItem(PINK))}catch(e){return null}}
+async function pinHash(s){try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("pamava|"+s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch(e){return"h"+hash("pamava|"+s)}}
+const lk={mode:"open",buf:"",first:"",fails:0,until:0,hiddenAt:0};
+function lkEl(){let e=document.getElementById("lock");if(e)return e;e=document.createElement("div");e.id="lock";e.style.cssText="position:fixed;inset:0;z-index:300;background:#0B3D3A;color:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center";document.body.appendChild(e);
+ e.addEventListener("click",ev=>{const b=ev.target.closest("[data-k]");if(b)lkKey(b.dataset.k)});return e}
+function lkDraw(){const e=lkEl(),T={open:"Ingresa tu PIN",set1:"Crea un PIN de 4 números",set2:"Repite el PIN",off:"Ingresa tu PIN para quitarlo",chg:"Ingresa tu PIN actual"}[lk.mode];
+ const wait=Date.now()<lk.until;
+ e.innerHTML=`<div style="font-size:2rem">🔒</div><h2 style="margin:6px 0 2px;color:#fff">${T}</h2><div id="lkmsg" style="min-height:22px;color:#ffd7d7;font-weight:700">${wait?"Demasiados intentos. Espera unos segundos.":""}</div>
+ <div style="display:flex;gap:14px;margin:12px 0 18px">${[0,1,2,3].map(i=>`<span style="width:16px;height:16px;border-radius:50%;border:2px solid #fff;background:${i<lk.buf.length?"#fff":"transparent"}"></span>`).join("")}</div>
+ <div style="display:grid;grid-template-columns:repeat(3,72px);gap:12px">${[1,2,3,4,5,6,7,8,9,"",0,"⌫"].map(k=>k===""?"<span></span>":`<button data-k="${k}" style="height:64px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:1.5rem;font-weight:800">${k}</button>`).join("")}</div>
+ <div style="margin-top:18px;display:flex;gap:10px">${lk.mode==="open"?`<button data-k="forgot" style="background:none;border:0;color:#bfe;text-decoration:underline">Olvidé mi PIN</button>`:`<button data-k="cancel" style="background:none;border:0;color:#bfe;text-decoration:underline">Cancelar</button>`}</div>`}
+function lkShow(mode){lk.mode=mode;lk.buf="";lk.first="";lkEl().style.display="flex";lkDraw()}
+function lkHide(){lkEl().style.display="none";lk.fails=0}
+function lkMsg(t){const m=document.getElementById("lkmsg");if(m)m.textContent=t}
+async function lkKey(k){
+ if(k==="cancel"){lkHide();return}
+ if(k==="forgot"){if(confirm("Para quitar el PIN se cerrará tu sesión y tendrás que entrar de nuevo con tu correo y contraseña. ¿Continuar?")){try{localStorage.removeItem(PINK)}catch(e){}try{if(CLOUD&&FA)await FA.signOut(fauth)}catch(e){}location.reload()}return}
+ if(Date.now()<lk.until)return;
+ if(k==="⌫"){lk.buf=lk.buf.slice(0,-1);lkDraw();return}
+ if(!/^\d$/.test(k)||lk.buf.length>=4)return;
+ lk.buf+=k;lkDraw();if(lk.buf.length<4)return;
+ const buf=lk.buf,st=pinGet(),h=await pinHash(buf);
+ if(lk.mode==="set1"){lk.first=buf;lk.buf="";lk.mode="set2";lkDraw();return}
+ if(lk.mode==="set2"){if(buf===lk.first){try{localStorage.setItem(PINK,JSON.stringify({h:await pinHash(buf)}))}catch(e){}lkHide();toast("PIN activado");draw()}else{lk.mode="set1";lk.buf="";lk.first="";lkDraw();lkMsg("No coinciden. Intenta de nuevo.")}return}
+ const ok=st&&st.h===h;
+ if(ok){lk.fails=0;if(lk.mode==="open")lkHide();else if(lk.mode==="off"){try{localStorage.removeItem(PINK)}catch(e){}lkHide();toast("PIN quitado");draw()}else if(lk.mode==="chg"){lk.mode="set1";lk.buf="";lkDraw()}}
+ else{lk.fails++;lk.buf="";if(lk.fails>=5){lk.until=Date.now()+30000;lk.fails=0;setTimeout(()=>{if(lk.mode)lkDraw()},30500)}lkDraw();lkMsg(Date.now()<lk.until?"Demasiados intentos. Espera 30 segundos.":"PIN incorrecto.")}}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")lk.hiddenAt=Date.now();else if(pinGet()&&lk.hiddenAt&&Date.now()-lk.hiddenAt>60000&&lkEl().style.display==="none")lkShow("open")});
+document.addEventListener("click",e=>{let b;
+ if(b=e.target.closest("[data-exp]")){exportar(b.dataset.exp);return}
+ if(b=e.target.closest("[data-bk]")){if(b.dataset.bk==="save")respaldoGuardar();else{const f=$("#bkfile");if(f)f.click()}return}
+ if(b=e.target.closest("[data-pin]")){const m=b.dataset.pin;lkShow(m==="set"?"set1":m==="change"?"chg":"off");return}});
+document.addEventListener("change",e=>{if(e.target.id==="bkfile"&&e.target.files[0]){respaldoRestaurar(e.target.files[0]);e.target.value=""}});
+if(pinGet())lkShow("open");
 
 /* ============ inicio ============ */
 if("serviceWorker"in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").catch(()=>{});
