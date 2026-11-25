@@ -115,7 +115,7 @@ details.card summary{font-weight:800;cursor:pointer}
 </style></head><body>
 <div class="wm" aria-hidden="true"></div>
 <header class="top">
- <div class="brand"><div class="logo">$</div><div><span id="appName">Préstamos</span><small>por PAMAVA soluciones · prototipo</small></div></div>
+ <div class="brand"><div class="logo">$</div><div><span id="appName">Préstamos</span><small>por PAMAVA soluciones</small></div></div>
  <div id="ubox" class="row" style="color:#fff;gap:6px"></div>
  <select class="who" id="who" aria-label="Cliente a mostrar" style="display:none"></select>
  <div class="seg" role="group" aria-label="Vista"><button id="mP" aria-pressed="true">Prestamista</button><button id="mC" aria-pressed="false">Cliente</button></div>
@@ -2491,7 +2491,7 @@ const cli=id=>db.clientes.find(c=>c.id===id);
 const pres=id=>db.prestamos.find(p=>p.id===id);
 function seed(){
  const t=today();
- db={cfg:{prestamista:"Prestamista de ejemplo",tel:"",tope:25,tasaSimple:1.5,montoMin:100000,montoMax:5000000,plazoMax:12,docsReq:"Cédula original, Comprobante de ingresos o certificado laboral, Recibo de un servicio público, Dos referencias personales (nombre y teléfono)",lugar:"Oficina del prestamista (escribe aquí la dirección)",ini:7,fin:19,satIni:8,satFin:15,festivos:"",maxContactos:2,ignorarHorario:false,medios:"Efectivo, Nequi, Daviplata"},clientes:[],prestamos:[],pagos:[],notifs:[],contactos:[],log:[],msgs:[],sols:[]};
+ db={cfg:{prestamista:"Prestamista de ejemplo",tel:"",tope:28.34,tasaSimple:1.5,montoMin:100000,montoMax:5000000,plazoMax:12,docsReq:"Cédula original, Comprobante de ingresos o certificado laboral, Recibo de un servicio público, Dos referencias personales (nombre y teléfono)",lugar:"Oficina del prestamista (escribe aquí la dirección)",ini:7,fin:19,satIni:8,satFin:15,festivos:"2026-12-08, 2026-12-25, 2027-01-01, 2027-01-11, 2027-03-22, 2027-03-25, 2027-03-26, 2027-05-01, 2027-05-10, 2027-05-31, 2027-06-07, 2027-07-05, 2027-07-20, 2027-08-07, 2027-08-16, 2027-10-18, 2027-11-01, 2027-11-15, 2027-12-08, 2027-12-25",maxContactos:2,ignorarHorario:false,medios:"Efectivo, Nequi, Daviplata"},clientes:[],prestamos:[],pagos:[],notifs:[],contactos:[],log:[],msgs:[],sols:[]};
  const C=(n,d,tel,dir,ref)=>{const c={id:uid(),nombre:n,doc:d,tel,dir,ref,notas:"",estado:"cliente"};db.clientes.push(c);return c};
  const c1=C("María Fernanda Rojas","1.110.000.001","3001112233","Barrio Jordán, Mz 4 Cs 12","Vecina: Ana Gómez");
  const c2=C("Carlos Andrés Peña","1.110.000.002","3002223344","Calle 60 # 5-20, Centro","Tienda La Esquina");
@@ -2532,10 +2532,33 @@ function contactosSemana(cid){const lim=Date.now()-7*864e5;return db.contactos.f
 const TABS_P=[["resumen","📊","Resumen"],["cobros","💵","Cobros"],["clientes","👥","Clientes"],["prestamos","📒","Préstamos"],["msg","💬","Mensajes"],["mas","⚙️","Más"]];
 const TABS_C=[["c_res","🏠","Mi crédito"],["c_calc","🧮","Calcular"],["c_msg","💬","Mensajes"],["c_rec","🧾","Recibos"],["c_av","🔔","Avisos"]];
 function setMode(m){ui.mode=m;ui.nuevo=false;ui.chat=null;ui.pend=[];ui.draft="";ui.tab=m==="P"?"resumen":"c_res";if(m==="C"&&!ui.cid)ui.cid=db.clientes[0]?.id;draw()}
+
+/* ============ Licencia y demostración (control a distancia) ============ */
+const WA_SOPORTE="";/* escribe aquí tu WhatsApp con indicativo, ej. 573001234567 */
+function licInfo(){
+  const l=ui.lic;if(!CLOUD||!l)return{ok:true,libre:true};
+  const hasta=+l.hasta||0,ahora=Date.now(),dias=hasta?Math.ceil((hasta-ahora)/864e5):null;
+  if(l.estado==="bloqueada")return{ok:false,motivo:"bloqueada",dias};
+  if(hasta&&ahora>hasta)return{ok:false,motivo:"vencida",dias:0};
+  return{ok:true,plan:l.plan||"",dias,hasta};
+}
+function vBloqueo(){
+  const li=licInfo(),cli=ui.mode==="C";
+  const wa=WA_SOPORTE?`<a class="btn" style="display:block;text-align:center;text-decoration:none;margin-top:10px;padding:12px" target="_blank" rel="noopener" href="https://wa.me/${WA_SOPORTE}?text=${encodeURIComponent("Hola, quiero activar mi licencia de Préstamos PAMAVA ("+(sync.email||"")+")")}">💬 Escribir por WhatsApp</a>`:"";
+  return `<div class="card" style="margin-top:24px;text-align:center"><div style="font-size:2.4rem">🔒</div><h1 style="margin:6px 0">${cli?"Servicio no disponible":li.motivo==="vencida"?"Tu demostración terminó":"Tu acceso está en pausa"}</h1>
+  <p style="color:var(--mut)">${cli?"Tu prestamista debe renovar su servicio. Contáctalo directamente para tus pagos y consultas.":li.motivo==="vencida"?"Ya pasó el tiempo de prueba. Tus datos siguen guardados y seguros. Activa tu licencia para continuar donde te quedaste.":"El acceso a esta cuenta está en pausa. Tus datos siguen guardados. Comunícate con PAMAVA soluciones para reactivarla."}</p>
+  ${cli?"":wa}<button class="btn gh" id="salir2" style="width:100%;margin-top:10px;padding:12px">Cerrar sesión</button></div>`;
+}
+function licBanner(){
+  const li=licInfo();if(!li.ok||li.libre||ui.mode==="C"||li.dias==null||li.dias>5)return"";
+  return `<div class="alert warn" style="margin-bottom:10px">⏳ ${li.plan==="demo"?"Tu demostración":"Tu licencia"} ${li.dias<=0?"vence hoy":li.dias===1?"vence mañana":"vence en "+li.dias+" días"}. ${WA_SOPORTE?`<a href="https://wa.me/${WA_SOPORTE}" target="_blank" rel="noopener">Activar</a>`:"Contáctanos para activarla."}</div>`;
+}
+
 function draw(){
  const ta=$("#mtxt");if(ta)ui.draft=ta.value;
  if(ui.vista!=="app"){renderAuth();return}
  if(CLOUD&&!sync.loaded){hdrCloud();$("#tabs").style.display="none";$("#calcBtn").style.display="none";$("#app").innerHTML=vSplash();return}
+ if(CLOUD&&!licInfo().ok){hdrCloud();$("#tabs").style.display="none";$("#calcBtn").style.display="none";$("#app").innerHTML=vBloqueo();return}
  $("#appName").textContent=BRAND.nombre;document.title=BRAND.nombre;
  $("#mP").setAttribute("aria-pressed",ui.mode==="P");$("#mC").setAttribute("aria-pressed",ui.mode==="C");
  const who=$("#who");who.style.display=ui.mode==="C"?"":"none";who.innerHTML=db.clientes.map(c=>`<option value="${c.id}"${c.id===ui.cid&&!ui.nuevo?" selected":""}>${esc(c.nombre)}</option>`).join("")+`<option value="__new"${ui.nuevo?" selected":""}>➕ Soy nuevo (registrarme)</option>`;
@@ -2545,7 +2568,7 @@ function draw(){
  const html=(ui.mode==="C"&&ui.nuevo)?vNuevo():(V[ui.tab]||vResumen)();
  const T=ui.mode==="P"?TABS_P:TABS_C;const bd=k=>k==="msg"?noLeidos("P"):k==="c_msg"?noLeidos("C",ui.cid):0;
  $("#tabs").innerHTML=T.map(([k,i,l])=>`<button data-tab="${k}" aria-selected="${ui.tab===k}"><span>${i}</span>${l}${bd(k)?`<em class="bd">${bd(k)}</em>`:""}</button>`).join("");
- $("#tabs").style.display=(ui.mode==="C"&&ui.nuevo)?"none":"";$("#app").innerHTML=html+`<div class="foot">${CLOUD?"":"Prototipo con datos de demostración · "}PAMAVA soluciones</div>`;
+ $("#tabs").style.display=(ui.mode==="C"&&ui.nuevo)?"none":"";$("#app").innerHTML=licBanner()+html+`<div class="foot">${CLOUD?"":"Modo demostración con datos de ejemplo · "}PAMAVA soluciones</div>`;
  const th=$("#thread");if(th)th.scrollTop=th.scrollHeight;
  save()}
 function semaforo(cid){let peor=0;db.prestamos.filter(p=>p.clienteId===cid).forEach(p=>vencidas(p).forEach(q=>{peor=Math.max(peor,diffDays(today(),q.fecha))}));return peor===0?"ok":peor<=7?"warn":"bad"}
@@ -2598,7 +2621,7 @@ function vMas(){const c=db.cfg;return `<h1>Más</h1>
  <label class="f">Máx. contactos por cliente / semana<input name="maxContactos" value="${c.maxContactos}" inputmode="numeric"></label>
  <label class="f" style="flex-direction:row;align-items:center;gap:8px;grid-column:1/-1"><input type="checkbox" name="ign" ${c.ignorarHorario?"checked":""} style="width:auto"> Ignorar horario (solo para probar la demostración)</label>
  <div style="grid-column:1/-1"><button class="btn" type="submit">Guardar configuración</button></div></form>
- <p class="alert warn" style="margin-top:10px">⚠️ El tope de usura (25 %) y los horarios son <b>valores de ejemplo</b>. Actualiza el tope con el certificado vigente de la Superfinanciera y verifica los horarios con el texto de la Ley 2300 de 2023.</p></div>
+ <p class="alert warn" style="margin-top:10px">⚠️ El tope de usura (28,34 % E.A.) es el certificado por la Superfinanciera para <b>noviembre de 2026</b> (Resolución 1707). <b>Cambia cada mes</b>: actualízalo el primer día de cada mes con el certificado vigente. Los festivos incluidos son los de Colombia hasta 2027; verifica los horarios con la ley vigente.</p></div>
  <div class="card" style="margin-top:10px"><h2>Bitácora</h2><p style="color:var(--mut);margin:0 0 6px;font-size:.85rem">Registro de todo lo que pasa en la cuenta.</p><div class="scroll"><table class="t"><tbody>${db.log.map(l=>`<tr><td style="white-space:normal">${esc(l.x)}</td><td>${new Date(l.t).toLocaleString("es-CO",{dateStyle:"short",timeStyle:"short"})}</td></tr>`).join("")||`<tr><td>Sin movimientos</td><td></td></tr>`}</tbody></table></div></div>
  ${seguridadHtml()}
  ${CLOUD?cuentaHtml():`<div class="card" style="margin-top:10px"><h2>Demostración</h2><button class="btn gh" id="reset">↺ Restablecer datos de ejemplo</button></div>`}`}
@@ -2988,7 +3011,7 @@ const FBV="10.14.1";
 let FA=null,FS=null,fauth=null,fdb=null;
 const sync={ok:false,uid:null,pid:null,role:null,email:"",base:{},cfgFp:"",init:{},unsubs:[],timer:null,busy:false,again:false,signing:false,loaded:false,pend:new Set(),redrawLater:false,errShown:false};
 const COLS_W={prestamista:["clientes","prestamos","pagos","sols","msgs","notifs","contactos","log"],cliente:["clientes","sols","msgs"]};
-function cfgDefault(nombre){return{prestamista:nombre||"Tu negocio",tel:"",tope:25,tasaSimple:1.5,montoMin:100000,montoMax:5000000,plazoMax:12,docsReq:"Cédula original, Comprobante de ingresos o certificado laboral, Recibo de un servicio público, Dos referencias personales (nombre y teléfono)",lugar:"",ini:7,fin:19,satIni:8,satFin:15,festivos:"",maxContactos:2,ignorarHorario:false,medios:"Efectivo, Nequi, Daviplata"}}
+function cfgDefault(nombre){return{prestamista:nombre||"Tu negocio",tel:"",tope:28.34,tasaSimple:1.5,montoMin:100000,montoMax:5000000,plazoMax:12,docsReq:"Cédula original, Comprobante de ingresos o certificado laboral, Recibo de un servicio público, Dos referencias personales (nombre y teléfono)",lugar:"",ini:7,fin:19,satIni:8,satFin:15,festivos:"2026-12-08, 2026-12-25, 2027-01-01, 2027-01-11, 2027-03-22, 2027-03-25, 2027-03-26, 2027-05-01, 2027-05-10, 2027-05-31, 2027-06-07, 2027-07-05, 2027-07-20, 2027-08-07, 2027-08-16, 2027-10-18, 2027-11-01, 2027-11-15, 2027-12-08, 2027-12-25",maxContactos:2,ignorarHorario:false,medios:"Efectivo, Nequi, Daviplata"}}
 const emptyDb=()=>({cfg:cfgDefault(),clientes:[],prestamos:[],pagos:[],sols:[],msgs:[],notifs:[],contactos:[],log:[]});
 /* ---- huellas para detectar qué cambió ---- */
 const cl=v=>v===undefined?undefined:JSON.parse(JSON.stringify(v));
@@ -3018,7 +3041,7 @@ function startListeners(){
  const marca=k=>{sync.init[k]=true;if(sync.pend.delete(k)&&!sync.pend.size){sync.loaded=true;scheduleDraw()}};
  const err=e=>{console.error(e);if(!sync.errShown){sync.errShown=true;toast("No se pudo leer la base de datos: "+(e.code||e.message))}};
  const on=(k,ref,fn)=>sync.unsubs.push(onSnapshot(ref,s=>{fn(s);marca(k);scheduleDraw()},e=>{err(e);marca(k)}));
- on("cfg",doc(fdb,"prestamistas",sync.pid),s=>{if(s.exists()&&s.data().cfg){const n=Object.assign(cfgDefault(),s.data().cfg);if(!sync.cfgFp||fpk(db.cfg)===sync.cfgFp){db.cfg=n;sync.cfgFp=fpk(n)}}});
+ on("cfg",doc(fdb,"prestamistas",sync.pid),s=>{const nl=s.exists()&&s.data().lic||null;if(JSON.stringify(nl)!==JSON.stringify(ui.lic)){ui.lic=nl;setTimeout(draw,0)}if(s.exists()&&s.data().cfg){const n=Object.assign(cfgDefault(),s.data().cfg);if(!sync.cfgFp||fpk(db.cfg)===sync.cfgFp){db.cfg=n;sync.cfgFp=fpk(n)}}});
  const col=(k,q)=>on(k,q,s=>{s.docChanges().forEach(ch=>{if(ch.type==="removed")quitar(k,ch.doc.id);else upsert(k,Object.assign({},ch.doc.data(),{id:ch.doc.id}))});ordenar(k)});
  if(owner){["clientes","prestamos","pagos","sols","msgs","notifs","contactos"].forEach(k=>col(k,P(k)));col("log",query(P("log"),orderBy("t","desc"),limit(100)))}
  else{on("clientes",doc(fdb,"prestamistas",sync.pid,"clientes",sync.uid),s=>{if(s.exists())upsert("clientes",Object.assign({},s.data(),{id:s.id}))});
@@ -3043,7 +3066,7 @@ window.addEventListener("pagehide",()=>{if(CLOUD)flushSync()});
 function salirLocal(){stopSync();CLOUD=false;sync.uid=null;sync.pid=null;sync.role=null;sync.email=""}
 async function entrar(u,info){
  try{if(!info){const s=await FS.getDoc(FS.doc(fdb,"usuarios",u.uid));if(!s.exists()){await FA.signOut(fauth);ui.vista="inicio";ui.aviso="Tu cuenta no tiene perfil. Crea la cuenta desde el inicio (si el correo ya existe, usa otro).";draw();return}info=s.data()}
-  stopSync();sync.uid=u.uid;sync.email=u.email||"";sync.role=info.rol;sync.pid=info.pid;CLOUD=true;db=emptyDb();
+  stopSync();sync.uid=u.uid;sync.email=u.email||"";ui.lic=null;sync.role=info.rol;sync.pid=info.pid;CLOUD=true;db=emptyDb();
   ui.mode=info.rol==="prestamista"?"P":"C";ui.cid=info.rol==="cliente"?u.uid:null;ui.tab=ui.mode==="P"?"resumen":"c_res";ui.chat=null;ui.nuevo=false;ui.pend=[];ui.draft="";ui.vista="app";ui.aviso="";
   startListeners();draw()}
  catch(e){console.error(e);salirLocal();ui.vista="inicio";ui.aviso="No se pudo abrir tu cuenta: "+(e.code||e.message);draw()}}
@@ -3088,7 +3111,7 @@ document.addEventListener("submit",async e=>{const f=e.target;
   const bt=f.querySelector("button[type=submit]");bt.disabled=true;
   try{if(!crear){await FA.signInWithEmailAndPassword(fauth,email,pass);return}
    sync.signing=true;const cred=await FA.createUserWithEmailAndPassword(fauth,email,pass);const uid=cred.user.uid;
-   try{const bb=FS.writeBatch(fdb);bb.set(FS.doc(fdb,"usuarios",uid),{rol:"prestamista",pid:uid});bb.set(FS.doc(fdb,"prestamistas",uid),{ownerUid:uid,cfg:cfgDefault(f.negocio.value.trim()),creado:Date.now()});await bb.commit()}
+   try{const bb=FS.writeBatch(fdb);bb.set(FS.doc(fdb,"usuarios",uid),{rol:"prestamista",pid:uid});bb.set(FS.doc(fdb,"prestamistas",uid),{ownerUid:uid,lic:{plan:"demo",estado:"activa",hasta:Date.now()+15*864e5},cfg:cfgDefault(f.negocio.value.trim()),creado:Date.now()});await bb.commit()}
    catch(x){try{await FA.deleteUser(cred.user)}catch(y){}sync.signing=false;throw x}
    sync.signing=false;await entrar(cred.user,{rol:"prestamista",pid:uid})}
   catch(x){sync.signing=false;err(msgErr(x))}finally{bt.disabled=false}return}
